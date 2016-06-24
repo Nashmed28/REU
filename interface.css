@@ -74,7 +74,8 @@ input[name = epsilonbox] {
 
 #additional-parameters-wrap {
     display: table;
-    width: 100%;
+    width: 90%;
+    padding-left: 10%;
     background: #eeeeff;
     position: fixed;
 }
@@ -82,11 +83,11 @@ input[name = epsilonbox] {
 #additional-parameters-wrap > div {
     display: table-cell;
     vertical-align: middle;
-    width: 10%;
+    width: 60%;
 }
 
 #additional-parameters-wrap > div:nth-child(2) {
-    width: 80%;
-    vertical-align: top;
-    background: #666;
+    width: 20%;
+    vertical-align: middle;
+    background: #555;
 }
