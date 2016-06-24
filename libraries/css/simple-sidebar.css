@@ -21,7 +21,7 @@
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    left: 7.5%;
+    left: 7%;
     width: 0;
     height: 100%;
     margin-left: -7.5%;
@@ -99,7 +99,7 @@
 @media(min-width:768px) {
     #wrapper {
         padding-top: 0px;
-        padding-left: 7.5%;
+        padding-left: 7em;
     }
 
     #wrapper.toggled {
@@ -107,7 +107,7 @@
     }
 
     #sidebar-wrapper {
-        width: 7.5%;
+        width: 7em;
     }
 
     #wrapper.toggled #sidebar-wrapper {
@@ -115,7 +115,7 @@
     }
 
     #page-content-wrapper {
-        padding: 20px;
+        padding: 5px;
         position: relative;
     }
 
