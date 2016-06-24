@@ -1,5 +1,5 @@
-html {
-	width: 100px;
+/*html {
+	width: 100%;
 }
 
 #header-wrap {
@@ -36,10 +36,57 @@ p.logo {
     width: 100%;
     height: 10%;
     display: flex;
-    justify-content: center; /* align horizontal */
+    justify-content: center; 
     align-items: center;
 }
 
 input[name = epsilonbox] {
     width: 100%;
+}*/
+
+#header-wrap {
+    display: table;
+    width: 100%;
+    background: #eeeeff;
+    position: fixed;
+}
+
+#header-wrap > div {
+    display: table-cell;
+    vertical-align: middle;
+    width: 10%;
+}
+
+#header-wrap > div:nth-child(2) {
+    width: 80%;
+    vertical-align: top;
+    background: #666;
+}
+
+#title {
+    padding-top: 0%;
+    padding-bottom: 0%;
+    font-size: 1.75em;
+    color: white;
+    max-height: 1.75em; 
+    overflow: hidden;"
+}
+
+#additional-parameters-wrap {
+    display: table;
+    width: 100%;
+    background: #eeeeff;
+    position: fixed;
+}
+
+#additional-parameters-wrap > div {
+    display: table-cell;
+    vertical-align: middle;
+    width: 10%;
+}
+
+#additional-parameters-wrap > div:nth-child(2) {
+    width: 80%;
+    vertical-align: top;
+    background: #666;
 }
