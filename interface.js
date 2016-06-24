@@ -9,7 +9,22 @@ $(document).ready(function () {
         });
         $("#wrapper").toggleClass("toggled");
     });
-    
+
+	// Collapsable Sections
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function(){
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+      }
+    }
+
+    $("#add-new").click(function() {
+        $("#statistic").clone().prependTo("#add-new");
+    });
+
 	// alert(height);
 	// document.getElementById('header-wrap').style.height = '90px';
 	// $(function() {
