@@ -1,4 +1,10 @@
-var height = document.getElementById('mainbar').offsetHeight;
+// JSON data of r-libraries
+var text = '{"rfunctions":[' +
+	'{"func":"Mean","parameter":["Lower Bound", "Upper Bound", "Granularity"] },' +
+	'{"func":"Histogram","parameter":["Number of Bins"] },' +
+	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] }]}';
+
+
 
 
 $(document).ready(function () {	
@@ -21,9 +27,26 @@ $(document).ready(function () {
       }
     }
 
+    // Clone form fields
     $("#add-new").click(function() {
         $("#statistic").clone().prependTo("#add-new");
     });
+
+    // Demo of using JSON data
+	obj = JSON.parse(text);
+	document.getElementById("demo").innerHTML =
+	obj.rfunctions[2].func + " " + obj.rfunctions[2].parameter[1];
+	     	
+
+
+
+
+
+
+
+
+
+
 
 	// alert(height);
 	// document.getElementById('header-wrap').style.height = '90px';
@@ -39,3 +62,4 @@ $(document).ready(function () {
     //     $("#wrapper").toggleClass("toggled");
     // });
 });
+
