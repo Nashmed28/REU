@@ -44,11 +44,16 @@ input[name = epsilonbox] {
     width: 100%;
 }*/
 
+html {
+    width: 100%;
+}
+
 #header-wrap {
     display: table;
     width: 100%;
     background: #eeeeff;
     position: fixed;
+    height: 85px;
 }
 
 #header-wrap > div {
@@ -60,14 +65,14 @@ input[name = epsilonbox] {
 #header-wrap > div:nth-child(2) {
     width: 80%;
     vertical-align: top;
-    background: #666;
+    background: #eeeeff;
 }
 
 #title {
     padding-top: 0%;
     padding-bottom: 0%;
     font-size: 1.75em;
-    color: white;
+    color: maroon;
     max-height: 1.75em; 
     overflow: hidden;"
 }
@@ -89,5 +94,5 @@ input[name = epsilonbox] {
 #additional-parameters-wrap > div:nth-child(2) {
     width: 20%;
     vertical-align: middle;
-    background: #555;
+    background: #eeeeff;
 }
