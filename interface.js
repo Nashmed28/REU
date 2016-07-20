@@ -1,5 +1,3 @@
-// JSON data of r-libraries
-
 // types, categorical, numerical, and boolean
 // mean -> num (lower,upper), bool (bins)
 // histogram -> categorical (), numerical(), and boolean()
@@ -7,14 +5,28 @@
 // bivariate -> categorical
 // func, <types: metadata per type>
 // build set of types dynamically
+
+
+
+// JSON data of r-libraries (Fanny's work will provide these)
+// List of variables to make form bubbles (Fanny's work will provide these)
 var functions = '{"rfunctions":[' +
 	'{"func":"Mean","parameter":["Lower Bound", "Upper Bound"] },' +
 	'{"func":"Histogram","parameter":["Number of Bins"] },' +
 	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] },' +
-    '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] }]}';
+    '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] } ],' + 
+    '"varlist": ["var1", "var2"] }';
 
-// list of variables to make form bubbles
-// var varlist = {"var1","var2"};
+// Parses the function and varlist data structure
+var fobj = JSON.parse(functions);
+
+// Locally global array of parameters need for a single variable
+var generated_parameters = [];
+
+// Global table of metadata (as inputed by user)
+var inputted_metadata = [];
+
+
 
 // Unique array function (source: http://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array)
 Array.prototype.unique = function () {
@@ -24,20 +36,11 @@ Array.prototype.unique = function () {
     });
 };
 
-// Parses the rfunction data structure
-var obj = JSON.parse(functions);
-
-// Locally global array of parameters need for a single variable
-var generated_parameters = [];
-
-// Global table of metadata (as inputed by user)
-var inputted_metadata = [];
-
 // Makes a checklist of possible statistics 
 function available_statistics() { 
     var options = "";
-    for (n = 0; n < obj.rfunctions.length; n++) {
-        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + obj.rfunctions[n].func.replace(/\s/g, '') + "'> " + obj.rfunctions[n].func + "<br>";
+    for (n = 0; n < fobj.rfunctions.length; n++) {
+        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '') + "'> " + fobj.rfunctions[n].func + "<br>";
     };
     $(".released_statistics").append(options);
 };
@@ -75,8 +78,8 @@ function Parameter_Populate(stat_id, stat_index) {
     if ($("#" + stat_id).prop('checked')) {
         // adds parameters to master array
         // does simple push, so added in the order selected and listed
-        for(n = 0; n < obj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.push(obj.rfunctions[stat_index].parameter[n]);
+        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+            generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
         };
 
         // calls the parameter generating function
@@ -85,12 +88,12 @@ function Parameter_Populate(stat_id, stat_index) {
 
     // if not checked
     else {
-        // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+        // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
         // index() help: https://api.jquery.com/index/
 
         // finds index of particular parameter and removes them
-        for(n = 0; n < obj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.splice((generated_parameters.indexOf(obj.rfunctions[stat_index].parameter[n])), 1);
+        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+            generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
         };
 
         // calls the parameter generating function
@@ -169,18 +172,18 @@ $(document).ready(function () {
 
     // Demo of using JSON data
 	// function available_statistics() { 
- //       var obj = JSON.parse(functions);
+ //       var fobj = JSON.parse(functions);
 	//    var text = "";
  //       var n; 
- //       for (n = 0; n < obj.rfunctions.length; n++) {
- //        text += "<input type='checkbox' name='stat' value='" + obj.rfunctions[n].func + "'> " + obj.rfunctions[n].func + "<br>";
+ //       for (n = 0; n < fobj.rfunctions.length; n++) {
+ //        text += "<input type='checkbox' name='stat' value='" + fobj.rfunctions[n].func + "'> " + fobj.rfunctions[n].func + "<br>";
  //        };
  //        $(".released_statistics").append(text);
  //    };
 
-    // obj.rfunctions[2].func = Quantile 
-    // obj.rfunctions[2].parameter[1] = Upper Bound
-    // obj.rfunctions.length = 3
+    // fobj.rfunctions[2].func = Quantile 
+    // fobj.rfunctions[2].parameter[1] = Upper Bound
+    // fobj.rfunctions.length = 3
 
 
 
