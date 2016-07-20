@@ -24,8 +24,14 @@ Array.prototype.unique = function () {
     });
 };
 
+// Parses the rfunction data structure
 var obj = JSON.parse(functions);
+
+// Locally global array of parameters need for a single variable
 var generated_parameters = [];
+
+// Global table of metadata (as inputed by user)
+var inputted_metadata = [];
 
 // Makes a checklist of possible statistics 
 function available_statistics() { 
@@ -40,7 +46,8 @@ function available_statistics() {
 
 
 function Parameter_Memory(parameter_id) {
-
+    var metadata = document.getElementById(parameter_id).value;
+    alert(metadata);
 };
 
 
