@@ -30,7 +30,7 @@ var functions = '{"rfunctions":[' +
 	'{"func":"Histogram","parameter":["Number of Bins"] },' +
 	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] },' +
     '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] } ],' + 
-    '"varlist": ["var1", "var2"] }';
+    '"varlist": ["var 1", "var2"] }';
 
 // Parses the function and varlist data structure
 var fobj = JSON.parse(functions);
@@ -78,12 +78,45 @@ for (n = 0; n < column_fields.length; n++) {
 var inputted_metadata = [];
 
 
+// Makes bubbles and takes in variable name as unique identifier
+// Forces each variable to have an unique name
+function make_bubble (variable) {
+    variable = variable.replace(/\s/g, '_');
+    var blank_bubble = 
+    "<div class='bubble' id='" + variable + "'>" +
+        "<button class='accordion' id='" + variable + "'>" +
+            "<table style='width: 100%;'>" +
+                "<tr>" +
+                    "<td style='width: 50%;'>" +
+                        variable +
+                    "</td>" +
+                    "<td>" +
+                        "Variable Type: " +
+                        "<select id='variable_type_" + variable + "'>" + 
+                            "<option id='default_" + variable + "' value='default'>Please select a type</option>" +
+                        "</select>" +
+                    "</td>" +
+                "</tr>" +
+            "</table>" +
+        "</button>" +
+        "<div id='panel_" + variable + "' class='panel'>" +
+            "<div id='released_statistics_" + variable + "'class='released_statistics'>" +
+                "Please select which statistics you wish to release:<br>" +
+            "</div>" +
+            "<hr style='margin-top: -0.25em'>" +
+            "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
+        "</div>" +
+    "</div>";
+    return blank_bubble;
+};
 
 
-
-function variable_bubble () {
-    
-}
+// Generates bubbles from variable list recieved
+function variable_bubble() {
+    for (n = 0; n < fobj.varlist.length; n++) {
+        $("#bubble_form").append(make_bubble(fobj.varlist[n]));
+    };
+};
 
 
 // Makes a checklist of possible statistics 

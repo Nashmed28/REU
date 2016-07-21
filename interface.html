@@ -23,7 +23,7 @@
 
 
 
-<body onload="available_statistics()">
+<body onload="variable_bubble()">
 	<div id = "header-wrap">
         <div>
             <div style="text-align: center; max-height: 7em; overflow: hidden;">
@@ -112,8 +112,7 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12" style="width: 100%; height:100%; overflow-y: scroll; position: relative; z-index: 0;">
-                        
+                    <div id="bubble_form" class="col-lg-12" style="width: 100%; height:100%; overflow-y: scroll; position: relative; z-index: 0;">
                         <div id ="var1">
                             <button class="accordion" id="variable1">
                                 <table style="width: 100%;">
@@ -131,20 +130,6 @@
                                 </table> 
                             </button>
                                 <div class="panel">
-<!--                                     <table style="width: 100%;">
-                                        <tr>
-                                            <td>
-                                                Variable Name<br><input>
-                                            </td>
-
-                                            <td>
-                                                Variable Type<br><input>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <hr style="border-width: 1px; border-color: black; margin-top: 1em"> -->
-
                                     <div class = "released_statistics" onload="n()">
                                         Please select which statistics you wish to release:<br>
                                     </div>
@@ -152,52 +137,39 @@
                                     <hr style="margin-top: -0.25em">
 
                                     <div id = "necessary_parameters"></div>
-<!-- 
-                                        <hr style="border-width: 1px; border-color: black; margin-top: -1em">
-
-                                        <table style="width: 100%;">
-                                            <tr>
-                                                <td>
-                                                    Lower Bound<br><input>
-                                                </td>
-
-                                                <td>
-                                                    Upper Bound<br><input>
-                                                </td>
-
-                                                <td>
-                                                    Granularity<br><input>
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        <table style="width: 100%; margin-top: 1em; text-align: center;">
-                                            <tr>
-                                                <td>
-                                                    Epsilon<br><input>
-                                                </td>
-
-                                                <td>
-                                                    Accuracy<br><input>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div> -->
-
-
-      <!--                               <div id = "add-new" style="text-align: right; margin-top: 0.5em;">
-                                        + Add New Statistics
-                                    </div> -->
-
                                 </div>
                         </div>
 
-                        <div>
-                            ccc
+                        <div id ="var1">
+                            <button class="accordion" id="variable1">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width:50%;">
+                                            Variable Name
+                                        </td>
+                                        <td>
+                                            Variable Type: 
+                                            <select id="variable_type">
+                                                <option value="default">Please select a type</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table> 
+                            </button>
+                                <div class="panel">
+                                    <div class = "released_statistics" onload="n()">
+                                        Please select which statistics you wish to release:<br>
+                                    </div>
+                                    
+                                    <hr style="margin-top: -0.25em">
+
+                                    <div id = "necessary_parameters"></div>
+                                </div>
                         </div>
 
+
                         <div>
-                            bb
+                            ccc
                         </div>
 
                     </div>
