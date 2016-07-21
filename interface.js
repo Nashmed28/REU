@@ -41,17 +41,18 @@ var generated_parameters = [];
 // Global metadata counter (only increases during a session)
 var index_id = 0; 
 
-// Column to Index Dictionary
-var column_index = {};
-
 // Initial List of Column Fields
 var column_fields = ['index_id', 'Variable_Name', 'Variable_Type', 'Statistic', 'Epsilon', 'Accuracy', 'Hold'];
 
 // Adding metadata fields
+// https://davidwalsh.name/combining-js-arrays
 var metadata_column_fields = [];
 for (n = 0; n < fobj.rfunctions.length; n++) {
     metadata_column_fields = metadata_column_fields.concat(fobj.rfunctions[n].parameter);
 };
+
+// Number of metadata fields
+metadata_column_fields_amount = metadata_column_fields.unique().length;
 
 // Final Un-Editted List of Column Fields
 column_fields = column_fields.concat(metadata_column_fields.unique());
@@ -62,6 +63,7 @@ for (n = 0; n < column_fields.length; n++) {
 };
 
 // Making a dictionary of column to index
+// http://stackoverflow.com/questions/7196212/how-to-create-dictionary-and-add-key-value-pairs-dynamically-in-javascriptadd
 // Declaring a Column to Index Dictionary
 var column_index = {};
 
@@ -79,7 +81,9 @@ var inputted_metadata = [];
 
 
 
-
+function variable_bubble () {
+    
+}
 
 
 // Makes a checklist of possible statistics 
@@ -89,6 +93,7 @@ function available_statistics() {
     for (n = 0; n < fobj.rfunctions.length; n++) {
         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
     };
+
     $(".released_statistics").append(options);
 };
 
@@ -135,6 +140,10 @@ function Parameter_Populate(stat_id, stat_index) {
         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
             generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
         };
+
+        // Adds to global metadata table
+        // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+        metadata_to_add = [index_id, ]
 
         // calls the parameter generating function
         parameter_fields();
