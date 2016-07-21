@@ -10,6 +10,19 @@
 
 
 
+
+
+// Unique array function (source: http://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array)
+Array.prototype.unique = function () {
+    var arr = this;
+    return $.grep(arr, function (v, i) {
+        return $.inArray(v, arr) === i;
+    });
+};
+
+
+
+
 // JSON data of r-libraries (Fanny's work will provide these)
 // List of variables to make form bubbles (Fanny's work will provide these)
 var functions = '{"rfunctions":[' +
@@ -25,23 +38,56 @@ var fobj = JSON.parse(functions);
 // Locally global array of parameters need for a single variable
 var generated_parameters = [];
 
-// Global table of metadata (as inputed by user)
-// Naive data structure: [Variable Name, Variable Type, Statistic, ... All Possible Metadata ... Epsilon, Accuracy, Hold Status]
-var inputted_metadata = [];
+// Global metadata counter (only increases during a session)
+var index_id = 0; 
 
-// Unique array function (source: http://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array)
-Array.prototype.unique = function () {
-    var arr = this;
-    return $.grep(arr, function (v, i) {
-        return $.inArray(v, arr) === i;
-    });
+// Column to Index Dictionary
+var column_index = {};
+
+// Initial List of Column Fields
+var column_fields = ['index_id', 'Variable_Name', 'Variable_Type', 'Statistic', 'Epsilon', 'Accuracy', 'Hold'];
+
+// Adding metadata fields
+var metadata_column_fields = [];
+for (n = 0; n < fobj.rfunctions.length; n++) {
+    metadata_column_fields = metadata_column_fields.concat(fobj.rfunctions[n].parameter);
 };
 
+// Final Un-Editted List of Column Fields
+column_fields = column_fields.concat(metadata_column_fields.unique());
+
+// Final Edit of List of Column Fields (Converts "Lower Bound" -> "Lower_Bound")
+for (n = 0; n < column_fields.length; n++) {
+    column_fields[n] = column_fields[n].replace(/\s/g, '_');
+};
+
+// Making a dictionary of column to index
+// Declaring a Column to Index Dictionary
+var column_index = {};
+
+// Populating the dictionary
+for (n = 0; n < column_fields.length; n++) {
+    column_index[column_fields[n]] = n;
+};
+
+
+// Global table of metadata (as inputed by user)
+// Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+var inputted_metadata = [];
+
+
+
+
+
+
+
+
 // Makes a checklist of possible statistics 
-function available_statistics() { 
+function available_statistics() {
+    // alert(); 
     var options = "";
     for (n = 0; n < fobj.rfunctions.length; n++) {
-        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '') + "'> " + fobj.rfunctions[n].func + "<br>";
+        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
     };
     $(".released_statistics").append(options);
 };
@@ -53,6 +99,13 @@ function Parameter_Memory(parameter_id) {
     var metadata = document.getElementById(parameter_id).value;
     alert(metadata);
 };
+
+
+
+
+
+
+
 
 
 
