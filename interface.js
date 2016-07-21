@@ -6,6 +6,8 @@
 // func, <types: metadata per type>
 // build set of types dynamically
 
+// the whole storing thing in memory = sql/database
+
 
 
 // JSON data of r-libraries (Fanny's work will provide these)
@@ -24,9 +26,8 @@ var fobj = JSON.parse(functions);
 var generated_parameters = [];
 
 // Global table of metadata (as inputed by user)
+// Naive data structure: [Variable Name, Variable Type, Statistic, ... All Possible Metadata ... Epsilon, Accuracy, Hold Status]
 var inputted_metadata = [];
-
-
 
 // Unique array function (source: http://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array)
 Array.prototype.unique = function () {
@@ -47,7 +48,7 @@ function available_statistics() {
 
 
 
-
+// Stores metadata in memory
 function Parameter_Memory(parameter_id) {
     var metadata = document.getElementById(parameter_id).value;
     alert(metadata);
