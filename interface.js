@@ -83,8 +83,8 @@ var inputted_metadata = [];
 function make_bubble (variable) {
     variable = variable.replace(/\s/g, '_');
     var blank_bubble = 
-    "<div class='bubble' id='" + variable + "'>" +
-        "<button class='accordion' id='" + variable + "'>" +
+    "<div class='bubble' id='bubble_" + variable + "'>" +
+        "<button class='accordion' id='accordion_" + variable + "' onclick='accordion(this)'>" +
             "<table style='width: 100%;'>" +
                 "<tr>" +
                     "<td style='width: 50%;'>" +
@@ -100,7 +100,7 @@ function make_bubble (variable) {
             "</table>" +
         "</button>" +
         "<div id='panel_" + variable + "' class='panel'>" +
-            "<div id='released_statistics_" + variable + "'class='released_statistics'>" +
+            "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
                 "Please select which statistics you wish to release:<br>" +
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
@@ -110,10 +110,43 @@ function make_bubble (variable) {
     return blank_bubble;
 };
 
+// Enables Collapsable Sections for JS Generated HTML
+function accordion(bubble) {
+    if (bubble.className == "accordion") {
+        bubble.className = "accordion active";
+    }
+    else {
+        bubble.className = "accordion";
+    }
+    // alert(bubble.className);
+    // if (counter % 2 == 0) {
+    //     alert('hi');
+    // }
+    // bubble.className = "accordion active"; 
+    // counter += 1;
+    // alert(counter);
+
+
+
+    // $("#" + bubble.id).toggle(function() {
+    //     bubble.className = "accordion active";
+    // },
+    // function() {
+    //     bubble.className = "accordion";
+    // });
+    // alert(bubble.className);
+    // bubble.onclick = function() {
+    //     bubble.className.toggle("active");
+    //     bubble.className.nextElementSibling.classList.toggle("show");
+    // }
+};
+
+
 
 // Generates bubbles from variable list recieved
 function variable_bubble() {
     for (n = 0; n < fobj.varlist.length; n++) {
+        // alert(make_bubble(fobj.varlist[n]));
         $("#bubble_form").append(make_bubble(fobj.varlist[n]));
     };
 };
@@ -121,12 +154,10 @@ function variable_bubble() {
 
 // Makes a checklist of possible statistics 
 function available_statistics() {
-    // alert(); 
     var options = "";
     for (n = 0; n < fobj.rfunctions.length; n++) {
         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
     };
-
     $(".released_statistics").append(options);
 };
 
@@ -219,6 +250,22 @@ function Parameter_Populate(stat_id, stat_index) {
 //     // document.getElementById('necessary_parameters').innerHTML = 'hi';
 // };
 
+
+
+
+
+
+// Collapsable Sections
+// http://www.w3schools.com/howto/howto_js_accordion.asp
+var acc = document.getElementsByClassName("accordion");
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function() {
+        this.classList.toggle("active");
+        this.nextElementSibling.classList.toggle("show");
+    }
+}
+
 $(document).ready(function () {	
 	// sidebar action, with toggle and text-switch
 	$("#sidebar-toggle").click(function() {
@@ -228,16 +275,6 @@ $(document).ready(function () {
         $("#wrapper").toggleClass("toggled");
     });
 
-	// Collapsable Sections
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-        acc[i].onclick = function(){
-            this.classList.toggle("active");
-            this.nextElementSibling.classList.toggle("show");
-      }
-    }
 
     // Produces parameter fields
 
