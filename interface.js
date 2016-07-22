@@ -143,56 +143,54 @@ function variable_bubble() {
 
 
 
-// // Generates html based on statistics choosen
-// function parameter_fields() {
-//     // makes blank html text
-//     var parameter_field = "";
-        
-//     // uses .unique() to get all unique values and iterate through
-//     for (j = 0; j < generated_parameters.unique().length; j++) {
-//         // creates html list in .sort() (alphabet order)
-//         parameter_field += generated_parameters.unique().sort()[j] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[j].replace(/\s/g, '') + "' oninput='Parameter_Memory(this.id)'><br>"
-//     };
 
-//     // prints this all out, display seems smooth
-//     document.getElementById('necessary_parameters_var2').innerHTML = parameter_field; 
-// };
+
+// Generates html based on statistics choosen
+function parameter_fields(variable) {
+    // makes blank html text
+    var parameter_field = "";
+        
+    // uses .unique() to get all unique values and iterate through
+    for (j = 0; j < generated_parameters.unique().length; j++) {
+        // creates html list in .sort() (alphabet order)
+        parameter_field += generated_parameters.unique().sort()[j] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[j].replace(/\s/g, '') + "_" + variable + "' oninput='Parameter_Memory(this.id)'><br>"
+    };
+
+    // prints this all out, display seems smooth
+    document.getElementById('necessary_parameters_' + variable).innerHTML = parameter_field; 
+};
 
 // Produce parameter fields
 // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
 function Parameter_Populate(stat_id, stat_index, variable) {
     // checks if thing is checked
     if ($("#" + stat_id).prop('checked')) {
-        
-        alert(variable);
+        // adds parameters to master array
+        // does simple push, so added in the order selected and listed
+        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+            generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
+        };
 
+        // Adds to global metadata table
+        // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+        // metadata_to_add = [index_id]
 
-        // // adds parameters to master array
-        // // does simple push, so added in the order selected and listed
-        // for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-        //     generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
-        // };
-
-        // // Adds to global metadata table
-        // // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
-        // // metadata_to_add = [index_id]
-
-        // // calls the parameter generating function
-        // parameter_fields();
+        // calls the parameter generating function
+        parameter_fields(variable);
     }
 
     // if not checked
     else {
-        // // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
-        // // index() help: https://api.jquery.com/index/
+        // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
+        // index() help: https://api.jquery.com/index/
 
-        // // finds index of particular parameter and removes them
-        // for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-        //     generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
-        // };
+        // finds index of particular parameter and removes them
+        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+            generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+        };
 
-        // // calls the parameter generating function
-        // parameter_fields();
+        // calls the parameter generating function
+        parameter_fields(variable);
     }
 };
 
