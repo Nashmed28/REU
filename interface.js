@@ -112,12 +112,17 @@ function make_bubble (variable) {
 
 // Enables Collapsable Sections for JS Generated HTML
 function accordion(bubble) {
+    var variable = bubble.id.slice(10,bubble.id.length);
+    // alert(document.getElementById("panel_" + variable).className);
     if (bubble.className == "accordion") {
         bubble.className = "accordion active";
+        document.getElementById("panel_" + variable).className = "panel show";
     }
     else {
         bubble.className = "accordion";
+        document.getElementById("panel_" + variable).className = "panel";
     }
+
     // alert(bubble.className);
     // if (counter % 2 == 0) {
     //     alert('hi');
