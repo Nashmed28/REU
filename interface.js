@@ -113,7 +113,6 @@ function make_bubble (variable) {
 // Enables Collapsable Sections for JS Generated HTML
 function accordion(bubble) {
     var variable = bubble.id.slice(10,bubble.id.length);
-    // alert(document.getElementById("panel_" + variable).className);
     if (bubble.className == "accordion") {
         bubble.className = "accordion active";
         document.getElementById("panel_" + variable).className = "panel show";
@@ -122,39 +121,15 @@ function accordion(bubble) {
         bubble.className = "accordion";
         document.getElementById("panel_" + variable).className = "panel";
     }
-
-    // alert(bubble.className);
-    // if (counter % 2 == 0) {
-    //     alert('hi');
-    // }
-    // bubble.className = "accordion active"; 
-    // counter += 1;
-    // alert(counter);
-
-
-
-    // $("#" + bubble.id).toggle(function() {
-    //     bubble.className = "accordion active";
-    // },
-    // function() {
-    //     bubble.className = "accordion";
-    // });
-    // alert(bubble.className);
-    // bubble.onclick = function() {
-    //     bubble.className.toggle("active");
-    //     bubble.className.nextElementSibling.classList.toggle("show");
-    // }
 };
-
-
 
 // Generates bubbles from variable list recieved
 function variable_bubble() {
     for (n = 0; n < fobj.varlist.length; n++) {
-        // alert(make_bubble(fobj.varlist[n]));
         $("#bubble_form").append(make_bubble(fobj.varlist[n]));
     };
 };
+
 
 
 // Makes a checklist of possible statistics 
