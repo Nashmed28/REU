@@ -35,8 +35,10 @@ var functions = '{"rfunctions":[' +
 // Parses the function and varlist data structure
 var fobj = JSON.parse(functions);
 
-// Locally global array of parameters need for a single variable
-var generated_parameters = [];
+// Locally global arrays of parameters need for a single variable
+for (k = 0; k < fobj.varlist.length; k++) { 
+    eval("var generated_parameters_" + fobj.varlist[k].replace(/\s/g, '_') + "= [];");
+};
 
 // Global metadata counter (only increases during a session)
 var index_id = 0; 
