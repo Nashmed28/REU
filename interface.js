@@ -79,6 +79,20 @@ var inputted_metadata = [];
 
 
 
+function list_of_statistics(variable) {
+    var options = "";
+    for (n = 0; n < fobj.rfunctions.length; n++) {
+        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+    };
+    return options;
+};
+
+var bob = list_of_statistics('dogs');
+
+
+
+
+
 
 // Makes bubbles and takes in variable name as unique identifier
 // Forces each variable to have an unique name
@@ -104,6 +118,7 @@ function make_bubble (variable) {
         "<div id='panel_" + variable + "' class='panel'>" +
             "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
                 "Please select which statistics you wish to release:<br>" + 
+                bob + 
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
@@ -123,8 +138,29 @@ function accordion(bubble) {
     else {
         bubble.className = "accordion";
         document.getElementById("panel_" + variable).className = "panel";
-    }
+    };
 };
+
+// Generates bubbles from variable list recieved
+function variable_bubble() {
+    for (n = 0; n < fobj.varlist.length; n++) {
+        $("#bubble_form").append(make_bubble(fobj.varlist[n]));
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,12 +173,6 @@ function accordion(bubble) {
 // };
 
 
-// Generates bubbles from variable list recieved
-function variable_bubble() {
-    for (n = 0; n < fobj.varlist.length; n++) {
-        $("#bubble_form").append(make_bubble(fobj.varlist[n]));
-    };
-};
 
 
 
