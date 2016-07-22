@@ -77,29 +77,19 @@ for (n = 0; n < column_fields.length; n++) {
 // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
 var inputted_metadata = [];
 
-
-
-// function list_of_statistics(variable) {
-//     var options = "";
-//     for (n = 0; n < fobj.rfunctions.length; n++) {
-//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
-//     };
-//     return options;
+// var options = "";
+// for (n = 0; n < fobj.rfunctions.length; n++) {
+//     options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_'> " + fobj.rfunctions[n].func + "<br>";
 // };
 
-// var bob = list_of_statistics('dogs');
 
-function hi (name) {
+function list_of_statistics(variable) {
     var options = "";
-    // for (n = 0; n < 3; n++) {
-    //     options += "hi" + name;
-    // }
-    options += "hi" + name;
-    return (options);
-}
-
-
-
+    for (n = 0; n < fobj.rfunctions.length; n++) {
+        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+    };
+    return options;
+};
 
 // Makes bubbles and takes in variable name as unique identifier
 // Forces each variable to have an unique name
@@ -125,7 +115,7 @@ function make_bubble (variable) {
         "<div id='panel_" + variable + "' class='panel'>" +
             "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
                 "Please select which statistics you wish to release:<br>" + 
-                hi("bob") + 
+                list_of_statistics(variable) +
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
@@ -150,8 +140,8 @@ function accordion(bubble) {
 
 // Generates bubbles from variable list recieved
 function variable_bubble() {
-    for (n = 0; n < fobj.varlist.length; n++) {
-        $("#bubble_form").append(make_bubble(fobj.varlist[n]));
+    for (i = 0; i < fobj.varlist.length; i++) {
+        $("#bubble_form").append(make_bubble(fobj.varlist[i]));
     };
 };
 
@@ -168,6 +158,7 @@ function variable_bubble() {
 
 
 
+// // // var bob = list_of_statistics('dogs');
 
 
 
