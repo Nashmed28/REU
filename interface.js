@@ -30,7 +30,7 @@ var functions = '{"rfunctions":[' +
 	'{"func":"Histogram","parameter":["Number of Bins"] },' +
 	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] },' +
     '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] } ],' + 
-    '"varlist": ["var 1", "var2", "var3"] }';
+    '"varlist": ["var 1", "var21", "var3"] }';
 
 // Parses the function and varlist data structure
 var fobj = JSON.parse(functions);
@@ -77,16 +77,11 @@ for (n = 0; n < column_fields.length; n++) {
 // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
 var inputted_metadata = [];
 
-// var options = "";
-// for (n = 0; n < fobj.rfunctions.length; n++) {
-//     options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_'> " + fobj.rfunctions[n].func + "<br>";
-// };
-
-
 function list_of_statistics(variable) {
+    variable = variable.replace(/\s/g, '_');
     var options = "";
     for (n = 0; n < fobj.rfunctions.length; n++) {
-        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+        options += "<input type='checkbox' onclick='Parameter_Populate(this.id," + n + ",\"" + variable + "\")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable + "'> " + fobj.rfunctions[n].func + "<br>";
     };
     return options;
 };
@@ -144,6 +139,89 @@ function variable_bubble() {
         $("#bubble_form").append(make_bubble(fobj.varlist[i]));
     };
 };
+
+
+
+
+// // Generates html based on statistics choosen
+// function parameter_fields() {
+//     // makes blank html text
+//     var parameter_field = "";
+        
+//     // uses .unique() to get all unique values and iterate through
+//     for (j = 0; j < generated_parameters.unique().length; j++) {
+//         // creates html list in .sort() (alphabet order)
+//         parameter_field += generated_parameters.unique().sort()[j] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[j].replace(/\s/g, '') + "' oninput='Parameter_Memory(this.id)'><br>"
+//     };
+
+//     // prints this all out, display seems smooth
+//     document.getElementById('necessary_parameters_var2').innerHTML = parameter_field; 
+// };
+
+// Produce parameter fields
+// http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
+function Parameter_Populate(stat_id, stat_index, variable) {
+    // checks if thing is checked
+    if ($("#" + stat_id).prop('checked')) {
+        
+        alert(variable);
+
+
+        // // adds parameters to master array
+        // // does simple push, so added in the order selected and listed
+        // for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+        //     generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
+        // };
+
+        // // Adds to global metadata table
+        // // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+        // // metadata_to_add = [index_id]
+
+        // // calls the parameter generating function
+        // parameter_fields();
+    }
+
+    // if not checked
+    else {
+        // // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
+        // // index() help: https://api.jquery.com/index/
+
+        // // finds index of particular parameter and removes them
+        // for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+        //     generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+        // };
+
+        // // calls the parameter generating function
+        // parameter_fields();
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
