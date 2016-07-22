@@ -79,17 +79,24 @@ var inputted_metadata = [];
 
 
 
-function list_of_statistics(variable) {
+// function list_of_statistics(variable) {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     return options;
+// };
+
+// var bob = list_of_statistics('dogs');
+
+function hi (name) {
     var options = "";
-    for (n = 0; n < fobj.rfunctions.length; n++) {
-        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
-    };
-    return options;
-};
-
-var bob = list_of_statistics('dogs');
-
-
+    // for (n = 0; n < 3; n++) {
+    //     options += "hi" + name;
+    // }
+    options += "hi" + name;
+    return (options);
+}
 
 
 
@@ -118,7 +125,7 @@ function make_bubble (variable) {
         "<div id='panel_" + variable + "' class='panel'>" +
             "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
                 "Please select which statistics you wish to release:<br>" + 
-                bob + 
+                hi("bob") + 
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
