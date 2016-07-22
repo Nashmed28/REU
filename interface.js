@@ -30,7 +30,7 @@ var functions = '{"rfunctions":[' +
 	'{"func":"Histogram","parameter":["Number of Bins"] },' +
 	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] },' +
     '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] } ],' + 
-    '"varlist": ["var 1", "var2"] }';
+    '"varlist": ["var 1", "var2", "var3"] }';
 
 // Parses the function and varlist data structure
 var fobj = JSON.parse(functions);
@@ -78,6 +78,8 @@ for (n = 0; n < column_fields.length; n++) {
 var inputted_metadata = [];
 
 
+
+
 // Makes bubbles and takes in variable name as unique identifier
 // Forces each variable to have an unique name
 function make_bubble (variable) {
@@ -101,18 +103,19 @@ function make_bubble (variable) {
         "</button>" +
         "<div id='panel_" + variable + "' class='panel'>" +
             "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
-                "Please select which statistics you wish to release:<br>" +
+                "Please select which statistics you wish to release:<br>" + 
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
         "</div>" +
-    "</div>";
+    "</div>" +
+    "<hr style='margin-top: 0.25em'>";
     return blank_bubble;
 };
 
 // Enables Collapsable Sections for JS Generated HTML
 function accordion(bubble) {
-    var variable = bubble.id.slice(10,bubble.id.length);
+    var variable = bubble.id.slice(10, bubble.id.length);
     if (bubble.className == "accordion") {
         bubble.className = "accordion active";
         document.getElementById("panel_" + variable).className = "panel show";
@@ -123,6 +126,17 @@ function accordion(bubble) {
     }
 };
 
+
+
+// function list_of_statistics() {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     return options;
+// };
+
+
 // Generates bubbles from variable list recieved
 function variable_bubble() {
     for (n = 0; n < fobj.varlist.length; n++) {
@@ -132,25 +146,21 @@ function variable_bubble() {
 
 
 
-// Makes a checklist of possible statistics 
-function available_statistics() {
-    var options = "";
-    for (n = 0; n < fobj.rfunctions.length; n++) {
-        options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
-    };
-    $(".released_statistics").append(options);
-};
 
 
 
-// Stores metadata in memory
-function Parameter_Memory(parameter_id) {
-    var metadata = document.getElementById(parameter_id).value;
-    alert(metadata);
-};
 
 
 
+
+// // Makes a checklist of possible statistics 
+// function available_statistics() {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     $(".released_statistics").append(options);
+// };
 
 
 
@@ -160,53 +170,237 @@ function Parameter_Memory(parameter_id) {
 
 
 
-// generates html based on statistics choosen
-function parameter_fields() {
-    // makes blank html text
-    var parameter_field = "";
+
+
+
+
+// // Generates the list of possible statistics
+// function list_of_statistics (variable) {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     return options;
+// };
+
+// // Outputs a checklist of possible statistics 
+// function available_statistics() {
+//     var released_statistics_list = document.getElementsByClassName("released_statistics");
+//     // alert(released_statistics_list[0].id.slice(20,released_statistics_list[0].length));
+//     // alert(released_statistics_list[n].id.slice(20,released_statistics_list[n].length));
+
+//     for (n = 0; n < released_statistics_list.length; n++) {
+//         alert(list_of_statistics(released_statistics_list[n].id.slice(20,released_statistics_list[n].length)));
+//         // released_statistics_list[n].append(list_of_statistics(released_statistics_list[n].id.slice(20,released_statistics_list[n].length)));
+//     };
+// };
+
+
+
+
+
+
+
+
+
+
+
+// RUDIMENTARY WORKING
+// // Makes a checklist of possible statistics 
+// function available_statistics() {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     $(".released_statistics").append(options);
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ADD THIS BACK IN AFTER EACH STAT HAS AN UNIQUE ID
+// // Generates html based on statistics choosen
+// function parameter_fields() {
+//     // makes blank html text
+//     var parameter_field = "";
         
-    // uses .unique() to get all unique values and iterate through
-    for (n = 0; n < generated_parameters.unique().length; n++) {
-        // creates html list in .sort() (alphabet order)
-        parameter_field += generated_parameters.unique().sort()[n] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[n].replace(/\s/g, '') +"' oninput='Parameter_Memory(this.id)'><br>"
-    };
+//     // uses .unique() to get all unique values and iterate through
+//     for (n = 0; n < generated_parameters.unique().length; n++) {
+//         // creates html list in .sort() (alphabet order)
+//         parameter_field += generated_parameters.unique().sort()[n] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[n].replace(/\s/g, '') +"' oninput='Parameter_Memory(this.id)'><br>"
+//     };
 
-    // prints this all out, display seems smooth
-    document.getElementById('necessary_parameters').innerHTML = parameter_field; 
-};
+//     // prints this all out, display seems smooth
+//     document.getElementById('necessary_parameters').innerHTML = parameter_field; 
+// };
 
-// Produce parameter fields
-function Parameter_Populate(stat_id, stat_index) {
-    // checks if thing is checked
-    if ($("#" + stat_id).prop('checked')) {
-        // adds parameters to master array
-        // does simple push, so added in the order selected and listed
-        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
-        };
+// // Produce parameter fields
+// // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
+// function Parameter_Populate(stat_id, stat_index) {
+//     // checks if thing is checked
+//     if ($("#" + stat_id).prop('checked')) {
+//         // adds parameters to master array
+//         // does simple push, so added in the order selected and listed
+//         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+//             generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
+//         };
 
-        // Adds to global metadata table
-        // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
-        metadata_to_add = [index_id, ]
+//         // Adds to global metadata table
+//         // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+//         // metadata_to_add = [index_id]
 
-        // calls the parameter generating function
-        parameter_fields();
-    }
+//         // calls the parameter generating function
+//         parameter_fields();
+//     }
 
-    // if not checked
-    else {
-        // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
-        // index() help: https://api.jquery.com/index/
+//     // if not checked
+//     else {
+//         // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
+//         // index() help: https://api.jquery.com/index/
 
-        // finds index of particular parameter and removes them
-        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
-        };
+//         // finds index of particular parameter and removes them
+//         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+//             generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+//         };
 
-        // calls the parameter generating function
-        parameter_fields();
-    }
-};
+//         // calls the parameter generating function
+//         parameter_fields();
+//     }
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // // Generates the list of possible statistics
+// function list_of_statistics (variable) {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     alert(options); 
+// };
+
+
+// var options = "";
+// for (n = 0; n < fobj.rfunctions.length; n++) {
+//     options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+// };
+
+
+
+
+
+
+// // Makes a checklist of possible statistics 
+// function available_statistics() {
+//     var options = "";
+//     for (n = 0; n < fobj.rfunctions.length; n++) {
+//         options += "<input type='checkbox' name='stat' onclick='Parameter_Populate(this.id," + n + ")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "'> " + fobj.rfunctions[n].func + "<br>";
+//     };
+//     $(".released_statistics").append(options);
+// };
+
+
+// // Stores metadata in memory
+// function Parameter_Memory(parameter_id) {
+//     var metadata = document.getElementById(parameter_id).value;
+//     alert(metadata);
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+// // generates html based on statistics choosen
+// function parameter_fields() {
+//     // makes blank html text
+//     var parameter_field = "";
+        
+//     // uses .unique() to get all unique values and iterate through
+//     for (n = 0; n < generated_parameters.unique().length; n++) {
+//         // creates html list in .sort() (alphabet order)
+//         parameter_field += generated_parameters.unique().sort()[n] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[n].replace(/\s/g, '') +"' oninput='Parameter_Memory(this.id)'><br>"
+//     };
+
+//     // prints this all out, display seems smooth
+//     document.getElementById('necessary_parameters').innerHTML = parameter_field; 
+// };
+
+// // Produce parameter fields
+// // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
+// function Parameter_Populate(stat_id, stat_index) {
+//     // checks if thing is checked
+//     if ($("#" + stat_id).prop('checked')) {
+//         // adds parameters to master array
+//         // does simple push, so added in the order selected and listed
+//         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+//             generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
+//         };
+
+//         // Adds to global metadata table
+//         // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
+//         metadata_to_add = [index_id, ]
+
+//         // calls the parameter generating function
+//         parameter_fields();
+//     }
+
+//     // if not checked
+//     else {
+//         // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
+//         // index() help: https://api.jquery.com/index/
+
+//         // finds index of particular parameter and removes them
+//         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+//             generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+//         };
+
+//         // calls the parameter generating function
+//         parameter_fields();
+//     }
+// };
 
 
 
@@ -237,14 +431,14 @@ function Parameter_Populate(stat_id, stat_index) {
 
 // Collapsable Sections
 // http://www.w3schools.com/howto/howto_js_accordion.asp
-var acc = document.getElementsByClassName("accordion");
+// var acc = document.getElementsByClassName("accordion");
 
-for (i = 0; i < acc.length; i++) {
-    acc[i].onclick = function() {
-        this.classList.toggle("active");
-        this.nextElementSibling.classList.toggle("show");
-    }
-}
+// for (i = 0; i < acc.length; i++) {
+//     acc[i].onclick = function() {
+//         this.classList.toggle("active");
+//         this.nextElementSibling.classList.toggle("show");
+//     }
+// }
 
 $(document).ready(function () {	
 	// sidebar action, with toggle and text-switch
