@@ -149,13 +149,15 @@ function variable_bubble() {
 
 // Generates html based on statistics choosen
 function parameter_fields(variable) {
+    eval("var parameter_list = generated_parameters_" + variable + ";");
+    
     // makes blank html text
     var parameter_field = "";
-        
+
     // uses .unique() to get all unique values and iterate through
-    for (j = 0; j < generated_parameters.unique().length; j++) {
+    for (j = 0; j < parameter_list.unique().length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += generated_parameters.unique().sort()[j] + ": <input type='text' id='input_" + generated_parameters.unique().sort()[j].replace(/\s/g, '') + "_" + variable + "' oninput='Parameter_Memory(this.id)'><br>"
+        parameter_field += parameter_list.unique().sort()[j] + ": <input type='text' id='input_" + parameter_list.unique().sort()[j].replace(/\s/g, '') + "_" + variable + "' oninput='Parameter_Memory(this.id)'><br>"
     };
 
     // prints this all out, display seems smooth
@@ -165,12 +167,14 @@ function parameter_fields(variable) {
 // Produce parameter fields
 // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
 function Parameter_Populate(stat_id, stat_index, variable) {
+    eval("var parameter_list = generated_parameters_" + variable + ";");
+    
     // checks if thing is checked
     if ($("#" + stat_id).prop('checked')) {
         // adds parameters to master array
         // does simple push, so added in the order selected and listed
         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.push(fobj.rfunctions[stat_index].parameter[n]);
+            parameter_list.push(fobj.rfunctions[stat_index].parameter[n]);
         };
 
         // Adds to global metadata table
@@ -188,7 +192,7 @@ function Parameter_Populate(stat_id, stat_index, variable) {
 
         // finds index of particular parameter and removes them
         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-            generated_parameters.splice((generated_parameters.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+            parameter_list.splice((parameter_list.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
         };
 
         // calls the parameter generating function
