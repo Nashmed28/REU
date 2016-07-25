@@ -83,7 +83,7 @@ function list_of_statistics(variable) {
     variable = variable.replace(/\s/g, '_');
     var options = "";
     for (n = 0; n < fobj.rfunctions.length; n++) {
-        options += "<input type='checkbox' onclick='Parameter_Populate(this.id," + n + ",\"" + variable + "\")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable + "'> " + fobj.rfunctions[n].func + "<br>";
+        options += "<input type='checkbox' name='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\")' id='" + fobj.rfunctions[n].func.replace(/\s/g, '_') + "_" + variable + "'> " + fobj.rfunctions[n].func + "<br>";
     };
     return options;
 };
@@ -143,12 +143,23 @@ function variable_bubble() {
 };
 
 
+// Stores metadata in memory
+function Parameter_Memory(parameter, var_stat_index) {
+    var metadata = document.getElementById(parameter.id).value;
+    inputted_metadata[var_stat_index][column_index[parameter.name]] = metadata;
+    alert(inputted_metadata[var_stat_index]);
+
+    // inputted_metadata[var_stat_index]
+    // alert(inputted_metadata[var_stat_index][column_index["Lower_Bound"]]);
+    // alert(column_index["Lower_Bound"]);
+};
+
 
 
 
 
 // Generates html based on statistics choosen
-function parameter_fields(variable) {
+function parameter_fields(variable, var_stat_index) {
     eval("var parameter_list = generated_parameters_" + variable + ";");
     
     // makes blank html text
@@ -157,7 +168,7 @@ function parameter_fields(variable) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < parameter_list.unique().length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += parameter_list.unique().sort()[j] + ": <input type='text' id='input_" + parameter_list.unique().sort()[j].replace(/\s/g, '') + "_" + variable + "' oninput='Parameter_Memory(this.id)'><br>"
+        parameter_field += parameter_list.unique().sort()[j] + ": <input type='text' name='" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "'id='input_" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this," + var_stat_index + ")'><br>"
     };
 
     // prints this all out, display seems smooth
@@ -166,23 +177,32 @@ function parameter_fields(variable) {
 
 // Produce parameter fields
 // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
-function Parameter_Populate(stat_id, stat_index, variable) {
+function Parameter_Populate(stat, stat_index, variable) {
     eval("var parameter_list = generated_parameters_" + variable + ";");
     
     // checks if thing is checked
-    if ($("#" + stat_id).prop('checked')) {
+    if ($("#" + stat.id).prop('checked')) {
         // adds parameters to master array
         // does simple push, so added in the order selected and listed
         for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
             parameter_list.push(fobj.rfunctions[stat_index].parameter[n]);
         };
-
+        
         // Adds to global metadata table
         // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
-        // metadata_to_add = [index_id]
+        metadata_to_add = [index_id, variable, "default", stat.name, "null", "null", "no"];
+        for (l = 7; l < column_fields.length; l++) {
+            metadata_to_add.push("null");
+        }; 
+        // alert(column_fields + "\n" + metadata_to_add);
+        
+        inputted_metadata.push(metadata_to_add);
 
         // calls the parameter generating function
-        parameter_fields(variable);
+        parameter_fields(variable, index_id);
+
+
+        index_id += 1;
     }
 
     // if not checked
