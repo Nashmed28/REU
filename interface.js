@@ -41,7 +41,7 @@ for (k = 0; k < fobj.varlist.length; k++) {
 };
 
 // Global metadata counter (only increases during a session)
-var index_id = 0; 
+var index_id = 1; 
 
 // Initial List of Column Fields
 var column_fields = ['index_id', 'Variable_Name', 'Variable_Type', 'Statistic', 'Epsilon', 'Accuracy', 'Hold'];
@@ -78,6 +78,14 @@ for (n = 0; n < column_fields.length; n++) {
 // Global table of metadata (as inputed by user)
 // Naive (current) metadata structure: [id/index, Variable Name, Variable Type, Statistic, Epsilon, Accuracy, Hold Status, ... All Possible Metadata ...]
 var inputted_metadata = [];
+
+// Making a deflaut entry full of nulls
+var default_entry_metadata = [];
+for (n = 0; n < column_fields.length; n++) {
+    default_entry_metadata.push("null");
+};
+
+inputted_metadata.push(default_entry_metadata);
 
 function list_of_statistics(variable) {
     variable = variable.replace(/\s/g, '_');
@@ -149,6 +157,7 @@ function Parameter_Memory(parameter, var_stat_index) {
     inputted_metadata[var_stat_index][column_index[parameter.name]] = metadata;
     alert(inputted_metadata[var_stat_index]);
 
+
     // inputted_metadata[var_stat_index]
     // alert(inputted_metadata[var_stat_index][column_index["Lower_Bound"]]);
     // alert(column_index["Lower_Bound"]);
@@ -168,7 +177,7 @@ function parameter_fields(variable, var_stat_index) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < parameter_list.unique().length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += parameter_list.unique().sort()[j] + ": <input type='text' name='" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "'id='input_" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this," + var_stat_index + ")'><br>"
+        parameter_field += parameter_list.unique().sort()[j] + ": <input type='text' value='" + inputted_metadata[var_stat_index-1][column_index[parameter_list.unique().sort()[j].replace(/\s/g, '_')]] + "' name='" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "'id='input_" + parameter_list.unique().sort()[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this," + var_stat_index + ")'><br>"
     };
 
     // prints this all out, display seems smooth
@@ -194,8 +203,8 @@ function Parameter_Populate(stat, stat_index, variable) {
         for (l = 7; l < column_fields.length; l++) {
             metadata_to_add.push("null");
         }; 
-        // alert(column_fields + "\n" + metadata_to_add);
-        
+        alert(column_fields + "\n" + metadata_to_add);
+    
         inputted_metadata.push(metadata_to_add);
 
         // calls the parameter generating function
