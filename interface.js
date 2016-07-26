@@ -117,13 +117,26 @@ for (n = 0; n < varlist.varlist.length; n++) {
     inputted_metadata[varlist.varlist[n].replace(/\s/g, '_')] = default_array;
 };
 
-
-
-
-function my () {
-    inputted_metadata["var_1"][0] = "Numerical"
-    alert(inputted_metadata["var_1"]);
+// A reset function for rows
+function reset (row) {
+    row[0] = "default";
+    for (m = 0; m < statistic_list.length; m ++) {
+        var n = 4 * m + 1;
+        row[n] = 0;
+        row[n + 1] = 0;
+        row[n + 2] = 0;
+        row[n + 3] = 0;
+    };
+    for (l = 0; l < metadata_list.length; l++) {
+        var n = 1 + 4 * statistic_list.length;
+        row[n + l] = 0;
+    };
 };
+
+// function my () {
+//     inputted_metadata["var_1"][0] = "Numerical"
+//     alert(inputted_metadata["var_1"]);
+// };
 
 
 
@@ -139,7 +152,9 @@ function list_of_types (variable) {
 
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
+    reset(inputted_metadata[variable]);
     inputted_metadata[variable][0] = type_chosen;
+
     if (type_chosen != "default") {
         document.getElementById("released_statistics_" + variable).innerHTML = list_of_statistics(type_chosen, variable);
         document.getElementById('necessary_parameters_' + variable).innerHTML = "";
@@ -271,9 +286,15 @@ function Parameter_Populate(stat, stat_index, variable, type_chosen) {
 // Stores metadata in memory
 function Parameter_Memory(parameter, variable) {
     inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
-    alert(inputted_metadata[variable]);
+    // alert(inputted_metadata[variable]);
 };
 
+
+// issues to resolve:
+// as you switch type, everything has to reset (need a reset function) done
+// between stats of same type, should deselecting remove memory of input?
+// next steps:
+// form logic (check if numerials), maybe not have zero as initial display, add new variable, drop old ones
 
 
 
