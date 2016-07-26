@@ -138,8 +138,17 @@ function reset (row) {
     };
 };
 
-
-
+// A default array 
+var array_default = ['default'];
+for (m = 0; m < statistic_list.length; m ++) {
+    array_default.push(0);
+    array_default.push(0);
+    array_default.push(0);
+    array_default.push(0);
+};
+for (l = 0; l < metadata_list.length; l++) {
+    array_default.push("");
+};
 
 
 
@@ -305,6 +314,12 @@ function create_new_variable () {
     if (new_variable_name != "default") {
         varlist_inactive.splice(new_variable_number, 1);
         varlist_active.push(new_variable_name);
+        inputted_metadata[new_variable_name] = array_default;
+
+
+        // alert(inputted_metadata[new_variable_name]);
+
+
         $("#bubble_form").append(make_bubble(new_variable_name));
     }
     else {}
