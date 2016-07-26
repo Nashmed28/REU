@@ -250,18 +250,9 @@ function Parameter_Populate(stat, stat_index, variable, type_chosen) {
     if ($("#" + stat.id).prop('checked')) {
         // Updating the master data-array
         inputted_metadata[variable][column_index[stat.name]] = 1;
-
-        // Get's necessary parameters
-        // var needed_parameters = rfunctions.rfunctions[ppparameter[stat_index].rfunctions_index].statistic_type[ppparameter[stat_index].parameter_index].parameter;
-        
-        // alert(ppparameter.length) 4
-        // alert(rfunctions.rfunctions[ppparameter[stat_index].rfunctions_index].statistic) 
-
-        // alert(inputted_metadata[variable])
         
         // calls the parameter HTML generating function
         parameter_fields(variable, type_chosen);
-
     }
 
     // if not checked
@@ -269,20 +260,18 @@ function Parameter_Populate(stat, stat_index, variable, type_chosen) {
         // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
         // index() help: https://api.jquery.com/index/
 
-        // finds index of particular parameter and removes them
-        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
-            parameter_list.splice((parameter_list.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
-        };
+        // Updating the master data-array
+        inputted_metadata[variable][column_index[stat.name]] = 0;
 
-        // calls the parameter generating function
-        parameter_fields(variable);
+        // calls the parameter HTML generating function
+        parameter_fields(variable, type_chosen);
     }
 };
-
 
 // Stores metadata in memory
 function Parameter_Memory(parameter, variable) {
     inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
+    alert(inputted_metadata[variable]);
 };
 
 
