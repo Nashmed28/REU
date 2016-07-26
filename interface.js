@@ -31,13 +31,14 @@ Array.prototype.unique = function () {
 
 
 
+
 // List of possible statisitics
 var statistic_list = [];
 for (n = 0; n < rfunctions.rfunctions.length; n++) {
     statistic_list.push(rfunctions.rfunctions[n].statistic);
 };
 
-// List of types
+// List of all types
 var type_list = [];
 for (n = 0; n < rfunctions.rfunctions.length; n++) {
     for (m = 0; m < rfunctions.rfunctions[n].statistic_type.length; m++) {
@@ -50,22 +51,77 @@ type_list = type_list.unique()
 for (n = 0; n < type_list.length; n++) {
     var var_type = type_list[n];
     eval("var " + var_type.replace(/\s/g, '_') + "_stat_list = [];");
+    eval("var " + var_type.replace(/\s/g, '_') + "_stat_parameter_list = [];");
     for (m = 0; m < rfunctions.rfunctions.length; m++) {
         for (l = 0; l < rfunctions.rfunctions[m].statistic_type.length; l++) {
             if (rfunctions.rfunctions[m].statistic_type[l].stype == var_type) {
                 eval(var_type.replace(/\s/g, '_') + "_stat_list.push('" + rfunctions.rfunctions[m].statistic + "');");
+                eval(var_type.replace(/\s/g, '_') + "_stat_parameter_list.push({'rfunctions_index': " + m + ", 'parameter_index': " + l + "});");
             }
             else {}
         };
     };
 };
 
+// List of all metadata
+var metadata_list = [];
+for (n = 0; n < type_list.length; n++) {
+    eval("var var_type_list = " + type_list[n] + "_stat_parameter_list;");
+    for (m = 0; m < var_type_list.length; m++) {
+        metadata_list = metadata_list.concat(rfunctions.rfunctions[var_type_list[m].rfunctions_index].statistic_type[var_type_list[m].parameter_index].parameter);
+    };
+};
+metadata_list = metadata_list.unique();
 
-// function my () {
-//     alert(Numerical_stat_list);
-//     alert(Boolean_stat_list);
-//     alert(Categorical_stat_list);
-// };
+
+
+
+
+
+
+// Column index dictionary
+// Format: inputted_metadata[variable_name] = ['Variable_Type', 'Statistic1', 'Epsilon1', 'Accuracy1', 'Hold1', ... Repeats for all possible statistics ... All Possible Metadata];
+var column_index = {}
+column_index["Variable_Type"] = 0; 
+for (n = 0; n < statistic_list.length; n ++) {
+    var m = 4 * n; 
+    var statistic_index = statistic_list[n].replace(/\s/g, '_');
+    column_index[statistic_index] = m + 1;
+    column_index["epsilon_" + statistic_index] = m + 2;
+    column_index["accuracy_" + statistic_index] = m + 3;
+    column_index["hold_" + statistic_index] = m + 4;
+};
+for (n = 0; n < metadata_list.length; n++) {
+    m = 4 * statistic_list.length + 1;
+    column_index[metadata_list[n].replace(/\s/g, '_')] = m + n;
+};
+
+column_index_length = 1 + 4 * statistic_list.length + metadata_list.length;
+
+// Array that is to be passed to the R-servers
+// Format: inputted_metadata[variable_name] = ['Variable_Type', 'Statistic1', 'Epsilon1', 'Accuracy1', 'Hold1', ... Repeats for all possible statistics ... All Possible Metadata];
+var inputted_metadata = {};
+
+// Inputting the given variables
+for (n = 0; n < varlist.varlist.length; n++) {
+    default_array = ['default']
+    for (m = 0; m < statistic_list.length; m ++) {
+        default_array.push(0);
+        default_array.push(0);
+        default_array.push(0);
+        default_array.push(0);
+    };
+    for (l = 0; l < metadata_list.length; l++) {
+        default_array.push(0);
+    };
+    inputted_metadata[varlist.varlist[n].replace(/\s/g, '_')] = default_array;
+};
+
+
+
+
+
+
 
 
 
@@ -118,8 +174,6 @@ function make_bubble (variable) {
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
-                // "Please select which statistics you wish to release:<br>" + 
-                // list_of_statistics(variable) +
             "</div>" +
             "<hr style='margin-top: -0.25em'>" +
             "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
@@ -148,6 +202,17 @@ function variable_bubble() {
         $("#bubble_form").append(make_bubble(varlist.varlist[i]));
     };
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
