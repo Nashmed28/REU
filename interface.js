@@ -138,10 +138,7 @@ function reset (row) {
     };
 };
 
-// function my () {
-//     inputted_metadata["var_1"][0] = "Numerical"
-//     alert(inputted_metadata["var_1"]);
-// };
+
 
 
 
@@ -210,7 +207,7 @@ function make_bubble (variable) {
 };
 
 // Enables Collapsable Sections for JS Generated HTML
-function accordion(bubble) {
+function accordion (bubble) {
     var variable = bubble.id.slice(10, bubble.id.length);
     if (bubble.className == "accordion") {
         bubble.className = "accordion active";
@@ -223,7 +220,7 @@ function accordion(bubble) {
 };
 
 // Generates bubbles from variable list recieved
-function variable_bubble() {
+function variable_bubble () {
     for (i = 0; i < varlist_active.length; i++) {
         $("#bubble_form").append(make_bubble(varlist_active[i]));
     };
@@ -235,7 +232,7 @@ function variable_bubble() {
 
 
 // Generates html based on statistics choosen
-function parameter_fields(variable, type_chosen) {
+function parameter_fields (variable, type_chosen) {
     eval("var pparameter = " + type_chosen + "_stat_list;");
     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
 
@@ -263,7 +260,7 @@ function parameter_fields(variable, type_chosen) {
 
 // Produce parameter fields
 // http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
-function Parameter_Populate(stat, stat_index, variable, type_chosen) {    
+function Parameter_Populate (stat, stat_index, variable, type_chosen) {    
     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
 
     // checks if thing is checked
@@ -289,9 +286,8 @@ function Parameter_Populate(stat, stat_index, variable, type_chosen) {
 };
 
 // Stores metadata in memory
-function Parameter_Memory(parameter, variable) {
+function Parameter_Memory (parameter, variable) {
     inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
-    // alert(inputted_metadata[variable]);
 };
 
 
@@ -299,10 +295,69 @@ function Parameter_Memory(parameter, variable) {
 
 
 
+// need to put in master inputted_metadata
+
+// Updates varlist_active, varlist_inactive, and creates bubble
+function create_new_variable () {
+    var new_variable = document.getElementById('new_variable_to_add').value;
+    var new_variable_name = new_variable.slice(2, new_variable.length);
+    var new_variable_number = new_variable.slice(0, 1);
+    if (new_variable_name != "default") {
+        varlist_inactive.splice(new_variable_number, 1);
+        varlist_active.push(new_variable_name);
+        $("#bubble_form").append(make_bubble(new_variable_name));
+    }
+    else {}
+    modal.style.display = "none";
+};
+
+// Modal Windows: http://www.w3schools.com/howto/howto_css_modals.asp
+// Adds new bubbles for the inactive variable list
+
+// Updates the varlist_active and varlist_inactive
+function add_new_bubble () {
+    var possible_variables = "";
+    for (n = 0; n < varlist_inactive.length; n++) {
+        possible_variables += "<option id='" + varlist_inactive[n].replace(/\s/g, '_') + "_add_new_bubble' value='" + n + "_" + varlist_inactive[n].replace(/\s/g, '_') + "'>" + varlist_inactive[n].replace(/\s/g, '_') + "</option>";
+    };
+
+    var modal_window = 
+    "Please select a variable: <select id='new_variable_to_add'>" +
+        "<option id='default_add_new_bubble' value='__default'> -- </option>" +
+        possible_variables +
+    "</select>" +
+    "<br>" +
+    "<button onclick='create_new_variable()'>Confirm</button>";
+
+    document.getElementById('modal-content').innerHTML = modal_window;
+};
 
 
+// Get the modal
+var modal = document.getElementById('myModal');
 
+// Get the button that opens the modal
+var btn = document.getElementById("add_new_bubble");
 
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 
 
