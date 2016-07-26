@@ -120,7 +120,10 @@ for (n = 0; n < varlist.varlist.length; n++) {
 
 
 
-
+function my () {
+    inputted_metadata["var_1"][0] = "Numerical"
+    alert(inputted_metadata["var_1"]);
+};
 
 
 
@@ -136,11 +139,14 @@ function list_of_types (variable) {
 
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
+    inputted_metadata[variable][0] = type_chosen;
     if (type_chosen != "default") {
         document.getElementById("released_statistics_" + variable).innerHTML = list_of_statistics(type_chosen, variable);
+        document.getElementById('necessary_parameters_' + variable).innerHTML = "";
     }
     else {
         document.getElementById("released_statistics_" + variable).innerHTML = "";
+        document.getElementById('necessary_parameters_' + variable).innerHTML = "";
     }
 };
 
@@ -150,7 +156,7 @@ function list_of_statistics (type_chosen, variable) {
     var options = "";
     eval("var type_chosen_list = " + type_chosen + "_stat_list;")
     for (n = 0; n < type_chosen_list.length; n++) {
-        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> " + type_chosen_list[n] + "<br>";
+        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> " + type_chosen_list[n] + "<br>";
     };
     return options;
 };
@@ -206,6 +212,78 @@ function variable_bubble() {
 
 
 
+
+
+// Generates html based on statistics choosen
+function parameter_fields(variable, type_chosen) {
+    eval("var pparameter = " + type_chosen + "_stat_list;");
+    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
+
+    var needed_parameters = [];
+    for (i = 0; i < ppparameter.length; i++) {
+        if (inputted_metadata[variable][column_index[pparameter[i].replace(/\s/g, '_')]] == 1) {
+            needed_parameters = needed_parameters.concat(rfunctions.rfunctions[ppparameter[i].rfunctions_index].statistic_type[ppparameter[i].parameter_index].parameter);
+        }
+        else {}
+    };
+    needed_parameters = needed_parameters.unique();
+
+    // makes blank html text
+    var parameter_field = "";
+
+    // uses .unique() to get all unique values and iterate through
+    for (j = 0; j < needed_parameters.length; j++) {
+        // creates html list in .sort() (alphabet order)
+        parameter_field += needed_parameters.sort()[j] + ": <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters.sort()[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters.sort()[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters.sort()[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
+    };
+
+    // prints this all out, display seems smooth
+    document.getElementById('necessary_parameters_' + variable).innerHTML = parameter_field; 
+};
+
+// Produce parameter fields
+// http://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_oninput
+function Parameter_Populate(stat, stat_index, variable, type_chosen) {    
+    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
+
+    // checks if thing is checked
+    if ($("#" + stat.id).prop('checked')) {
+        // Updating the master data-array
+        inputted_metadata[variable][column_index[stat.name]] = 1;
+
+        // Get's necessary parameters
+        // var needed_parameters = rfunctions.rfunctions[ppparameter[stat_index].rfunctions_index].statistic_type[ppparameter[stat_index].parameter_index].parameter;
+        
+        // alert(ppparameter.length) 4
+        // alert(rfunctions.rfunctions[ppparameter[stat_index].rfunctions_index].statistic) 
+
+        // alert(inputted_metadata[variable])
+        
+        // calls the parameter HTML generating function
+        parameter_fields(variable, type_chosen);
+
+    }
+
+    // if not checked
+    else {
+        // splice.() help: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_fobjects/Array/splice
+        // index() help: https://api.jquery.com/index/
+
+        // finds index of particular parameter and removes them
+        for(n = 0; n < fobj.rfunctions[stat_index].parameter.length; n++) {
+            parameter_list.splice((parameter_list.indexOf(fobj.rfunctions[stat_index].parameter[n])), 1);
+        };
+
+        // calls the parameter generating function
+        parameter_fields(variable);
+    }
+};
+
+
+// Stores metadata in memory
+function Parameter_Memory(parameter, variable) {
+    inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
+};
 
 
 
