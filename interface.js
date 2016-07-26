@@ -1,12 +1,20 @@
-// types, categorical, numerical, and boolean
-// mean -> num (lower,upper), bool (bins)
-// histogram -> categorical (), numerical(), and boolean()
-// quantile -> numerical bool 
-// bivariate -> categorical
-// func, <types: metadata per type>
-// build set of types dynamically
+// JSON data of r-libraries (Fanny's work will provide these)
+var JSON_file = '{"rfunctions":['+
+    '{"statistic": "Mean", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
+    '{"statistic": "Histogram", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
+    '{"statistic": "Quantile", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
+    '{"statistic": "Bivariate Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ] }';
 
-// the whole storing thing in memory = sql/database
+
+
+
+
+// List of variables to make form bubbles (Fanny's work will provide these)
+var JSON_file2 = '{ "varlist": ["var 1", "var21", "var3"] }'; 
+
+// Parses the function and varlist data structure
+var rfunctions = JSON.parse(JSON_file);
+var varlist = JSON.parse(JSON_file2);
 
 
 
@@ -23,32 +31,123 @@ Array.prototype.unique = function () {
 
 
 
-// JSON data of r-libraries (Fanny's work will provide these)
-// List of variables to make form bubbles (Fanny's work will provide these)
-// var JSON_file = '{"rfunctions":[' +
-// 	'{"func":"Mean","parameter":["Lower Bound", "Upper Bound"] },' +
-// 	'{"func":"Histogram","parameter":["Number of Bins"] },' +
-// 	'{"func":"Quantile","parameter": ["Lower Bound", "Upper Bound", "Granularity"] },' +
-//     '{"func":"Bivariate Analysis","parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"] } ] }';
+// List of possible statisitics
+var statistic_list = [];
+for (n = 0; n < rfunctions.rfunctions.length; n++) {
+    statistic_list.push(rfunctions.rfunctions[n].statistic);
+};
 
-var JSON_file = '{"rfunctions":['+
-    '{"statistic": "Mean", "statistic_type": [{"type": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"type": "Boolean", "parameter": []}]},' + 
-    '{"statistic": "Histogram", "statistic_type": [{"type": "Numerical", "parameter": ["Number of Bins"]}, {"type": "Boolean", "parameter": []}, {"type": "Categorical", "parameter": ["Number of Bins"]}]},' +
-    '{"statistic": "Quantile", "statistic_type": [{"type": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"type": "Boolean", "parameter": []}]},' +
-    '{"statistic": "Bivariate Regression", "statistic_type": [{"type": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ] }';
+// List of types
+var type_list = [];
+for (n = 0; n < rfunctions.rfunctions.length; n++) {
+    for (m = 0; m < rfunctions.rfunctions[n].statistic_type.length; m++) {
+        type_list.push(rfunctions.rfunctions[n].statistic_type[m].stype);
+    };
+};
+type_list = type_list.unique()
 
-var JSON_file2 = '{ "varlist": ["var 1", "var21", "var3"] }'; 
+// List of statistics per type and metadata required
+for (n = 0; n < type_list.length; n++) {
+    var var_type = type_list[n];
+    eval("var " + var_type.replace(/\s/g, '_') + "_stat_list = [];");
+    for (m = 0; m < rfunctions.rfunctions.length; m++) {
+        for (l = 0; l < rfunctions.rfunctions[m].statistic_type.length; l++) {
+            if (rfunctions.rfunctions[m].statistic_type[l].stype == var_type) {
+                eval(var_type.replace(/\s/g, '_') + "_stat_list.push('" + rfunctions.rfunctions[m].statistic + "');");
+            }
+            else {}
+        };
+    };
+};
 
-// Parses the function and varlist data structure
-var rfunctions = JSON.parse(JSON_file);
-var varlist = JSON.parse(JSON_file2);
 
-function my() {
-    alert(varlist.varlist[1]);
-    alert(rfunctions.rfunctions[0].statistic);
-}
+// function my () {
+//     alert(Numerical_stat_list);
+//     alert(Boolean_stat_list);
+//     alert(Categorical_stat_list);
+// };
 
 
+
+// Make the category dropdown
+function list_of_types (variable) {
+    type_menu = "";
+    for (m = 0; m < type_list.length; m++) {
+        type_menu += "<option id='" + type_list[m] + "_" + variable + "' value='" + type_list[m] + "'>" + type_list[m] + "</option>";
+    };
+    return type_menu;
+};
+
+// Produces checkboxes on selected type
+function type_selected (type_chosen, variable) {
+    if (type_chosen != "default") {
+        document.getElementById("released_statistics_" + variable).innerHTML = list_of_statistics(type_chosen, variable);
+    }
+    else {
+        document.getElementById("released_statistics_" + variable).innerHTML = "";
+    }
+};
+
+// Makes the checkboxes
+function list_of_statistics (type_chosen, variable) {
+    variable = variable.replace(/\s/g, '_');
+    var options = "";
+    eval("var type_chosen_list = " + type_chosen + "_stat_list;")
+    for (n = 0; n < type_chosen_list.length; n++) {
+        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> " + type_chosen_list[n] + "<br>";
+    };
+    return options;
+};
+
+// Makes bubbles and takes in variable name as unique identifier
+// Forces each variable to have an unique name
+function make_bubble (variable) {
+    variable = variable.replace(/\s/g, '_');
+    var blank_bubble = 
+    "<div class='bubble' id='bubble_" + variable + "'>" +
+        "<button class='accordion' id='accordion_" + variable + "' onclick='accordion(this)'>" +
+            variable +
+        "</button>" +
+        "<div id='panel_" + variable + "' class='panel'>" +
+            "<div id='variable_types_" + variable + "' class='variable_types'>" +
+                "Variable Type: " +
+                "<select id='variable_type_" + variable + "' onchange='type_selected(value,\"" + variable + "\")'>" + 
+                    "<option id='default_" + variable + "' value='default'>Please select a type</option>" +
+                    list_of_types(variable) +
+                "</select>" +
+            "</div>" +
+            "<hr style='margin-top: -0.25em'>" +
+            "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
+                // "Please select which statistics you wish to release:<br>" + 
+                // list_of_statistics(variable) +
+            "</div>" +
+            "<hr style='margin-top: -0.25em'>" +
+            "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
+        "</div>" +
+    "</div>" +
+    "<hr style='margin-top: 0.25em'>";
+    return blank_bubble;
+};
+
+// Enables Collapsable Sections for JS Generated HTML
+function accordion(bubble) {
+    var variable = bubble.id.slice(10, bubble.id.length);
+    if (bubble.className == "accordion") {
+        bubble.className = "accordion active";
+        document.getElementById("panel_" + variable).className = "panel show";
+    }
+    else {
+        bubble.className = "accordion";
+        document.getElementById("panel_" + variable).className = "panel";
+    };
+};
+
+// Generates bubbles from variable list recieved
+function variable_bubble() {
+    for (i = 0; i < varlist.varlist.length; i++) {
+        $("#bubble_form").append(make_bubble(varlist.varlist[i]));
+    };
+};
 
 
 
