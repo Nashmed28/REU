@@ -10,12 +10,17 @@ var JSON_file = '{"rfunctions":['+
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": ["var 1", "var21", "var3"] }'; 
+var JSON_file2 = '{ "varlist": {"active": ["var 1", "var21", "var3"], "inactive": ["var11", "var123"]} }'; 
 
 // Parses the function and varlist data structure
 var rfunctions = JSON.parse(JSON_file);
 var varlist = JSON.parse(JSON_file2);
 
+
+
+// Active and inactive variable list
+var varlist_active = varlist.varlist.active;
+var varlist_inactive = varlist.varlist.inactive; 
 
 
 
@@ -103,7 +108,7 @@ column_index_length = 1 + 4 * statistic_list.length + metadata_list.length;
 var inputted_metadata = {};
 
 // Inputting the given variables
-for (n = 0; n < varlist.varlist.length; n++) {
+for (n = 0; n < varlist_active.length; n++) {
     default_array = ['default']
     for (m = 0; m < statistic_list.length; m ++) {
         default_array.push(0);
@@ -112,9 +117,9 @@ for (n = 0; n < varlist.varlist.length; n++) {
         default_array.push(0);
     };
     for (l = 0; l < metadata_list.length; l++) {
-        default_array.push(0);
+        default_array.push("");
     };
-    inputted_metadata[varlist.varlist[n].replace(/\s/g, '_')] = default_array;
+    inputted_metadata[varlist_active[n].replace(/\s/g, '_')] = default_array;
 };
 
 // A reset function for rows
@@ -129,7 +134,7 @@ function reset (row) {
     };
     for (l = 0; l < metadata_list.length; l++) {
         var n = 1 + 4 * statistic_list.length;
-        row[n + l] = 0;
+        row[n + l] = "";
     };
 };
 
@@ -219,8 +224,8 @@ function accordion(bubble) {
 
 // Generates bubbles from variable list recieved
 function variable_bubble() {
-    for (i = 0; i < varlist.varlist.length; i++) {
-        $("#bubble_form").append(make_bubble(varlist.varlist[i]));
+    for (i = 0; i < varlist_active.length; i++) {
+        $("#bubble_form").append(make_bubble(varlist_active[i]));
     };
 };
 
@@ -309,32 +314,21 @@ function Parameter_Memory(parameter, variable) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // issues to resolve:
-// as you switch type, everything has to reset (need a reset function) done
-// between stats of same type, should deselecting remove memory of input?
+// as you switch type, everything has to reset (need a reset function) done 
+// between stats of same type, should deselecting remove memory of input? (N/A)
 // next steps:
-// form logic (check if numerials), maybe not have zero as initial display, add new variable, drop old ones
+// form logic (check if numerials), 
+// maybe not have zero as initial display,  (done)
+// add new variable, 
+// drop old ones
+// epsilon/accuracy table
+// change inputted_metadata to have an active variable field ?? (done)
+// find the size of a js dictionary (similar or different to an array?) (done:
 
+//     var bat = {'b':2,'c':3 };
+
+// document.write( Object.keys(bat).length );)
 
 
 
