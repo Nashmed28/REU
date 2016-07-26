@@ -249,7 +249,7 @@ function parameter_fields(variable, type_chosen) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < needed_parameters.length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += needed_parameters.sort()[j] + ": <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters.sort()[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters.sort()[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters.sort()[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
+        parameter_field += needed_parameters[j] + ": <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
     };
 
     // prints this all out, display seems smooth
@@ -288,6 +288,45 @@ function Parameter_Memory(parameter, variable) {
     inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
     // alert(inputted_metadata[variable]);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // issues to resolve:
