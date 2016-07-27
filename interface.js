@@ -10,7 +10,7 @@ var JSON_file = '{"rfunctions":['+
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": {"active": ["var 1", "var  21", "var3"], "inactive": ["var11", "var123"]} }'; 
+var JSON_file2 = '{ "varlist": {"active": ["var 1", "var 21", "var 3"], "inactive": ["var11", "var123"]} }'; 
 
 // Parses the function and varlist data structure
 var rfunctions = JSON.parse(JSON_file);
