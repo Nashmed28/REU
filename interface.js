@@ -396,27 +396,53 @@ function delete_variable (variable) {
 
 // Creates Epsilon 
 function submit () {
-    var number_of_variables = Object.keys(inputted_metadata).length;
+    var number_of_variables = varlist_active.length;
     var epsilon_table = 
     "<table id='epsilon_table' style='width: 100%;'>" +
         "<tr>" +
-            "<td>" +
+            "<td style='font-weight: bold;'>" +
                 "Variable Name" +
             "</td>" +
-            "<td>" +
+            "<td style='font-weight: bold;'>" +
                 "Statistic" +
             "</td>" +
-            "<td>" +
+            "<td style='font-weight: bold;'>" +
                 "Epsilon" +
             "</td>" +
-            "<td>" +
+            "<td style='font-weight: bold;'>" +
                 "Accuracy" +
             "</td>" +
-            "<td>" +
+            "<td style='font-weight: bold;'>" +
                 "Hold" +
             "</td>" +
-        "</tr>" +
-    "</table>";
+        "</tr>";
+    for (n = 0; n < number_of_variables; n++) {
+        for (m = 0; m < statistic_list.length; m++) {
+            var stat_index = 4 * m + 1;
+            if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 1) {
+                epsilon_table += 
+                "<tr>" +
+                    "<td>" +
+                        varlist_active[n] +
+                    "</td>" +
+                    "<td>" +
+                        statistic_list[m] +
+                    "</td>" +
+                    "<td>" +
+                        "0" +
+                    "</td>" +
+                    "<td>" +
+                        "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
+                    "</td>" +
+                    "<td>" +
+                        "0" +
+                    "</td>" +
+                "</tr>";
+            }
+            else {}
+        };
+    };
+    epsilon_table += "</table>";
     document.getElementById('modal-content').innerHTML = epsilon_table;
 };
 
