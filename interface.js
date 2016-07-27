@@ -190,28 +190,32 @@ function list_of_statistics (type_chosen, variable) {
 // Makes bubbles and takes in variable name as unique identifier
 // Forces each variable to have an unique name
 function make_bubble (variable) {
+    var variable_raw = variable;
     variable = variable.replace(/\s/g, '_');
     var blank_bubble = 
-    "<div class='bubble' id='bubble_" + variable + "'>" +
-        "<button class='accordion' id='accordion_" + variable + "' onclick='accordion(this)'>" +
-            variable +
-        "</button>" +
-        "<div id='panel_" + variable + "' class='panel'>" +
-            "<div id='variable_types_" + variable + "' class='variable_types'>" +
-                "Variable Type: " +
-                "<select id='variable_type_" + variable + "' onchange='type_selected(value,\"" + variable + "\")'>" + 
-                    "<option id='default_" + variable + "' value='default'>Please select a type</option>" +
-                    list_of_types(variable) +
-                "</select>" +
+    "<div id='" + variable + "'>" + 
+        "<div class='bubble' id='bubble_" + variable + "'>" +
+            "<button class='accordion' id='accordion_" + variable + "' onclick='accordion(this)'>" +
+                variable +
+            "</button>" +
+            "<div id='panel_" + variable + "' class='panel'>" +
+                "<div id='variable_types_" + variable + "' class='variable_types'>" +
+                    "Variable Type: " +
+                    "<select id='variable_type_" + variable + "' onchange='type_selected(value,\"" + variable + "\")'>" + 
+                        "<option id='default_" + variable + "' value='default'>Please select a type</option>" +
+                        list_of_types(variable) +
+                    "</select>" +
+                "</div>" +
+                "<hr style='margin-top: -0.25em'>" +
+                "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
+                "</div>" +
+                "<hr style='margin-top: -0.25em'>" +
+                "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
+                "<div><button onclick='delete_variable(\"" + variable_raw + "\")'>DELETE</button></div>" + 
             "</div>" +
-            "<hr style='margin-top: -0.25em'>" +
-            "<div id='released_statistics_" + variable + "' class='released_statistics'>" +
-            "</div>" +
-            "<hr style='margin-top: -0.25em'>" +
-            "<div id='necessary_parameters_" + variable + "' class='necessary_parameters'></div>" + 
         "</div>" +
-    "</div>" +
-    "<hr style='margin-top: 0.25em'>";
+        "<hr style='margin-top: 0.25em'>" +
+    "</div>";
     return blank_bubble;
 };
 
@@ -315,11 +319,6 @@ function create_new_variable () {
         varlist_inactive.splice(new_variable_number, 1);
         varlist_active.push(new_variable_name);
         inputted_metadata[new_variable_name] = array_default;
-
-
-        // alert(inputted_metadata[new_variable_name]);
-
-
         $("#bubble_form").append(make_bubble(new_variable_name));
     }
     else {}
@@ -377,7 +376,19 @@ window.onclick = function(event) {
 
 
 
-
+// Remove variable
+function delete_variable (variable) {
+    var index = varlist_active.indexOf(variable);
+    if (varlist_active.length == 1) {
+        alert("YOU MUST HAVE AT LEAST ONE VARIABLE ON THE FORM");
+    }
+    else {
+        varlist_active.splice(index, 1);
+        varlist_inactive.push(variable);
+        delete inputted_metadata[variable.replace(/\s/g, '_')];
+        document.getElementById(variable.replace(/\s/g, '_')).remove();
+    }
+};
 
 
 
@@ -390,8 +401,8 @@ window.onclick = function(event) {
 // next steps:
 // form logic (check if numerials), 
 // maybe not have zero as initial display,  (done)
-// add new variable, 
-// drop old ones
+// add new variable, check
+// drop old ones check
 // epsilon/accuracy table
 // change inputted_metadata to have an active variable field ?? (done)
 // find the size of a js dictionary (similar or different to an array?) (done:
