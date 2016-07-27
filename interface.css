@@ -187,3 +187,18 @@ div.panel.show {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+
+
+
+
+/* Submit Table Format */
+#epsilon_table table, #epsilon_table th, #epsilon_table td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+#epsilon_table th, #epsilon_table td {
+    padding: 5px;
+    text-align: center;
+}

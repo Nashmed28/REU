@@ -10,7 +10,7 @@ var JSON_file = '{"rfunctions":['+
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": {"active": ["var 1", "var21", "var3"], "inactive": ["var11", "var123"]} }'; 
+var JSON_file2 = '{ "varlist": {"active": ["var 1", "var  21", "var3"], "inactive": ["var11", "var123"]} }'; 
 
 // Parses the function and varlist data structure
 var rfunctions = JSON.parse(JSON_file);
@@ -196,7 +196,7 @@ function make_bubble (variable) {
     "<div id='" + variable + "'>" + 
         "<div class='bubble' id='bubble_" + variable + "'>" +
             "<button class='accordion' id='accordion_" + variable + "' onclick='accordion(this)'>" +
-                variable +
+                variable_raw +
             "</button>" +
             "<div id='panel_" + variable + "' class='panel'>" +
                 "<div id='variable_types_" + variable + "' class='variable_types'>" +
@@ -305,7 +305,35 @@ function Parameter_Memory (parameter, variable) {
 
 
 
+// Get the modal
+var modal = document.getElementById('myModal');
 
+// Get the button that opens the modal
+var btn_add = document.getElementById("add_new_bubble");
+var btn_submit = document.getElementById("submit");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn_add.onclick = function() {
+    modal.style.display = "block";
+};
+btn_submit.onclick = function() {
+    modal.style.display = "block";
+};
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
 
 
 
@@ -346,36 +374,10 @@ function add_new_bubble () {
 };
 
 
-// Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-var btn = document.getElementById("add_new_bubble");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-
 
 
 // Remove variable
+// http://red-team-design.com/removing-an-element-with-plain-javascript-remove-method/
 function delete_variable (variable) {
     var index = varlist_active.indexOf(variable);
     if (varlist_active.length == 1) {
@@ -391,6 +393,32 @@ function delete_variable (variable) {
 
 
 
+
+// Creates Epsilon 
+function submit () {
+    var number_of_variables = Object.keys(inputted_metadata).length;
+    var epsilon_table = 
+    "<table id='epsilon_table' style='width: 100%;'>" +
+        "<tr>" +
+            "<td>" +
+                "Variable Name" +
+            "</td>" +
+            "<td>" +
+                "Statistic" +
+            "</td>" +
+            "<td>" +
+                "Epsilon" +
+            "</td>" +
+            "<td>" +
+                "Accuracy" +
+            "</td>" +
+            "<td>" +
+                "Hold" +
+            "</td>" +
+        "</tr>" +
+    "</table>";
+    document.getElementById('modal-content').innerHTML = epsilon_table;
+};
 
 
 
