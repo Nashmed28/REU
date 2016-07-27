@@ -393,10 +393,20 @@ function delete_variable (variable) {
 
 
 
+// Does the hold function
+function hold_status (hold_checkbox, variable, statistic) {
+    if ($("#" + hold_checkbox.id).prop('checked')) {
+        inputted_metadata[variable][column_index["hold_" + statistic]] = 1;
+    }
+    else {
+        inputted_metadata[variable][column_index["hold_" + statistic]] = 0;
+    }
+};
+
+
 
 // Creates Epsilon 
 function submit () {
-    var number_of_variables = varlist_active.length;
     var epsilon_table = 
     "<table id='epsilon_table' style='width: 100%;'>" +
         "<tr>" +
@@ -416,7 +426,7 @@ function submit () {
                 "Hold" +
             "</td>" +
         "</tr>";
-    for (n = 0; n < number_of_variables; n++) {
+    for (n = 0; n < varlist_active.length; n++) {
         for (m = 0; m < statistic_list.length; m++) {
             var stat_index = 4 * m + 1;
             if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 1) {
@@ -435,16 +445,83 @@ function submit () {
                         "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
                     "</td>" +
                     "<td>" +
-                        "0" +
+                        "<input type='checkbox' id='hold_" + varlist_active[n].replace(/\s/g, '_') + "_" + statistic_list[m] + "' onclick='hold_status(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\",\"" + statistic_list[m] + "\")'>" +
                     "</td>" +
                 "</tr>";
             }
             else {}
         };
     };
-    epsilon_table += "</table>";
+    epsilon_table += 
+    "</table>" +
+    "<br>" +
+    "<button onclick='report()'>Confirm</button>";
+
     document.getElementById('modal-content').innerHTML = epsilon_table;
 };
+
+
+
+
+
+
+// Reverse column_index: http://stackoverflow.com/questions/1159277/array-flip-in-javascript
+var index_column = {};
+$.each(column_index, function(i, el) {
+    index_column[el]=i;
+});
+
+// Get length of js dictionary length: http://jsfiddle.net/simevidas/nN84h/
+// Generates a HTML datapage with all the info collected 
+function report () {
+    info =
+    "<style>" +
+    "#epsilon_table table, #epsilon_table th, #epsilon_table td {" +
+        "border: 1px solid black;" +
+        "border-collapse: collapse;" +
+    "}" +
+    "#epsilon_table th, #epsilon_table td {" +
+        "padding: 5px;" +
+        "text-align: center;" +
+    "}" +
+    "</style>" + 
+    "<table id='epsilon_table' style='width: 100%;'>" +
+        "<tr>" +
+            "<td style='font-weight: bold;'>" +
+                "Variable Name" +
+            "</td>";
+
+    for (n = 0; n < column_index_length; n++) {
+        info +=             
+        "<td style='font-weight: bold;'>" +
+            index_column[n] +
+        "</td>";
+    };
+    
+    info += "</tr>";
+
+    for (m = 0;  m < varlist_active.length; m++) {
+        info += 
+        "<tr>" +
+            "<td>" +
+                varlist_active[m] +
+            "</td>";
+        
+        for (l = 0; l < column_index_length; l++) {
+            info +=             
+            "<td>" +
+                inputted_metadata[varlist_active[m].replace(/\s/g, '_')][l] +
+            "</td>";
+        };
+
+        info += "</tr>";
+    };
+
+    var report_info = window.open("");
+    report_info.document.write(info + "</table>");
+};
+
+
 
 
 
