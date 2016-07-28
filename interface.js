@@ -1,9 +1,60 @@
+// // JSON data of r-libraries (Fanny's work will provide these)
+// var JSON_file = '{"rfunctions":[' +
+//     '{"statistic": "Mean", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
+//     '{"statistic": "Histogram", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
+//     '{"statistic": "Quantile", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
+//     '{"statistic": "Bivariate Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ] }';
+
+
+
+
+
+
 // JSON data of r-libraries (Fanny's work will provide these)
-var JSON_file = '{"rfunctions":['+
-    '{"statistic": "Mean", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
-    '{"statistic": "Histogram", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
-    '{"statistic": "Quantile", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
-    '{"statistic": "Bivariate Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ] }';
+var JSON_file = '{"rfunctions":[' +
+    '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"], "entry_type": ["number", "number"], "parameter_info": ["The lowest value", "The highest value"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' + 
+    '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}, {"stype": "Categorical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}]},' +
+    '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"], "entry_type": ["number", "number", "pos_integer"], "parameter_info": ["The lowest value", "The highest value", "Rate of change"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' +
+    '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"], "entry_type": ["number", "number", "number", "number", "pos_decimal"], "parameter_info": ["The lowest value", "The highest value", "The lowest value of y-component", "The highest value of y-component", "Relationship between x and y axis"]}]} ],' +
+    '"type_label": [{"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"}] }';
+
+// // statistic_type has 2 more arrays info text and type validity
+// // mouseover label telling what the statistic is , parameter is, and type is 
+// // what metadata needs (numerical (whole number), text, decimal (can have .), positive, negative #, is order a < b, )
+// // custom logic (metadata checking rules)
+
+
+// // Salil input
+// // beta -> each statistics, default beta but option to change
+// // histogram -> description of what the bins
+
+
+// // text, pos_decimal, neg_decimal, decimal, pos_integer, neg_integer, integer, pos_number, neg_number, number
+
+
+
+
+
+
+// var test = JSON.parse(test);
+// var func = test.rfunctions;
+// var type_label = test.type_label;
+
+// function my () {
+//     alert(func[0].statistic_type[0].parameter_info);
+// };
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -45,12 +96,10 @@ for (n = 0; n < rfunctions.rfunctions.length; n++) {
 
 // List of all types
 var type_list = [];
-for (n = 0; n < rfunctions.rfunctions.length; n++) {
-    for (m = 0; m < rfunctions.rfunctions[n].statistic_type.length; m++) {
-        type_list.push(rfunctions.rfunctions[n].statistic_type[m].stype);
-    };
+for (n = 0; n < rfunctions.type_label.length; n++) {
+    type_list.push(rfunctions.type_label[n].stype);
 };
-type_list = type_list.unique()
+
 
 // List of statistics per type and metadata required
 for (n = 0; n < type_list.length; n++) {
@@ -153,10 +202,11 @@ for (l = 0; l < metadata_list.length; l++) {
 
 
 // Make the category dropdown
+// Tooltip: http://stackoverflow.com/questions/682643/tooltip-on-a-dropdown-list
 function list_of_types (variable) {
     type_menu = "";
     for (m = 0; m < type_list.length; m++) {
-        type_menu += "<option id='" + type_list[m] + "_" + variable + "' value='" + type_list[m] + "'>" + type_list[m] + "</option>";
+        type_menu += "<option id='" + type_list[m] + "_" + variable + "' value='" + type_list[m] + "' title='" + rfunctions.type_label[m].type_info + "'>" + type_list[m] + "</option>";
     };
     return type_menu;
 };
@@ -530,7 +580,11 @@ function report () {
 };
 
 
-
+// json
+// mouseover label telling what the statistic is
+// what metadata needs (numerical (whole number), text, decimal (can have .), positive, negative #, is order a < b, )
+// custom logic (metadata checking rules)
+// shift over dynamic table to below
 
 
 // issues to resolve:
