@@ -21,15 +21,14 @@
 var JSON_file = '{"rfunctions":[' +
     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
-    '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
-    '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ],' +
-    '"type_label": [{"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"}] }';
+    '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]} ],' +
+    '"type_label": [ {"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"} ],' +
+    '"parameter_info": [ {"stype": "Lower Bound", "entry_type": "number", "info": "Lowest Value"}, {"stype": "Upper Bound", "entry_type": "number", "info": "Highest Value"}, {"stype": "Number of Bins", "entry_type": "pos_integer", "info": "Number of Categories"}, {"stype": "Granularity", "entry_type": "pos_integer", "info": "Spread"} ] }';
 
 
 
 
-
-
+// {"stype": "Lower Bound", "entry_type": "number", "info": "Lowest Value"}, {"stype": "Upper Bound", "entry_type": "number", "info": "Highest Value"}, {"stype": "Number of Bins", "entry_type": "pos_integer", "info": "Number of Categories"}, {"stype": "Granularity", "entry_type": "pos_integer", "info": "Spread"},
 
 // // statistic_type has 2 more arrays info text and type validity
 // // mouseover label telling what the statistic is , parameter is, and type is 
