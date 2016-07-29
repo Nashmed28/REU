@@ -7,16 +7,29 @@
 
 
 
+// // JSON data of r-libraries (Fanny's work will provide these)
+// var JSON_file = '{"rfunctions":[' +
+//     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"], "entry_type": ["number", "number"], "parameter_info": ["The lowest value", "The highest value"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' + 
+//     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}, {"stype": "Categorical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}]},' +
+//     '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"], "entry_type": ["number", "number", "pos_integer"], "parameter_info": ["The lowest value", "The highest value", "Rate of change"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' +
+//     '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"], "entry_type": ["number", "number", "number", "number", "pos_decimal"], "parameter_info": ["The lowest value", "The highest value", "The lowest value of y-component", "The highest value of y-component", "Relationship between x and y axis"]}]} ],' +
+//     '"type_label": [{"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"}] }';
 
 
 
 // JSON data of r-libraries (Fanny's work will provide these)
 var JSON_file = '{"rfunctions":[' +
-    '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"], "entry_type": ["number", "number"], "parameter_info": ["The lowest value", "The highest value"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' + 
-    '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}, {"stype": "Categorical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}]},' +
-    '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"], "entry_type": ["number", "number", "pos_integer"], "parameter_info": ["The lowest value", "The highest value", "Rate of change"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' +
-    '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"], "entry_type": ["number", "number", "number", "number", "pos_decimal"], "parameter_info": ["The lowest value", "The highest value", "The lowest value of y-component", "The highest value of y-component", "Relationship between x and y axis"]}]} ],' +
+    '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
+    '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
+    '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
+    '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ],' +
     '"type_label": [{"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"}] }';
+
+
+
+
+
+
 
 // // statistic_type has 2 more arrays info text and type validity
 // // mouseover label telling what the statistic is , parameter is, and type is 
@@ -36,7 +49,7 @@ var JSON_file = '{"rfunctions":[' +
 
 
 
-// var test = JSON.parse(test);
+// var test = JSON.parse(JSON_file);
 // var func = test.rfunctions;
 // var type_label = test.type_label;
 
@@ -232,7 +245,7 @@ function list_of_statistics (type_chosen, variable) {
     var options = "";
     eval("var type_chosen_list = " + type_chosen + "_stat_list;")
     for (n = 0; n < type_chosen_list.length; n++) {
-        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> " + type_chosen_list[n] + "<br>";
+        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> <span title='" + rfunctions.rfunctions[(column_index[type_chosen_list[n].replace(/\s/g, '_')] - 1) / 4].stat_info + "'>" + type_chosen_list[n] + "</span><br>";
     };
     return options;
 };
@@ -314,7 +327,7 @@ function parameter_fields (variable, type_chosen) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < needed_parameters.length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += needed_parameters[j] + ": <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
+        parameter_field += "<span title='" + needed_parameters[j].replace(/\s/g, '_') + "'>" + needed_parameters[j] + ":</span> <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
     };
 
     // prints this all out, display seems smooth
