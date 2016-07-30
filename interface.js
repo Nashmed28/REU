@@ -58,6 +58,103 @@
 
 
 
+// Regex: http://www.w3schools.com/jsref/jsref_obj_regexp.asp
+// Validate form based on entry_type info
+function ValidateInput (input, valid_entry, variable) {
+    var entry = input.value;
+
+    if (entry == "") {
+        return false;
+    } 
+
+    if (valid_entry == "general_text") {
+        if (!entry.match(/^[a-zA-Z0-9]+$/)) {
+            alert("Invalid entry. Entry can only contain numbers and letters only!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "text_only") {
+        if (!entry.match(/^[a-zA-Z]+$/)) {
+            alert("Invalid entry. Entry can only contain letters only!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "pos_decimal") {
+        if (!entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be positive decimals!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "neg_decimal") {
+        if (!entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be negative decimals. Must have negative sign (-) in front!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "decimal") {
+        if (!entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be decimals!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "pos_integer") {
+        if (!entry.match(/^[+]?[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be positive integer!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "neg_integer") {
+        if (!entry.match(/^[-]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be negative integer. Must have negative sign (-) in front!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "integer") {
+        if (!entry.match(/^[+-]?[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be integers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "pos_number") {
+        if (!(entry.match(/^[+]?[0-9]+[.]?$/) || entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be positive numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "neg_number") {
+        if (!(entry.match(/^[-]{1}[0-9]+[.]?$/) || entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be negative numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "number") {
+        if (!(entry.match(/^[+-]?[0-9]+[.]?$/) || entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+};
 
 
 
@@ -141,7 +238,6 @@ var metadata_list = [];
 for (n = 0; n < rfunctions.parameter_info.length; n++) {
     metadata_list.push(rfunctions.parameter_info[n].parameter);
 };
-
 
 
 
@@ -330,7 +426,7 @@ function parameter_fields (variable, type_chosen) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < needed_parameters.length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += "<span title='" + rfunctions.parameter_info[(column_index[needed_parameters[j].replace(/\s/g, '_')] - (4 * type_list.length) - 1)].pinfo + "'>" + needed_parameters[j] + ":</span> <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")'><br>"
+        parameter_field += "<span title='" + rfunctions.parameter_info[(column_index[needed_parameters[j].replace(/\s/g, '_')] - (4 * type_list.length) - 1)].pinfo + "'>" + needed_parameters[j] + ":</span> <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' oninput='Parameter_Memory(this,\"" + variable + "\")' onfocusout='ValidateInput(this, \"" + rfunctions.parameter_info[(column_index[needed_parameters[j].replace(/\s/g, '_')] - (4 * type_list.length) - 1)].entry_type + "\", \"" + variable + "\")'><br>"
     };
 
     // prints this all out, display seems smooth
