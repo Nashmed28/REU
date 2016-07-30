@@ -25,35 +25,45 @@
 
 <body onload="variable_bubble()">
 
-    <!-- Page Content -->
-    <div id="bubble_form" style="">
-    </div>
-                    
-    <!-- Button for new variables -->
-    <div id="add_new_bubble">
-         <button type="button" id="add_new_bubble" onclick="add_new_bubble()">+Add New Variable</button>
-    </div>
-                    
-    <br>
-                    
-    <!-- Submit Button -->
-    <div id="submit">
-        <button type="button" id="submit" onclick="submit()">SUBMIT</button>
-    </div>
+    <div class="flex-container">
+        <header>
+            <h1>STUFF</h1>
+        </header>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">X</span>
+        <nav class="nav">
+            Variable Selection
+        </nav>
+
+        <article class="article">
+            <!-- Page Content: Bubbles -->
+            <div id="bubble_form" style=""></div>
                             
-            <div id="modal-content"></div>
-        </div>
+            <!-- Button for new variables -->
+            <div id="add_new_bubble">
+                 <button type="button" id="add_new_bubble" onclick="add_new_bubble()">+Add New Variable</button>
+            </div>
+                            
+            <br>
+                            
+            <!-- Submit Button -->
+            <div id="submit">
+                <button type="button" id="submit" onclick="submit()">SUBMIT</button>
+            </div>
+
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">X</span>
+                                    
+                    <div id="modal-content"></div>
+                </div>
+            </div>
+
+        </article>
+
+        <footer>REU PRIVACY TOOLS</footer>
     </div>
-
-
-
-
 
     <script type="text/javascript" src="interface.js"></script>
 
