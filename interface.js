@@ -376,7 +376,7 @@ function make_bubble (variable) {
                 "<div><button onclick='delete_variable(\"" + variable_raw + "\")'>DELETE</button></div>" + 
             "</div>" +
         "</div>" +
-        "<hr style='margin-top: 0.25em'>" +
+        "<br>" +
     "</div>";
     return blank_bubble;
 };
