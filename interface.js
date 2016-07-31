@@ -8,17 +8,19 @@ var JSON_file = '{"rfunctions":[' +
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": {"active": ["var 1", "var 21", "var 3"], "inactive": ["var11", "var123"]} }'; 
+var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5"] }'; 
+
 
 // Parses the function and varlist data structure
 var rfunctions = JSON.parse(JSON_file);
 var varlist = JSON.parse(JSON_file2);
 
 
-
 // Active and inactive variable list
-var varlist_active = varlist.varlist.active;
-var varlist_inactive = varlist.varlist.inactive; 
+var varlist_active = ["var1", "var2"];
+var varlist_inactive = ["var4", "var67"]; 
+
+
 
 
 
