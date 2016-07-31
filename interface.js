@@ -1,172 +1,3 @@
-// // JSON data of r-libraries (Fanny's work will provide these)
-// var JSON_file = '{"rfunctions":[' +
-//     '{"statistic": "Mean", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
-//     '{"statistic": "Histogram", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
-//     '{"statistic": "Quantile", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]},' +
-//     '{"statistic": "Bivariate Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"]}]} ] }';
-
-
-
-// // JSON data of r-libraries (Fanny's work will provide these)
-// var JSON_file = '{"rfunctions":[' +
-//     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"], "entry_type": ["number", "number"], "parameter_info": ["The lowest value", "The highest value"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' + 
-//     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}, {"stype": "Categorical", "parameter": ["Number of Bins"], "entry_type": ["pos_integer"], "parameter_info": ["Number of Categories"]}]},' +
-//     '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"], "entry_type": ["number", "number", "pos_integer"], "parameter_info": ["The lowest value", "The highest value", "Rate of change"]}, {"stype": "Boolean", "parameter": [], "entry_type": [], "parameter_info": []}]},' +
-//     '{"statistic": "Bivariate Regression", "stat_info": "Regression", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "y-Lower Bound", "y-Upper Bound", "R-coefficient"], "entry_type": ["number", "number", "number", "number", "pos_decimal"], "parameter_info": ["The lowest value", "The highest value", "The lowest value of y-component", "The highest value of y-component", "Relationship between x and y axis"]}]} ],' +
-//     '"type_label": [{"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"}] }';
-
-
-
-// // JSON data of r-libraries (Fanny's work will provide these)
-// var JSON_file = '{"rfunctions":[' +
-//     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
-//     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
-//     '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]} ],' +
-//     '"type_label": [ {"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"} ],' +
-//     '"parameter_info": [ {"parameter": "Lower Bound", "entry_type": "number", "pinfo": "Lowest Value"}, {"parameter": "Upper Bound", "entry_type": "number", "pinfo": "Highest Value"}, {"parameter": "Number of Bins", "entry_type": "pos_integer", "pinfo": "Number of Categories"}, {"parameter": "Granularity", "entry_type": "pos_integer", "pinfo": "Spread"} ] }';
-
-
-
-
-// {"stype": "Lower Bound", "entry_type": "number", "info": "Lowest Value"}, {"stype": "Upper Bound", "entry_type": "number", "info": "Highest Value"}, {"stype": "Number of Bins", "entry_type": "pos_integer", "info": "Number of Categories"}, {"stype": "Granularity", "entry_type": "pos_integer", "info": "Spread"},
-
-// // statistic_type has 2 more arrays info text and type validity
-// // mouseover label telling what the statistic is , parameter is, and type is 
-// // what metadata needs (numerical (whole number), text, decimal (can have .), positive, negative #, is order a < b, )
-// // custom logic (metadata checking rules)
-
-
-// // Salil input
-// // beta -> each statistics, default beta but option to change
-// // histogram -> description of what the bins
-
-
-// // text, pos_decimal, neg_decimal, decimal, pos_integer, neg_integer, integer, pos_number, neg_number, number
-
-
-
-
-
-
-// var test = JSON.parse(JSON_file);
-// var func = test.rfunctions;
-// var type_label = test.type_label;
-
-// function my () {
-//     alert(func[0].statistic_type[0].parameter_info);
-// };
-
-
-
-// Regex: http://www.w3schools.com/jsref/jsref_obj_regexp.asp
-// Validate form based on entry_type info
-function ValidateInput (input, valid_entry, variable) {
-    var entry = input.value;
-
-    if (entry == "") {
-        return false;
-    } 
-
-    if (valid_entry == "general_text") {
-        if (!entry.match(/^[a-zA-Z0-9]+$/)) {
-            alert("Invalid entry. Entry can only contain numbers and letters only!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-
-    if (valid_entry == "text_only") {
-        if (!entry.match(/^[a-zA-Z]+$/)) {
-            alert("Invalid entry. Entry can only contain letters only!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-
-    if (valid_entry == "pos_decimal") {
-        if (!entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be positive decimals!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-
-    if (valid_entry == "neg_decimal") {
-        if (!entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be negative decimals. Must have negative sign (-) in front!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "decimal") {
-        if (!entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be decimals!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "pos_integer") {
-        if (!entry.match(/^[+]?[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be positive integer!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "neg_integer") {
-        if (!entry.match(/^[-]{1}[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be negative integer. Must have negative sign (-) in front!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "integer") {
-        if (!entry.match(/^[+-]?[0-9]+$/)) {
-            alert("Invalid entry. Entry can only be integers!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "pos_number") {
-        if (!(entry.match(/^[+]?[0-9]+[.]?$/) || entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/))) {
-            alert("Invalid entry. Entry can only be positive numbers!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "neg_number") {
-        if (!(entry.match(/^[-]{1}[0-9]+[.]?$/) || entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/))) {
-            alert("Invalid entry. Entry can only be negative numbers!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-    
-    if (valid_entry == "number") {
-        if (!(entry.match(/^[+-]?[0-9]+[.]?$/) || entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/))) {
-            alert("Invalid entry. Entry can only be numbers!");
-            inputted_metadata[variable][column_index[input.name]] = "";
-            input.value = "";
-        }
-    }
-};
-
-
-
-
-
-
-
-
-
-
-
-
 // JSON data of r-libraries and functions (Fanny's work will provide these)
 var JSON_file = '{"rfunctions":[' +
     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
@@ -465,6 +296,112 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
 function Parameter_Memory (parameter, variable) {
     inputted_metadata[variable][column_index[parameter.name]] = parameter.value;
 };
+
+
+
+
+
+
+// Regex: http://www.w3schools.com/jsref/jsref_obj_regexp.asp
+// Validate form based on entry_type info
+function ValidateInput (input, valid_entry, variable) {
+    var entry = input.value;
+
+    if (entry == "") {
+        return false;
+    } 
+
+    if (valid_entry == "general_text") {
+        if (!entry.match(/^[a-zA-Z0-9]+$/)) {
+            alert("Invalid entry. Entry can only contain numbers and letters only!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "text_only") {
+        if (!entry.match(/^[a-zA-Z]+$/)) {
+            alert("Invalid entry. Entry can only contain letters only!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "pos_decimal") {
+        if (!entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be positive decimals!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+
+    if (valid_entry == "neg_decimal") {
+        if (!entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be negative decimals. Must have negative sign (-) in front!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "decimal") {
+        if (!entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be decimals!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "pos_integer") {
+        if (!entry.match(/^[+]?[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be positive integer!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "neg_integer") {
+        if (!entry.match(/^[-]{1}[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be negative integer. Must have negative sign (-) in front!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "integer") {
+        if (!entry.match(/^[+-]?[0-9]+$/)) {
+            alert("Invalid entry. Entry can only be integers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "pos_number") {
+        if (!(entry.match(/^[+]?[0-9]+[.]?$/) || entry.match(/^[+]?[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be positive numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "neg_number") {
+        if (!(entry.match(/^[-]{1}[0-9]+[.]?$/) || entry.match(/^[-]{1}[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be negative numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+    
+    if (valid_entry == "number") {
+        if (!(entry.match(/^[+-]?[0-9]+[.]?$/) || entry.match(/^[+-]?[0-9]*[.]{1}[0-9]+$/))) {
+            alert("Invalid entry. Entry can only be numbers!");
+            inputted_metadata[variable][column_index[input.name]] = "";
+            input.value = "";
+        }
+    }
+};
+
+
+
 
 
 
