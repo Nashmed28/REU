@@ -636,6 +636,10 @@ function variable_selected (variable) {
         document.getElementById("selection_sidebar_" + variable).style.cssText = variable_unselected_class; 
         delete_variable(variable);
     }
+    document.getElementById("live-search-box").value = "";
+    $('.live-search-list li').each(function() {
+        $(this).show();
+    });
 };
 
 
