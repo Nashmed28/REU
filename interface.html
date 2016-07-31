@@ -23,7 +23,7 @@
 
 
 
-<body onload="variable_bubble()">
+<body onload="variable_bubble(); generate_epsilon_table();">
 
     <div class="flex-container">
         <header>
@@ -44,11 +44,6 @@
             </div>
                             
             <br>
-                            
-            <!-- Submit Button -->
-            <div id="submit">
-                <button type="button" id="submit" onclick="submit()">SUBMIT</button>
-            </div>
 
             <!-- The Modal -->
             <div id="myModal" class="modal">
@@ -62,7 +57,7 @@
 
         </article>
 
-        <nav class="epsilon_sidebar">
+        <nav id="epsilon_sidebar" class="epsilon_sidebar">
             Variable Selection
         </nav>
 

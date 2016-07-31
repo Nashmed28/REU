@@ -326,6 +326,7 @@ function list_of_types (variable) {
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
     reset(inputted_metadata[variable]);
+    generate_epsilon_table();
     inputted_metadata[variable][0] = type_chosen;
 
     if (type_chosen != "default") {
@@ -344,7 +345,7 @@ function list_of_statistics (type_chosen, variable) {
     var options = "";
     eval("var type_chosen_list = " + type_chosen + "_stat_list;")
     for (n = 0; n < type_chosen_list.length; n++) {
-        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\")' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> <span title='" + rfunctions.rfunctions[(column_index[type_chosen_list[n].replace(/\s/g, '_')] - 1) / 4].stat_info + "'>" + type_chosen_list[n] + "</span><br>";
+        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\"); generate_epsilon_table()' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> <span title='" + rfunctions.rfunctions[(column_index[type_chosen_list[n].replace(/\s/g, '_')] - 1) / 4].stat_info + "'>" + type_chosen_list[n] + "</span><br>";
     };
     return options;
 };
@@ -472,16 +473,12 @@ var modal = document.getElementById('myModal');
 
 // Get the button that opens the modal
 var btn_add = document.getElementById("add_new_bubble");
-var btn_submit = document.getElementById("submit");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 btn_add.onclick = function() {
-    modal.style.display = "block";
-};
-btn_submit.onclick = function() {
     modal.style.display = "block";
 };
 
@@ -550,6 +547,7 @@ function delete_variable (variable) {
         varlist_inactive.push(variable);
         delete inputted_metadata[variable.replace(/\s/g, '_')];
         document.getElementById(variable.replace(/\s/g, '_')).remove();
+        generate_epsilon_table();
     }
 };
 
@@ -568,7 +566,7 @@ function hold_status (hold_checkbox, variable, statistic) {
 
 
 // Creates Epsilon 
-function submit () {
+function generate_epsilon_table () {
     var epsilon_table = 
     "<table id='epsilon_table' style='width: 100%;'>" +
         "<tr>" +
@@ -627,7 +625,7 @@ function submit () {
     "<br>" +
     "<button onclick='report()'>Confirm</button>";
 
-    document.getElementById('modal-content').innerHTML = epsilon_table;
+    document.getElementById('epsilon_sidebar').innerHTML = epsilon_table;
 };
 
 

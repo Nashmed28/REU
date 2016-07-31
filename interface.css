@@ -120,9 +120,9 @@ footer {background: #aaa;color:white;}
 .epsilon_sidebar {background:#eef;}
 
 @media all and (min-width: 768px) {
-    .variable_sidebar {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:1;order:1;}
-    .main {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
-    .epsilon_sidebar {text-align:left;-webkit-flex: 4 auto;flex:4 auto;-webkit-order:3;order:3;}
+    .variable_sidebar {text-align:left;-webkit-flex: .75 auto;flex:.75 auto;-webkit-order:1;order:1;}
+    .main {-webkit-flex:5 auto;flex:5 auto;-webkit-order:2;order:2;}
+    .epsilon_sidebar {text-align:left;-webkit-flex: 2 auto;flex:2 auto;-webkit-order:3;order:3;}
     footer {-webkit-order:4;order:4;}
 }
 
