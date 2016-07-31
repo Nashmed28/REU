@@ -22,43 +22,30 @@
 </head>
 
 
-<body onload="variable_bubble(); generate_epsilon_table();">
+<body onload="variable_bubble(); generate_epsilon_table(); populate_variable_selection_sidebar();">
 
     <div class="flex-container">
         <header>
             <h1>STUFF</h1>
         </header>
 
+        <!-- Variable Selection -->
         <nav class="variable_sidebar">
-            Variable Selection
+            <!-- Searchbar -->
+            <input type="text" class="live-search-box" placeholder="Search Here"/>
+
+            <!-- Variable List -->
+            <ul id="variable_sidebar" class="live-search-list"></ul>
         </nav>
 
         <article class="main">
             <!-- Page Content: Bubbles -->
             <div id="bubble_form" style=""></div>
-                            
-            <!-- Button for new variables -->
-            <div id="add_new_bubble">
-                 <button type="button" id="add_new_bubble" onclick="add_new_bubble()">+Add New Variable</button>
-            </div>
-                            
-            <br>
-
-            <!-- The Modal -->
-            <div id="myModal" class="modal">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">X</span>
-                                    
-                    <div id="modal-content"></div>
-                </div>
-            </div>
 
         </article>
 
-        <nav id="epsilon_sidebar" class="epsilon_sidebar">
-            Variable Selection
-        </nav>
+        <!-- Epsilon Sidebar Table -->
+        <nav id="epsilon_sidebar" class="epsilon_sidebar"></nav>
 
         <footer>REU PRIVACY TOOLS</footer>
     </div>

@@ -15,10 +15,12 @@ var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5"] }';
 var rfunctions = JSON.parse(JSON_file);
 var varlist = JSON.parse(JSON_file2);
 
+// List of possible variable
+var variable_list = varlist.varlist;
 
 // Active and inactive variable list
-var varlist_active = ["var1", "var2"];
-var varlist_inactive = ["var4", "var67"]; 
+var varlist_active = [];
+var varlist_inactive = variable_list; 
 
 
 
@@ -133,17 +135,19 @@ function reset (row) {
 };
 
 // A default array 
-var array_default = ['default'];
-for (m = 0; m < statistic_list.length; m ++) {
-    array_default.push(0);
-    array_default.push(0);
-    array_default.push(0);
-    array_default.push(0);
+function array_default () {
+    var array_default = ['default'];
+    for (m = 0; m < statistic_list.length; m ++) {
+        array_default.push(0);
+        array_default.push(0);
+        array_default.push(0);
+        array_default.push(0);
+    };
+    for (l = 0; l < metadata_list.length; l++) {
+        array_default.push("");
+    };
+    return array_default;
 };
-for (l = 0; l < metadata_list.length; l++) {
-    array_default.push("");
-};
-
 
 
 // Make the category dropdown
@@ -159,8 +163,8 @@ function list_of_types (variable) {
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
     reset(inputted_metadata[variable]);
-    generate_epsilon_table();
     inputted_metadata[variable][0] = type_chosen;
+    generate_epsilon_table();
 
     if (type_chosen != "default") {
         document.getElementById("released_statistics_" + variable).innerHTML = list_of_statistics(type_chosen, variable);
@@ -178,7 +182,7 @@ function list_of_statistics (type_chosen, variable) {
     var options = "";
     eval("var type_chosen_list = " + type_chosen + "_stat_list;")
     for (n = 0; n < type_chosen_list.length; n++) {
-        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\"); generate_epsilon_table()' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> <span title='" + rfunctions.rfunctions[(column_index[type_chosen_list[n].replace(/\s/g, '_')] - 1) / 4].stat_info + "'>" + type_chosen_list[n] + "</span><br>";
+        options += "<input type='checkbox' name='" + type_chosen_list[n].replace(/\s/g, '_') + "' onclick='Parameter_Populate(this," + n + ",\"" + variable + "\",\"" + type_chosen + "\"); generate_epsilon_table();' id='" + type_chosen_list[n].replace(/\s/g, '_') + "_" + variable + "'> <span title='" + rfunctions.rfunctions[(column_index[type_chosen_list[n].replace(/\s/g, '_')] - 1) / 4].stat_info + "'>" + type_chosen_list[n] + "</span><br>";
     };
     return options;
 };
@@ -405,93 +409,6 @@ function ValidateInput (input, valid_entry, variable) {
 
 
 
-
-
-// Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-var btn_add = document.getElementById("add_new_bubble");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn_add.onclick = function() {
-    modal.style.display = "block";
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-};
-
-
-
-// Updates varlist_active, varlist_inactive, and creates bubble
-function create_new_variable () {
-    var new_variable = document.getElementById('new_variable_to_add').value;
-    var new_variable_name = new_variable.slice(2, new_variable.length);
-    var new_variable_number = new_variable.slice(0, 1);
-    if (new_variable_name != "default") {
-        varlist_inactive.splice(new_variable_number, 1);
-        varlist_active.push(new_variable_name);
-        inputted_metadata[new_variable_name] = array_default;
-        $("#bubble_form").append(make_bubble(new_variable_name));
-    }
-    else {}
-    modal.style.display = "none";
-};
-
-// Modal Windows: http://www.w3schools.com/howto/howto_css_modals.asp
-// Adds new bubbles for the inactive variable list
-
-// Updates the varlist_active and varlist_inactive
-function add_new_bubble () {
-    var possible_variables = "";
-    for (n = 0; n < varlist_inactive.length; n++) {
-        possible_variables += "<option id='" + varlist_inactive[n].replace(/\s/g, '_') + "_add_new_bubble' value='" + n + "_" + varlist_inactive[n].replace(/\s/g, '_') + "'>" + varlist_inactive[n].replace(/\s/g, '_') + "</option>";
-    };
-
-    var modal_window = 
-    "Please select a variable: <select id='new_variable_to_add'>" +
-        "<option id='default_add_new_bubble' value='__default'> -- </option>" +
-        possible_variables +
-    "</select>" +
-    "<br>" +
-    "<button onclick='create_new_variable()'>Confirm</button>";
-
-    document.getElementById('modal-content').innerHTML = modal_window;
-};
-
-
-
-
-// Remove variable
-// http://red-team-design.com/removing-an-element-with-plain-javascript-remove-method/
-function delete_variable (variable) {
-    var index = varlist_active.indexOf(variable);
-    if (varlist_active.length == 1) {
-        alert("YOU MUST HAVE AT LEAST ONE VARIABLE ON THE FORM");
-    }
-    else {
-        varlist_active.splice(index, 1);
-        varlist_inactive.push(variable);
-        delete inputted_metadata[variable.replace(/\s/g, '_')];
-        document.getElementById(variable.replace(/\s/g, '_')).remove();
-        generate_epsilon_table();
-    }
-};
-
-
-
 // Does the hold function
 function hold_status (hold_checkbox, variable, statistic) {
     if ($("#" + hold_checkbox.id).prop('checked')) {
@@ -652,3 +569,122 @@ $(document).ready(function () {
         $("#wrapper").toggleClass("toggled");
     });
 });
+
+
+
+
+// Search box logic: https://www.html5andbeyond.com/live-search-a-html-list-using-jquery-no-plugin-needed/
+jQuery(document).ready(function($) {
+    $('.live-search-list li').each(function() {
+        $(this).attr('data-search-term', $(this).text().toLowerCase());
+    });
+
+    $('.live-search-box').on('keyup', function() {
+        var searchTerm = $(this).val().toLowerCase();
+
+        $('.live-search-list li').each(function() {
+            if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                $(this).show();
+            } 
+            else {
+                $(this).hide();
+            }
+        });
+    });
+});
+
+
+
+
+// Adding variables to the variable selection column
+function populate_variable_selection_sidebar () {
+    variable_selection_sidebar = ""
+    for (n = 0; n < variable_list.length; n++) {
+        variable_selection_sidebar += "<li id='selection_sidebar_" + variable_list[n] + "' data-search-term='" + variable_list[n] + "' onclick='variable_selected(\""+variable_list[n]+"\")'>" + variable_list[n] + "</li>";
+    };
+    $("#variable_sidebar").append(variable_selection_sidebar);
+};
+
+
+
+
+// CSS when variable selected
+var variable_selected_class = 
+    "color: black;" +
+    "list-style: none;" +
+    "padding: 5px;" + 
+    "margin: 5px 0;" +
+    "border: solid 5px green;"+
+    "text-align: center;";
+
+// CSS when variable unselected
+var variable_unselected_class = 
+    "color: black;" +
+    "list-style: none;" +
+    "padding: 5px;" + 
+    "margin: 5px 0;" +
+    "border: solid 5px red;"+
+    "text-align: center;";
+
+// Variable selection boxes change to signify selection
+function variable_selected (variable) {
+    if (inputted_metadata[variable] == undefined) {
+        document.getElementById("selection_sidebar_" + variable).style.cssText = variable_selected_class; 
+        create_new_variable(variable);
+    }
+    else {
+        document.getElementById("selection_sidebar_" + variable).style.cssText = variable_unselected_class; 
+        delete_variable(variable);
+    }
+};
+
+
+
+
+
+// Updates varlist_active, varlist_inactive, and creates bubble
+function create_new_variable (variable) {
+    var variable_index = varlist_inactive.indexOf(variable);
+    varlist_inactive.splice(variable_index, 1);
+    varlist_active.push(variable);
+    inputted_metadata[variable] = array_default();
+    $("#bubble_form").append(make_bubble(variable));
+};
+
+
+// Remove variable
+function delete_variable (variable) {
+    var variable_index = varlist_active.indexOf(variable);
+    varlist_active.splice(variable_index, 1);
+    varlist_inactive.push(variable);
+    delete inputted_metadata[variable.replace(/\s/g, '_')];
+    document.getElementById(variable.replace(/\s/g, '_')).remove();
+    generate_epsilon_table();
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
