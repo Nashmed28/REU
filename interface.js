@@ -103,20 +103,8 @@ column_index_length = 1 + 4 * statistic_list.length + metadata_list.length;
 // Format: inputted_metadata[variable_name] = ['Variable_Type', 'Statistic1', 'Epsilon1', 'Accuracy1', 'Hold1', ... Repeats for all possible statistics ... All Possible Metadata];
 var inputted_metadata = {};
 
-// Inputting the given variables
-for (n = 0; n < varlist_active.length; n++) {
-    default_array = ['default']
-    for (m = 0; m < statistic_list.length; m ++) {
-        default_array.push(0);
-        default_array.push(0);
-        default_array.push(0);
-        default_array.push(0);
-    };
-    for (l = 0; l < metadata_list.length; l++) {
-        default_array.push("");
-    };
-    inputted_metadata[varlist_active[n].replace(/\s/g, '_')] = default_array;
-};
+// Memory of the previous table
+var previous_inputted_metadata = {};
 
 // A reset function for rows
 function reset (row) {
@@ -685,11 +673,15 @@ function variable_selected (variable) {
 
 // Updates varlist_active, varlist_inactive, and creates bubble
 function create_new_variable (variable) {
+    // fixes javascript pass by value/reference issue
+    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     var variable_index = varlist_inactive.indexOf(variable);
     varlist_inactive.splice(variable_index, 1);
     varlist_active.push(variable);
     inputted_metadata[variable] = array_default();
     $("#bubble_form").append(make_bubble(variable));
+    console.log(previous_inputted_metadata);
+
 };
 
 
@@ -709,4 +701,306 @@ function delete_variable (variable) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function talktoR(btn, df, x, y, globals) {
+
+//   //package the output as JSON
+//   var estimated=false;
+//   var base = rappURL;
+  
+//   // If hold was pressed, no need to send to R
+//   if(btn === "Hold"){
+//     return;
+//   }
+
+
+//   isComplete = isCompleteTable(df);
+ 
+//   if(!isComplete){
+//     alert("Action is invalid while incomplete row exists. Complete it or delete it.");
+//     if(x === 0){
+//         resetGlobals(prevGlobals);  
+//         }
+//         else{
+//             undo();
+//         }
+//   }
+//   else{
+//   function estimateSuccess(btn,json) {
+//     allResults.push(json);
+//     console.log("json in: ", json);
+//     estimated=true;
+    
+//     if(json["error"][0] ==="T"){
+//         alert(json["message"]);
+//         //if globals were edited
+//         if(x === 0){
+//             resetGlobals(prevGlobals);
+//         }
+//         else{
+//             undo();
+//         }
+//     }
+        
+//     else{
+//         prevGlobals = getGlobalParameters()
+//         json = json["prd"];
+//         var n = getGlobalParameters()["n"];
+//         var accType = document.getElementById("accType").value;
+        
+//         for(i=0; i < json.length; i++){ 
+//           if(accType === "Absolute"){
+//              newAcc = parseFloat(json[i].Accuracy)*n;
+//              }
+//           else{
+//              newAcc = parseFloat(json[i].Accuracy);
+//           }
+//           newEps = parseFloat(json[i].Epsilon);
+          
+//           //if(data[i].Hold !==true){
+//             data[i].Accuracy =newAcc.toString();
+//          // }
+//           data[i].Epsilon = newEps.toString();
+//           grid.updateRow(i);
+//         }
+    
+//         if(data[grid.getDataLength() - 1].Accuracy){
+//           //last row has no acc value, make new row
+//           AddNewRow()
+//         }
+//     }
+//   }
+   
+
+//   function statisticsSuccess(btn,json) {  
+//   //Must do something else here if submit happened
+//     // SOMEWHEREHERE.push(json);
+//     console.log("json in: ", json);
+//   }
+
+
+//   function estimateFail(btn) {
+//     estimated=true;
+//   }
+
+//   if(document.getElementById("accType").value === "Absolute"){
+//         var n = getGlobalParameters()["n"];
+//         for(i=0; i<data.length; i++){
+//             data[i].Accuracy = data[i].Accuracy/n
+//         }   
+//     }
+//   if(btn === "submit"){
+//     //check completeness here too
+//     // if secrecy of the sample is active, provide boosted privacy parameters
+//     if(secSamp){
+//         globals["eps"] = document.getElementById("funcEp").value; 
+//         var big_n = document.getElementById("secSamp").value; 
+//         var n = globals["n"];
+//         globals["del"] = globals["del"]*(big_n/n)
+//     }
+//     var jsonout = JSON.stringify({ df: df, fileid: fileid, globals: globals});  // Make this a local reference eventually
+//     urlcall = base+"privateStatistics";
+//     console.log("urlcall out: ", urlcall);
+  
+//     makeCorsRequest(urlcall,btn, statisticsSuccess, estimateFail, jsonout);
+//   }
+
+//   else{
+//     if(secSamp){
+//         globals["eps"] = document.getElementById("funcEp").value; 
+//         var big_n = document.getElementById("secSamp").value; 
+//         var n = globals["n"];
+//         globals["del"] = globals["del"]*(big_n/n)
+//     }
+//     var jsonout = JSON.stringify({ df: df, x: x, y: y, btn:btn, globals:globals});
+//     console.log(jsonout)
+//     urlcall = base+"privateAccuracies";
+//     console.log("urlcall out: ", urlcall);
+//     allResults = [];
+//     makeCorsRequest(urlcall,btn, estimateSuccess, estimateFail, jsonout);
+//   }
+//  } 
+// }
+
+
+// // below from http://www.html5rocks.com/en/tutorials/cors/ for cross-origin resource sharing
+// // Create the XHR object.
+// function createCORSRequest(method, url, callback) {
+//     var xhr = new XMLHttpRequest();
+//     if ("withCredentials" in xhr) {
+//         // XHR for Chrome/Firefox/Opera/Safari.
+//         xhr.open(method, url, true);
+//     } else if (typeof XDomainRequest != "undefined") {
+//         // XDomainRequest for IE.
+//         xhr = new XDomainRequest();
+//         xhr.open(method, url);
+//     } else {
+//         // CORS not supported.
+//         xhr = null;
+//     }
+//     return xhr;  
+// }
+
+
+// // Make the actual CORS request.
+// function makeCorsRequest(url,btn,callback, warningcallback, json) {
+//     var xhr = createCORSRequest('POST', url);
+//     if (!xhr) {
+//         alert('CORS not supported');
+//         return;
+//     }
+//     // Response handlers for asynchronous load
+//     // onload or onreadystatechange?
+    
+//     xhr.onload = function() {
+        
+//       var text = xhr.responseText;
+//       console.log("text ", text);
+//       var json = JSON.parse(text);   // should wrap in try / catch
+//       var names = Object.keys(json);
+
+//       if (names[0] == "warning"){
+//         warningcallback(btn);
+//         alert("Warning: " + json.warning);
+//       }else{
+//         callback(btn, json);
+//       }
+//     };
+//     xhr.onerror = function() {
+//         // note: xhr.readystate should be 4, and status should be 200.  a status of 0 occurs when the url becomes too large
+//         if(xhr.status==0) {
+//             alert('xmlhttprequest status is 0. local server limitation?  url too long?');
+//         }
+//         else if(xhr.readyState!=4) {
+//             alert('xmlhttprequest readystate is not 4.');
+//         }
+//         else {
+//             alert('Woops, there was an error making the request.');
+//         }
+//         console.log(xhr);
+//     };
+//     console.log("sending")
+//     console.log(json);
+//     xhr.send("tableJSON="+json);   
+// }
+
+// function getGlobalParameters(){
+//     var epsval=document.getElementById("epsilonbox").value;
+//     var delval=document.getElementById("deltabox").value;
+//     var betaval=document.getElementById("betabox").value;
+//     var nval = 1223992 //Need to get this from metadata too 
+//     var globals={eps:epsval, del:delval, beta:betaval, n:nval};
+//     return globals;}
+    
+// var prevGlobals = getGlobalParameters();
+// function resetGlobals(prevGlobals){
+//     document.getElementById("epsilonbox").value = prevGlobals.eps
+//     if(secSamp){
+//         var big_n = document.getElementById("secSamp").value;
+//         var n = getGlobalParameters()["n"];
+//         var eps = getGlobalParameters()["eps"];
+//         document.getElementById("funcEp").value = Math.log((Math.exp(eps)-1)*(big_n/n)+1);
+//     }
+//     document.getElementById("deltabox").value = prevGlobals.del
+//     document.getElementById("betabox").value = prevGlobals.beta
+// }
+// function epsChange(){
+//     var btn = "epsChange";
+//     var df = data;
+//     var x = 0;
+//     var y= 0;
+//     var globals=getGlobalParameters();
+//     if(secSamp){
+//         var big_n = document.getElementById("secSamp").value;
+//         var n = getGlobalParameters()["n"];
+//         var eps = getGlobalParameters()["eps"];
+//         document.getElementById("funcEp").value = Math.log((Math.exp(eps)-1)*(big_n/n)+1);
+//     }
+//     talktoR(btn, df, x, y, globals);
+// }
+// function deltaChange(){
+//     var btn = "deltaChange";
+//     var df = data;
+//     var x = 0;
+//     var y= 0;
+//     var globals=getGlobalParameters();
+//     talktoR(btn, df, x, y, globals);
+// }
+// function betaChange(){
+//     var btn = "betaChange";
+//     var df = data;
+//     var x = 0;
+//     var y= 0;
+//     var globals=getGlobalParameters();
+//     talktoR(btn, df, x, y, globals);
+// }
+
+// function accTypeChange(){
+//     var toggle = {"Relative":"Absolute", "Absolute":"Relative"};
+//     var accType = document.getElementById("accType").value;
+//     var newType = toggle[accType];
+//     document.getElementById("accType").value = newType;
+//     var n = getGlobalParameters()["n"];
+//     for(i=0; i<data.length; i++){
+//         if(newType === "Relative"){
+//             data[i].Accuracy = data[i].Accuracy/n
+//         }
+//         else{
+//             data[i].Accuracy = data[i].Accuracy*n
+//         }
+//         grid.updateRow(i);
+//     }
+//     grid.render();
+// }
+
+// function secSampChange(){
+//     var big_n = document.getElementById("secSamp").value;
+//     var n = getGlobalParameters()["n"];
+//     if(isNaN(big_n) && big_n <= n){
+//         alert("Global population must be a number larger than your sample");
+//         document.getElementById("secSamp").value = "";
+//         document.getElementById("funcEp").value = "";
+//         secSamp = false;
+//     }
+//     else{
+//         var eps = document.getElementById("epsilonbox").value;
+//         console.log(typeof eps)
+//         console.log(typeof n)
+//         console.log(typeof big_n)
+//         console.log(Math.exp(eps))
+//         var funcEp = Math.log((Math.exp(eps)-1)*(big_n/n)+1);
+//         var funcDel = document.getElementById("deltabox").value*(big_n/n)
+//         document.getElementById("funcEp").value = funcEp;
+//         secSamp = true; 
+//         var btn = "secChange";
+//         var df = data;
+//         var x = 0;
+//         var y= 0;
+//         var globals=getGlobalParameters();
+//         talktoR(btn, df, x, y, globals);
+//     }
+// }
+
+// function submit(){
+
+//     var btn = "submit";
+//     var df = data;
+//     var x = 0;
+//     var y= 0;
+//     var globals=getGlobalParameters();
+//     console.log("Should talktoR");
+//     //talktoR(btn, df, x, y, globals);
+// }
 
