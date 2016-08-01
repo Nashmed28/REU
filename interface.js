@@ -311,6 +311,23 @@ function Parameter_Memory (parameter, variable) {
 // Regex: http://www.w3schools.com/jsref/jsref_obj_regexp.asp
 // Validate form based on entry_type info
 function ValidateInput (input, valid_entry, variable) {
+    // Epsilon Table Validation
+    var type_chosen = inputted_metadata[variable][0];
+    eval("var pparameter = " + type_chosen + "_stat_list;");
+    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");    
+    for (q = 0; q < pparameter.length; q++) {
+        if (inputted_metadata[variable][column_index[pparameter[q]]] > 0) {
+            var sparameter = rfunctions.rfunctions[(ppparameter[(pparameter.indexOf(pparameter[q]))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf(pparameter[q])].parameter_index].parameter;
+            inputted_metadata[variable][column_index[pparameter[q]]] = 2 + sparameter.length;
+            for (r = 0; r < sparameter.length; r++) {
+                if (inputted_metadata[variable][column_index[sparameter[r].replace(/\s/g, '_')]] != "") {
+                    inputted_metadata[variable][column_index[pparameter[q]]] = inputted_metadata[variable][column_index[pparameter[q]]] - 1;  
+                }
+            };
+        }
+    };
+
+    // Actual input validation
     var entry = input.value;
 
     if (entry == "") {
@@ -667,14 +684,14 @@ function delete_variable (variable) {
 };
 
 
-function my(type_chosen){
-    eval("var pparameter = " + type_chosen + "_stat_list;");
-    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
-// ppparameter[pparameter.indexOf('Mean')].parameter_index
-    // alert(rfunctions.rfunctions[(ppparameter[(pparameter.indexOf('Mean'))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf('Mean')].parameter_index].parameter)
-    alert(rfunctions.rfunctions[(ppparameter[(pparameter.indexOf('Mean'))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf('Mean')].parameter_index].parameter)
-    // alert(ppparameter[0].rfunctions_index)
-}
+// function my(type_chosen){
+//     eval("var pparameter = " + type_chosen + "_stat_list;");
+//     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
+// // ppparameter[pparameter.indexOf('Mean')].parameter_index
+//     // alert(rfunctions.rfunctions[(ppparameter[(pparameter.indexOf('Mean'))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf('Mean')].parameter_index].parameter)
+//     alert(rfunctions.rfunctions[(ppparameter[(pparameter.indexOf('Mean'))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf('Mean')].parameter_index].parameter)
+//     // alert(ppparameter[0].rfunctions_index)
+// }
 
 
 
@@ -688,8 +705,15 @@ function my(type_chosen){
 
 
 
-
-
+// var sparameter = rfunctions.rfunctions[(ppparameter[(pparameter.indexOf('Mean'))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf('Mean')].parameter_index].parameter;
+// for (q = 0; q < sparameter.length; q++) {
+//     if (inputted_metadata[variable][column_index[sparameter.replace(/\s/g, '_')]] == "") {
+//         break;
+//     }
+//     else {
+//         inputted_metadata[variable][column_index['Mean']] = 2;
+//     }
+// };
 
 
 
