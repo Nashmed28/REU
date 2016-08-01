@@ -51,6 +51,9 @@ div.panel.show {
 
 
 
+
+
+
 /*Sidebar and Header*/
 /*http://www.w3schools.com/html/tryit.asp?filename=tryhtml_layout_flexbox*/
 .flex-container {
@@ -62,7 +65,7 @@ div.panel.show {
 }
 
 .flex-container > * {
-    padding: 15px;
+    padding: 10px;
     -webkit-flex: 1 100%;
     flex: 1 100%;
 }
@@ -73,7 +76,7 @@ div.panel.show {
 
 header {
     background: black;
-    color:white;
+    color: white;
 }
 
 footer {
@@ -83,11 +86,6 @@ footer {
 
 .variable_sidebar {
     background:#eee;
-    position: relative;
-/*    width: 150px;*/
-    overflow-y: scroll;
-/*    top: 0;
-    bottom: 0;*/
 }
 
 .epsilon_sidebar {
@@ -103,6 +101,18 @@ footer {
 
 
 
+
+
+/*My shit*/
+#title {
+    font-size: 175%;
+    font-weight: bold;
+}
+
+.header {
+    width: 100%;
+    /*position: fixed;*/
+}
 
 
 

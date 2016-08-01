@@ -8,7 +8,7 @@ var JSON_file = '{"rfunctions":[' +
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5", "color", "income", "dogs", "cats", "gods will"] }'; 
+var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5", "color", "income", "dogs", "cats", "gods will", "Watergate", "China", "Walls", "Monica"] }'; 
 
 
 // Parses the function and varlist data structure
