@@ -150,6 +150,7 @@ function list_of_types (variable) {
 
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
+    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     reset(inputted_metadata[variable]);
     inputted_metadata[variable][0] = type_chosen;
     generate_epsilon_table();
@@ -162,6 +163,7 @@ function type_selected (type_chosen, variable) {
         document.getElementById("released_statistics_" + variable).innerHTML = "";
         document.getElementById('necessary_parameters_' + variable).innerHTML = "";
     }
+    console.log(previous_inputted_metadata);
 };
 
 // Makes the checkboxes
@@ -264,6 +266,8 @@ function parameter_fields (variable, type_chosen) {
 function Parameter_Populate (stat, stat_index, variable, type_chosen) {    
     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");
 
+    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
+
     // checks if thing is checked
     if ($("#" + stat.id).prop('checked')) {
         // Updating the master data-array
@@ -287,6 +291,7 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
         // calls the parameter HTML generating function
         parameter_fields(variable, type_chosen);
     }
+    console.log(previous_inputted_metadata);
 };
 
 // Stores metadata in memory
@@ -426,12 +431,15 @@ function epsilon_table_validation (variable) {
 
 // Does the hold function
 function hold_status (hold_checkbox, variable, statistic) {
+    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     if ($("#" + hold_checkbox.id).prop('checked')) {
         inputted_metadata[variable][column_index["hold_" + statistic]] = 1;
     }
     else {
+
         inputted_metadata[variable][column_index["hold_" + statistic]] = 0;
     }
+    console.log(previous_inputted_metadata);
 };
 
 
@@ -681,7 +689,6 @@ function create_new_variable (variable) {
     inputted_metadata[variable] = array_default();
     $("#bubble_form").append(make_bubble(variable));
     console.log(previous_inputted_metadata);
-
 };
 
 
@@ -697,6 +704,11 @@ function delete_variable (variable) {
     generate_epsilon_table();
     console.log(previous_inputted_metadata);
 };
+
+
+// fearonLaitan.xml
+// index.html
+// readData.js
 
 
 // hide variable sidebar + scroll down + previous table memory
