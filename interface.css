@@ -102,18 +102,36 @@ footer {
 
 
 
-
 /*My shit*/
 #title {
     font-size: 175%;
     font-weight: bold;
 }
 
-.header {
+body { margin:0; padding:0; }
+
+header {
     width: 100%;
+    line-height:25px;
+    margin:0 auto;
+    top:0;
+    left:0;
     /*position: fixed;*/
 }
 
+footer {
+    width: 100%;
+    /*position: fixed;*/
+    line-height:15px;
+    margin:0 auto;
+    bottom:0;
+    left:0;
+}
+
+
+/*#break {
+    top: 0;
+}*/
 
 
 
