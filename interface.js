@@ -8,7 +8,7 @@ var JSON_file = '{"rfunctions":[' +
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5"] }'; 
+var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5", "color", "income", "dogs", "cats", "gods will"] }'; 
 
 
 // Parses the function and varlist data structure
@@ -150,6 +150,7 @@ function list_of_types (variable) {
 
 // Produces checkboxes on selected type
 function type_selected (type_chosen, variable) {
+    variable = variable.replace(/\s/g, '_');
     previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     reset(inputted_metadata[variable]);
     inputted_metadata[variable][0] = type_chosen;
@@ -433,7 +434,7 @@ function record_table () {
     console.log(previous_inputted_metadata);
 }
 // issues: if someone clicks and then doesn't change anything becomes the same thing, then previous = current
-
+// however backend can be smart enough to realize that nothing really happened
 
 // Does the hold function
 function hold_status (hold_checkbox, variable, statistic) {
@@ -692,7 +693,7 @@ function create_new_variable (variable) {
     var variable_index = varlist_inactive.indexOf(variable);
     varlist_inactive.splice(variable_index, 1);
     varlist_active.push(variable);
-    inputted_metadata[variable] = array_default();
+    inputted_metadata[variable.replace(/\s/g, '_')] = array_default();
     $("#bubble_form").append(make_bubble(variable));
     console.log(previous_inputted_metadata);
 };

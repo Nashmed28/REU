@@ -71,10 +71,28 @@ div.panel.show {
     text-align: left;
 }
 
-header {background: black;color:white;}
-footer {background: #aaa;color:white;}
-.variable_sidebar {background:#eee;}
-.epsilon_sidebar {background:#eef;}
+header {
+    background: black;
+    color:white;
+}
+
+footer {
+    background: #aaa;
+    color:white;
+}
+
+.variable_sidebar {
+    background:#eee;
+    position: relative;
+/*    width: 150px;*/
+    overflow-y: scroll;
+/*    top: 0;
+    bottom: 0;*/
+}
+
+.epsilon_sidebar {
+    background:#eef;
+}
 
 @media all and (min-width: 768px) {
     .variable_sidebar {text-align:left;-webkit-flex: 0 auto;flex:0 auto;-webkit-order:1;order:1;}
