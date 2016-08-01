@@ -315,6 +315,7 @@ function ValidateInput (input, valid_entry, variable) {
     var entry = input.value;
 
     if (entry == "") {
+        epsilon_table_validation(variable);    
         return false;
     } 
 
@@ -406,7 +407,12 @@ function ValidateInput (input, valid_entry, variable) {
         }
     }
 
-    // Epsilon Table Validation
+    epsilon_table_validation(variable);    
+};
+
+
+// Epsilon Table Validation
+function epsilon_table_validation (variable) {
     var type_chosen = inputted_metadata[variable][0];
     eval("var pparameter = " + type_chosen + "_stat_list;");
     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");    
