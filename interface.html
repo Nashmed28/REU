@@ -24,35 +24,48 @@
 
 <body onload="variable_bubble(); generate_epsilon_table(); populate_variable_selection_sidebar();">
 
-    <div class="flex-container">
-        <header>
-            <div id="title">Budget Tool</div>
-            <table align="center">
-                <tr>
-                    <td>
-                        Epsilon (e)
-                    </td>
-                    <td>
-                        Delta (d)
-                    </td>
-                    <td>
-                        Beta (B)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input style="color: black;" type="text" placeholder="Epsilon">
-                    </td>
-                    <td>
-                        <input style="color: black;" type="text" placeholder="Delta">
-                    </td>
-                    <td>
-                        <input style="color: black;" type="text" placeholder="Beta">
-                    </td>
-                </tr>
-            </table>
-        </header>
 
+<!--     <header>
+        <div id="title">Budget Tool</div>
+        <table align="center">
+            <tr>
+                <td>
+                    Epsilon (e)
+                </td>
+                <td>
+                    Delta (d)
+                </td>
+                    <td>
+                    Beta (B)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input style="color: black;" type="text" placeholder="Epsilon">
+                </td>
+                <td>
+                    <input style="color: black;" type="text" placeholder="Delta">
+                </td>
+                <td>
+                    <input style="color: black;" type="text" placeholder="Beta">
+                </td>
+            </tr>
+        </table>
+    </header> -->
+
+    <!-- BEGIN: Sticky Header -->
+<div id="header_container">
+    <div id="header">
+        Header Content
+    </div>
+</div>
+<!-- END: Sticky Header -->
+
+
+<!-- BEGIN: Page Content -->
+<div id="container">
+    <div id="content">
+            <div class="flex-container">
 
         <!-- Variable Selection -->
         <nav class="variable_sidebar">
@@ -72,11 +85,27 @@
         <!-- Epsilon Sidebar Table -->
         <nav id="epsilon_sidebar" class="epsilon_sidebar"></nav>
 
-        <footer>
-            <button onclick='report()' style="color:red;">Confirm</button>
-            <br><br>REU PRIVACY TOOLS
-        </footer>
     </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- BEGIN: Sticky Footer -->
+<div id="footer_container">
+    <div id="footer">
+        Footer Content
+    </div>
+</div>
+
+
+<!--     <footer>
+        <button onclick='report()' style="color:red;">Confirm</button>
+        <br><br>REU PRIVACY TOOLS
+    </footer> -->
+
 
     <script type="text/javascript" src="interface.js"></script>
 
