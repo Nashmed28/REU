@@ -459,13 +459,13 @@ function generate_epsilon_table () {
             "<td style='font-weight: bold;'>" +
                 "Statistic" +
             "</td>" +
-            "<td style='font-weight: bold;'>" +
+            "<td title='Privacy parameter' style='font-weight: bold;'>" +
                 "Epsilon" +
             "</td>" +
-            "<td style='font-weight: bold;'>" +
+            "<td title='How accurate?' style='font-weight: bold;'>" +
                 "Accuracy" +
             "</td>" +
-            "<td style='font-weight: bold;'>" +
+            "<td title='Wanna fix the epsilon/accuracy value?' style='font-weight: bold;'>" +
                 "Hold" +
             "</td>" +
         "</tr>";
@@ -484,13 +484,13 @@ function generate_epsilon_table () {
 
                     if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 2) {
                         epsilon_table += 
-                        "<td title='Privacy parameter'>" +
+                        "<td>" +
                             "0" +
                         "</td>" +
-                        "<td title='How accurate?'>" +
+                        "<td>" +
                             "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onfocusout='ValidateInput(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\")' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
                         "</td>" +
-                        "<td title='Wanna fix the epsilon/accuracy value?'>";
+                        "<td>";
                         
                         if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][column_index["hold_" + statistic_list[m]]] == 1) {    
                             epsilon_table += "<input type='checkbox' id='hold_" + varlist_active[n].replace(/\s/g, '_') + "_" + statistic_list[m] + "' onclick='hold_status(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\",\"" + statistic_list[m] + "\")' checked>";
@@ -517,9 +517,7 @@ function generate_epsilon_table () {
         };
     };
     epsilon_table += 
-    "</table>" +
-    "<br>" +
-    "<button onclick='report()'>Confirm</button>";
+    "</table>";
 
     document.getElementById('epsilon_sidebar').innerHTML = epsilon_table;
 };

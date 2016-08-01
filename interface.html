@@ -26,13 +26,37 @@
 
     <div class="flex-container">
         <header>
-            <h1>STUFF</h1>
+            <h3>Budget Tool</h3>
+            <table align="center">
+                <tr>
+                    <td>
+                        Epsilon (e)
+                    </td>
+                    <td>
+                        Delta (d)
+                    </td>
+                    <td>
+                        Beta (B)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Epsilon">
+                    </td>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Delta">
+                    </td>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Beta">
+                    </td>
+                </tr>
+            </table>
         </header>
 
         <!-- Variable Selection -->
         <nav class="variable_sidebar">
             <!-- Searchbar -->
-            <input id='live-search-box' type="text" class="live-search-box" placeholder="Search Here"/>
+            <input id='live-search-box' type="text" class="live-search-box" placeholder="Search Here">
 
             <!-- Variable List -->
             <ul id="variable_sidebar" class="live-search-list"></ul>
@@ -47,7 +71,10 @@
         <!-- Epsilon Sidebar Table -->
         <nav id="epsilon_sidebar" class="epsilon_sidebar"></nav>
 
-        <footer>REU PRIVACY TOOLS</footer>
+        <footer>
+            <button onclick='report()' style="color:red;">Confirm</button>
+            <br><br>REU PRIVACY TOOLS
+        </footer>
     </div>
 
     <script type="text/javascript" src="interface.js"></script>
