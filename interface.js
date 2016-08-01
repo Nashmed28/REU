@@ -280,6 +280,9 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
     if ($("#" + stat.id).prop('checked')) {
         // Updating the master data-array
         inputted_metadata[variable][column_index[stat.name]] = 1;
+
+        // In case zero parameters needed
+        epsilon_table_validation(variable); 
         
         // calls the parameter HTML generating function
         parameter_fields(variable, type_chosen);
