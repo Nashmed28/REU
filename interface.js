@@ -703,3 +703,10 @@ function delete_variable (variable) {
     document.getElementById(variable.replace(/\s/g, '_')).remove();
     generate_epsilon_table();
 };
+
+
+// hide variable sidebar + scroll down + previous table memory
+
+
+
+
