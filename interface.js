@@ -687,6 +687,7 @@ function create_new_variable (variable) {
 
 // Remove variable
 function delete_variable (variable) {
+    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     document.getElementById("selection_sidebar_" + variable).style.cssText = variable_unselected_class; 
     var variable_index = varlist_active.indexOf(variable);
     varlist_active.splice(variable_index, 1);
@@ -694,6 +695,7 @@ function delete_variable (variable) {
     delete inputted_metadata[variable.replace(/\s/g, '_')];
     document.getElementById(variable.replace(/\s/g, '_')).remove();
     generate_epsilon_table();
+    console.log(previous_inputted_metadata);
 };
 
 
