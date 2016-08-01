@@ -51,9 +51,6 @@ div.panel.show {
 
 
 
-
-
-
 /*Sidebar and Header*/
 /*http://www.w3schools.com/html/tryit.asp?filename=tryhtml_layout_flexbox*/
 .flex-container {
@@ -65,7 +62,7 @@ div.panel.show {
 }
 
 .flex-container > * {
-    padding: 10px;
+    padding: 15px;
     -webkit-flex: 1 100%;
     flex: 1 100%;
 }
@@ -76,7 +73,7 @@ div.panel.show {
 
 header {
     background: black;
-    color: white;
+    color:white;
 }
 
 footer {
@@ -98,57 +95,6 @@ footer {
     .epsilon_sidebar {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:3;order:3;}
     footer {-webkit-order:4;order:4;}
 }
-
-
-
-
-/*My shit*/
-#title {
-    font-size: 175%;
-    font-weight: bold;
-}
-
-body { margin:0; padding:0; }
-
-header {
-    width: 100%;
-    line-height:25px;
-    margin:0 auto;
-    top:0;
-    left:0;
-    /*position: fixed;*/
-}
-
-footer {
-    width: 100%;
-    /*position: fixed;*/
-    line-height:15px;
-    margin:0 auto;
-    bottom:0;
-    left:0;
-}
-
-
-/*#break {
-    top: 0;
-}*/
-
-
-/* Reset body padding and margins */
-body { margin:0; padding:0; }
- 
-/* Make Header Sticky */
-#header_container { background:#eee; border:1px solid #666; height:60px; left:0; position:fixed; width:100%; top:0; }
-#header{ line-height:60px; margin:0 auto; width:940px; text-align:center; }
- 
-/* CSS for the content of page. I am giving top and bottom padding of 80px to make sure the header and footer do not overlap the content.*/
-#container { margin:0 auto; overflow:auto; padding:80px 0; width:940px; }
-#content{}
- 
-/* Make Footer Sticky */
-#footer_container { background:#eee; border:1px solid #666; bottom:0; height:60px; left:0; position:fixed; width:100%; }
-#footer { line-height:60px; margin:0 auto; width:940px; text-align:center; }
-
 
 
 
@@ -195,6 +141,3 @@ body { margin:0; padding:0; }
     border: solid 5px red;
     text-align: center;
 }
-
-
-

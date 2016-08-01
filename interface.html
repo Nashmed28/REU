@@ -2,70 +2,56 @@
 <html>
 
 <head>
-	<!-- Linking to CSS stylesheet -->
-	<link rel="stylesheet" type="text/css" href="interface.css">
+    <!-- Linking to CSS stylesheet -->
+    <link rel="stylesheet" type="text/css" href="interface.css">
 
-	<!-- Linking to Javascript file -->
-	<script type="text/javascript" src="interface.js"></script>
+    <!-- Linking to Javascript file -->
+    <script type="text/javascript" src="interface.js"></script>
 
-	<!-- Linking to Javascript/CSS libraries -->
+    <!-- Linking to Javascript/CSS libraries -->
     <link href="libraries/css/bootstrap.min.css" rel="stylesheet">
     <link href="libraries/css/simple-sidebar.css" rel="stylesheet">
-	<script type="text/javascript" src="libraries/js/jquery.js"></script>
-	<script type="text/javascript" src="libraries/js/jquery-1.12.2.js"></script>
-	<script type="text/javascript" src="libraries/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="libraries/js/jquery.js"></script>
+    <script type="text/javascript" src="libraries/js/jquery-1.12.2.js"></script>
+    <script type="text/javascript" src="libraries/js/jquery-ui.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="libraries/js/bootstrap.min.js"></script>
 
-	<!-- Naming the Website -->
-	<title>Budgeting Tool</title>
+    <!-- Naming the Website -->
+    <title>Budgeting Tool</title>
 </head>
 
 
 <body onload="variable_bubble(); generate_epsilon_table(); populate_variable_selection_sidebar();">
 
-
-<!--     <header>
-        <div id="title">Budget Tool</div>
-        <table align="center">
-            <tr>
-                <td>
-                    Epsilon (e)
-                </td>
-                <td>
-                    Delta (d)
-                </td>
+    <div class="flex-container">
+        <header>
+            <h3>Budget Tool</h3>
+            <table align="center">
+                <tr>
                     <td>
-                    Beta (B)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input style="color: black;" type="text" placeholder="Epsilon">
-                </td>
-                <td>
-                    <input style="color: black;" type="text" placeholder="Delta">
-                </td>
-                <td>
-                    <input style="color: black;" type="text" placeholder="Beta">
-                </td>
-            </tr>
-        </table>
-    </header> -->
-
-    <!-- BEGIN: Sticky Header -->
-<div id="header_container">
-    <div id="header">
-        Header Content
-    </div>
-</div>
-<!-- END: Sticky Header -->
-
-
-<!-- BEGIN: Page Content -->
-<div id="container">
-    <div id="content">
-            <div class="flex-container">
+                        Epsilon (e)
+                    </td>
+                    <td>
+                        Delta (d)
+                    </td>
+                    <td>
+                        Beta (B)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Epsilon">
+                    </td>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Delta">
+                    </td>
+                    <td>
+                        <input style="color: black;" type="text" placeholder="Beta">
+                    </td>
+                </tr>
+            </table>
+        </header>
 
         <!-- Variable Selection -->
         <nav class="variable_sidebar">
@@ -85,27 +71,11 @@
         <!-- Epsilon Sidebar Table -->
         <nav id="epsilon_sidebar" class="epsilon_sidebar"></nav>
 
+        <footer>
+            <button onclick='report()' style="color:red;">Confirm</button>
+            <br><br>REU PRIVACY TOOLS
+        </footer>
     </div>
-
-    </div>
-</div>
-
-
-
-
-<!-- BEGIN: Sticky Footer -->
-<div id="footer_container">
-    <div id="footer">
-        Footer Content
-    </div>
-</div>
-
-
-<!--     <footer>
-        <button onclick='report()' style="color:red;">Confirm</button>
-        <br><br>REU PRIVACY TOOLS
-    </footer> -->
-
 
     <script type="text/javascript" src="interface.js"></script>
 
