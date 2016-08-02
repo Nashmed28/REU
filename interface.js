@@ -641,7 +641,7 @@ jQuery(document).ready(function($) {
 function populate_variable_selection_sidebar () {
     variable_selection_sidebar = ""
     for (n = 0; n < variable_list.length; n++) {
-        variable_selection_sidebar += "<li id='selection_sidebar_" + variable_list[n] + "' data-search-term='" + variable_list[n] + "' onclick='variable_selected(\""+variable_list[n]+"\")'>" + variable_list[n] + "</li>";
+        variable_selection_sidebar += "<li id='selection_sidebar_" + variable_list[n].replace(/\s/g, '_') + "' data-search-term='" + variable_list[n] + "' onclick='variable_selected(\""+variable_list[n]+"\")'>" + variable_list[n] + "</li>";
     };
     $("#variable_sidebar").append(variable_selection_sidebar);
 };
@@ -669,8 +669,8 @@ var variable_unselected_class =
 
 // Variable selection boxes change to signify selection
 function variable_selected (variable) {
-    if (inputted_metadata[variable] == undefined) {
-        document.getElementById("selection_sidebar_" + variable).style.cssText = variable_selected_class; 
+    if (inputted_metadata[variable.replace(/\s/g, '_')] == undefined) {
+        document.getElementById("selection_sidebar_" + variable.replace(/\s/g, '_')).style.cssText = variable_selected_class; 
         create_new_variable(variable);
     }
     else {
@@ -702,7 +702,7 @@ function create_new_variable (variable) {
 // Remove variable
 function delete_variable (variable) {
     previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
-    document.getElementById("selection_sidebar_" + variable).style.cssText = variable_unselected_class; 
+    document.getElementById("selection_sidebar_" + variable.replace(/\s/g, '_')).style.cssText = variable_unselected_class; 
     var variable_index = varlist_active.indexOf(variable);
     varlist_active.splice(variable_index, 1);
     varlist_inactive.push(variable);
@@ -1025,3 +1025,6 @@ function delete_variable (variable) {
 //     //talktoR(btn, df, x, y, globals);
 // }
 
+
+
+// need to check for spaces in variable name
