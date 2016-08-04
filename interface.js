@@ -1,3 +1,13 @@
+// JM 
+var production = false;
+if (!production) {
+    // base URL for the R apps:
+    var rappURL = "http://0.0.0.0:8000/custom/";
+} else {
+    var rappURL = "https://dataverse-demo.iq.harvard.edu/custom/"; //this will change when/if the production host changes
+}
+
+
 // JSON data of r-libraries and functions (Fanny's work will provide these)
 var JSON_file = '{"rfunctions":[' +
     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
@@ -539,6 +549,14 @@ $.each(column_index, function(i, el) {
 // Get length of js dictionary length: http://jsfiddle.net/simevidas/nN84h/
 // Generates a HTML datapage with all the info collected 
 function report () {
+//JM talk to R example
+
+talktoR(previous_inputted_metadata,inputted_metadata, column_index);
+// end JM talk to R example
+	//var toSend = []; //JM
+	//console.log("JM");
+	//console.log(column_index);
+	//console.log(inputted_metadata);
     info =
     "<style>" +
     "#epsilon_table table, #epsilon_table th, #epsilon_table td {" +
@@ -723,7 +741,107 @@ function delete_variable (variable) {
 
 
 
+/////////////////////////////////////////////////////////////////////// 
+// JM talk to R mini example
+ function talktoR(prevDict, dict, indices) {
 
+   //package the output as JSON
+   var estimated=false;
+   var base = rappURL;
+   var btn = 0;
+   function estimateSuccess(btn,json) {
+     console.log("json in: ", json);
+     estimated=true;
+   }
+  
+
+   function statisticsSuccess(btn,json) {  
+     console.log("json in: ", json);
+   }
+
+
+   function estimateFail(btn) {
+     estimated=true;
+   }
+
+   var jsonout = JSON.stringify({ prevDict: prevDict, dict: dict, indices: indices });
+   console.log(jsonout)
+   urlcall = base+"privateAccuracies";
+   console.log("urlcall out: ", urlcall);
+   makeCorsRequest(urlcall,btn, estimateSuccess, estimateFail, jsonout);
+   
+  } 
+ 
+
+
+ // below from http://www.html5rocks.com/en/tutorials/cors/ for cross-origin resource sharing
+ // Create the XHR object.
+ function createCORSRequest(method, url, callback) {
+     var xhr = new XMLHttpRequest();
+     if ("withCredentials" in xhr) {
+         // XHR for Chrome/Firefox/Opera/Safari.
+         xhr.open(method, url, true);
+     } else if (typeof XDomainRequest != "undefined") {
+         // XDomainRequest for IE.
+         xhr = new XDomainRequest();
+         xhr.open(method, url);
+     } else {
+         // CORS not supported.
+         xhr = null;
+     }
+     return xhr;  
+ }
+
+
+ // Make the actual CORS request.
+ function makeCorsRequest(url,btn,callback, warningcallback, json) {
+     var xhr = createCORSRequest('POST', url);
+     if (!xhr) {
+         alert('CORS not supported');
+         return;
+     }
+     // Response handlers for asynchronous load
+     // onload or onreadystatechange?
+    
+     xhr.onload = function() {
+        
+       var text = xhr.responseText;
+       console.log("text ", text);
+       var json = JSON.parse(text);   // should wrap in try / catch
+       var names = Object.keys(json);
+
+       if (names[0] == "warning"){
+         warningcallback(btn);
+         alert("Warning: " + json.warning);
+       }else{
+         callback(btn, json);
+       }
+     };
+     xhr.onerror = function() {
+         // note: xhr.readystate should be 4, and status should be 200.  a status of 0 occurs when the url becomes too large
+         if(xhr.status==0) {
+             alert('xmlhttprequest status is 0. local server limitation?  url too long?');
+         }
+         else if(xhr.readyState!=4) {
+             alert('xmlhttprequest readystate is not 4.');
+         }
+         else {
+             alert('Woops, there was an error making the request.');
+         }
+         console.log(xhr);
+     };
+     console.log("sending")
+     console.log(json);
+     xhr.send("tableJSON="+json);   
+ }
+
+ 
+
+
+
+
+// end JM 
+///////////////////////////////////////////////////////////////////////
 
 
 
