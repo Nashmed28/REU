@@ -422,20 +422,22 @@ function ValidateInput (input, valid_entry, variable) {
 function epsilon_table_validation (variable) {
     var type_chosen = inputted_metadata[variable][0];
     eval("var pparameter = " + type_chosen + "_stat_list;");
-    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;");    
+    eval("var ppparameter = " + type_chosen + "_stat_parameter_list;"); 
+    var previous_stat_state;   
     for (q = 0; q < pparameter.length; q++) {
         if (inputted_metadata[variable][column_index[pparameter[q]]] > 0) {
             var sparameter = rfunctions.rfunctions[(ppparameter[(pparameter.indexOf(pparameter[q]))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf(pparameter[q])].parameter_index].parameter;
             inputted_metadata[variable][column_index[pparameter[q]]] = 2 + sparameter.length;
             for (r = 0; r < sparameter.length; r++) {
                 if (inputted_metadata[variable][column_index[sparameter[r].replace(/\s/g, '_')]] != "") {
-//                 	var previous_stat_state = inputted_metadata[variable][column_index[pparameter[q]]];
                     inputted_metadata[variable][column_index[pparameter[q]]] = inputted_metadata[variable][column_index[pparameter[q]]] - 1;  
-//                     alert(previous_stat_state);
                 }
+        	var previous_stat_state = inputted_metadata[variable][column_index[pparameter[q]]];
+
             };
         }
     };
+    alert(previous_stat_state);
     generate_epsilon_table();  
 };
 
