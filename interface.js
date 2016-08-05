@@ -429,7 +429,9 @@ function epsilon_table_validation (variable) {
             inputted_metadata[variable][column_index[pparameter[q]]] = 2 + sparameter.length;
             for (r = 0; r < sparameter.length; r++) {
                 if (inputted_metadata[variable][column_index[sparameter[r].replace(/\s/g, '_')]] != "") {
+//                 	var previous_stat_state = inputted_metadata[variable][column_index[pparameter[q]]];
                     inputted_metadata[variable][column_index[pparameter[q]]] = inputted_metadata[variable][column_index[pparameter[q]]] - 1;  
+//                     alert(previous_stat_state);
                 }
             };
         }
@@ -496,12 +498,14 @@ function generate_epsilon_table () {
                     "</td>"; 
 
                     if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 2) {
+                    	//talktoR(previous_inputted_metadata,inputted_metadata, column_index); 
+//                     	console.log("talk to r");
                         epsilon_table += 
                         "<td>" +
                             "0" +
                         "</td>" +
                         "<td>" +
-                            "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateInput(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\")' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
+                            "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateInput(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\"); pass_to_r(this,\"" + varlist_active[n] + "\", \"" + statistic_list[m] + "\");' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
                         "</td>" +
                         "<td>";
                         
@@ -537,7 +541,11 @@ function generate_epsilon_table () {
 
 
 
-
+function pass_to_r (input, variable, statistic) {
+//	alert(input.value + ", " + variable + ", " + statistic);
+//	talktoR(previous_inputted_metadata,inputted_metadata, column_index); 
+	console.log("talk to r");
+};
 
 
 // Reverse column_index: http://stackoverflow.com/questions/1159277/array-flip-in-javascript
