@@ -757,6 +757,16 @@ function delete_variable (variable) {
 
 /////////////////////////////////////////////////////////////////////// 
 // JM talk to R mini example
+// Full list of inputs that talk to R needs:
+// dict: inputted_metadata
+// indices: column_index
+// stats: ["Mean", "Quantile", "Histogram"]
+// metadata: ["Lower_Bound","Upper_Bound","Number_of_Bins", "Granularity"]
+// globals: {eps=.1, del=.0000001, Beta=.05, n=2000), action=""}
+// action: string. either "betaChange" if beta was just changed, "accuracyEdited" if 
+//         accuracy was just edited, or an empty string otherwise
+// var:    if accuracy was edited, the associated variable name. Otherwise empty string
+// stat:   if accuracy was edited, the associated statistic. Otherwise empty string.
  function talktoR(dict, indices) {
 
    //package the output as JSON
