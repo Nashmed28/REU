@@ -437,7 +437,7 @@ function epsilon_table_validation (variable) {
             };
         }
     };
-    alert(previous_stat_state);
+    //alert(previous_stat_state);
     generate_epsilon_table();  
 };
 
@@ -504,7 +504,7 @@ function generate_epsilon_table () {
 //                     	console.log("talk to r");
                         epsilon_table += 
                         "<td>" +
-                            "0" +
+                            "" +
                         "</td>" +
                         "<td>" +
                             "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateInput(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\"); pass_to_r(this,\"" + varlist_active[n] + "\", \"" + statistic_list[m] + "\");' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
@@ -559,14 +559,18 @@ $.each(column_index, function(i, el) {
 // Get length of js dictionary length: http://jsfiddle.net/simevidas/nN84h/
 // Generates a HTML datapage with all the info collected 
 function report () {
-//JM talk to R example
+	//JM talk to R example
+	
+	 talktoR(inputted_metadata, column_index);
+	// console.log("updated:");
+// 	console.log(updatedTable);
+// 	console.log("meta");
+// 	console.log(inputted_metadata);
+// 	inputted_metadata = JSON.parse(JSON.stringify(updatedTable));
+//     generate_epsilon_table();
+// 	
+	// end JM talk to R example
 
-talktoR(previous_inputted_metadata,inputted_metadata, column_index);
-// end JM talk to R example
-	//var toSend = []; //JM
-	//console.log("JM");
-	//console.log(column_index);
-	//console.log(inputted_metadata);
     info =
     "<style>" +
     "#epsilon_table table, #epsilon_table th, #epsilon_table td {" +
@@ -753,7 +757,7 @@ function delete_variable (variable) {
 
 /////////////////////////////////////////////////////////////////////// 
 // JM talk to R mini example
- function talktoR(prevDict, dict, indices) {
+ function talktoR(dict, indices) {
 
    //package the output as JSON
    var estimated=false;
@@ -761,6 +765,19 @@ function delete_variable (variable) {
    var btn = 0;
    function estimateSuccess(btn,json) {
      console.log("json in: ", json);
+     if(json["error"][0] ==="T"){
+        alert(json["message"]);
+        //undo to previous state of page (using previous_inputted_metadata
+    }
+    else{
+    	// If all went well, replace inputted_metadata with the returned dictionary 
+    	// and rebuild the epsilon table.
+    	// why doesn't the below work?
+		//inputted_metadata = json["prd"];
+		//console.log(inputted_metadata);
+		//generate_epsilon_table();
+
+    } 
      estimated=true;
    }
   
@@ -774,7 +791,7 @@ function delete_variable (variable) {
      estimated=true;
    }
 
-   var jsonout = JSON.stringify({ prevDict: prevDict, dict: dict, indices: indices });
+   var jsonout = JSON.stringify({dict: dict, indices: indices });
    console.log(jsonout)
    urlcall = base+"privateAccuracies";
    console.log("urlcall out: ", urlcall);
