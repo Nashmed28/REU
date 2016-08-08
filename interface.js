@@ -504,7 +504,7 @@ function generate_epsilon_table () {
 //                     	console.log("talk to r");
                         epsilon_table += 
                         "<td>" +
-                            "" +
+                            inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 1] +
                         "</td>" +
                         "<td>" +
                             "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateInput(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\"); pass_to_r(this,\"" + varlist_active[n] + "\", \"" + statistic_list[m] + "\");' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
@@ -762,7 +762,7 @@ function delete_variable (variable) {
 // indices: column_index
 // stats: ["Mean", "Quantile", "Histogram"]
 // metadata: ["Lower_Bound","Upper_Bound","Number_of_Bins", "Granularity"]
-// globals: {eps=.1, del=.0000001, Beta=.05, n=2000), action=""}
+// globals: {eps=.1, del=.0000001, Beta=.05, n=2000)}
 // action: string. either "betaChange" if beta was just changed, "accuracyEdited" if 
 //         accuracy was just edited, or an empty string otherwise
 // var:    if accuracy was edited, the associated variable name. Otherwise empty string
@@ -783,9 +783,9 @@ function delete_variable (variable) {
     	// If all went well, replace inputted_metadata with the returned dictionary 
     	// and rebuild the epsilon table.
     	// why doesn't the below work?
-		//inputted_metadata = json["prd"];
+		inputted_metadata = JSON.parse(JSON.stringify(json["prd"]));
 		//console.log(inputted_metadata);
-		//generate_epsilon_table();
+		generate_epsilon_table();
 
     } 
      estimated=true;
