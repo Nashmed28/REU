@@ -543,12 +543,7 @@ function pass_to_r_metadata (variable, input, ppparameter) {
         console.log("talking to R bc a statistic which is now edittable has it's been changed w/ some fields blank");
     }
 };
-// issue when another field is blank so changing lowerbound when number of bisn is empty doesnt (2 equal busts)
 
-
-// issues:
-// doesn't update after statistic deselected
-// half split when 2 variable selected even when one statistic is filled
 
 
 
@@ -559,8 +554,7 @@ function record_table () {
     previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     console.log(previous_inputted_metadata);
 }
-// issues: if someone clicks and then doesn't change anything becomes the same thing, then previous = current
-// however backend can be smart enough to realize that nothing really happened
+
 
 // Does the hold function
 function hold_status (hold_checkbox, variable, statistic) {
@@ -667,12 +661,6 @@ function ValidateAccuracy (input, valid_entry, variable, statistic) {
     // Actual input validation
     var entry = input.value;
 
-    // if (entry == "") {    
-    //     inputted_metadata[variable][column_index[input.name]] = previous_inputted_metadata[variable][column_index[input.name]];
-    //     input.value = previous_inputted_metadata[variable][column_index[input.name]];
-    //     alert("Can't have blank accuracy field");
-    // } 
-
     if (Validation(valid_entry, entry) == "false") {
         inputted_metadata[variable][column_index[input.name]] = previous_inputted_metadata[variable][column_index[input.name]];
         input.value = previous_inputted_metadata[variable][column_index[input.name]];
@@ -682,26 +670,6 @@ function ValidateAccuracy (input, valid_entry, variable, statistic) {
     inputted_metadata[variable][column_index[input.name]] = entry;
     pass_to_r_epsilon(statistic, variable);
 };
-
-// function pass_to_r_metadata (input, variable) {
-//     // for (k = 0; k < statistic_list.length; k++) {
-//     //     if (((previous_inputted_metadata[variable][4 * k + 1] == 2) && (inputted_metadata[variable][4 * k + 1] != 2)) || (inputted_metadata[variable][4 * k + 1] == 2)) {
-//     //         alert("r")
-//     //         // console.log("talk to r");
-//     //     }
-//     //     // // alert( 4 * k + 1);
-//     //     // alert(previous_inputted_metadata[variable][4 * k + 1])
-//     // };
-
-
-
-//     // var prev_value = previous_inputted_metadata[variable][column_index[input.name]];
-//     // var curr_value = inputted_metadata[variable][column_index[input.name]];
-//     // var prev_state = previous_inputted_metadata[variable][column_index[input.name]];
-//     // // var curr_state
-//     // alert(prev)
-// };
-
 
 
 
@@ -716,18 +684,6 @@ $.each(column_index, function(i, el) {
 // Get length of js dictionary length: http://jsfiddle.net/simevidas/nN84h/
 // Generates a HTML datapage with all the info collected 
 function report () {
-    //JM talk to R example
-    
-     // talktoR();
-    // console.log("updated:");
-//  console.log(updatedTable);
-//  console.log("meta");
-//  console.log(inputted_metadata);
-//  inputted_metadata = JSON.parse(JSON.stringify(updatedTable));
-//     generate_epsilon_table();
-//  
-    // end JM talk to R example
-
     info =
     "<style>" +
     "#epsilon_table table, #epsilon_table th, #epsilon_table td {" +
@@ -776,29 +732,7 @@ function report () {
 };
 
 
-// json
-// mouseover label telling what the statistic is
-// what metadata needs (numerical (whole number), text, decimal (can have .), positive, negative #, is order a < b, )
-// custom logic (metadata checking rules)
-// shift over dynamic table to below
 
-
-// issues to resolve:
-// form logic (check if numerials), 
-// epsilon/accuracy table
-
-
-
-
-// $(document).ready(function () {  
-//  // sidebar action, with toggle and text-switch
-//  $("#sidebar-toggle").click(function() {
-//         $(this).text(function(i, v){
-//          return v === '>>' ? '<<' : '>>'
-//         });
-//         $("#wrapper").toggleClass("toggled");
-//     });
-// });
 
 
 
@@ -831,7 +765,6 @@ function populate_variable_selection_sidebar () {
     document.getElementById('live-search-box').style.display = "inline";
 
     variable_selection_sidebar = 
-    // "<input id='live-search-box' type='text' class='live-search-box' placeholder='Search Here'>" +
     "<ul id='variable_sidebar' class='live-search-list'>";
 
     for (n = 0; n < variable_list.length; n++) {
@@ -905,8 +838,7 @@ function delete_variable (variable) {
     varlist_inactive.push(variable);
     delete inputted_metadata[variable.replace(/\s/g, '_')];
     document.getElementById(variable.replace(/\s/g, '_')).remove();
-    // design such that if the variable has a statistic value at 2, call talktoR
-    // talktoR();
+
     
     var active_stat = 0;
     for (j = 0; j < statistic_list.length; j++) {
@@ -923,95 +855,6 @@ function delete_variable (variable) {
     console.log(previous_inputted_metadata);
 };
 
-
-// fearonLaitan.xml
-// index.html
-// readData.js
-
-
-// hide variable sidebar + scroll down + previous table memory
-
-// var global_epsilon = 0.1;
-// var global_delta = 0.0000001;
-// var global_beta = 0.05
-// var global_size = 2000;
-
-// Get global parameters and validates them
-// Need logic for when global parameters go from empty to filled
-// function global_parameters_validation (global_parameters) {
-//     if (global_parameters.value == "") {
-//         return false;
-//     } 
-
-//  if (global_parameters.name == "epsilon") {
-//      if (Validation("pos_decimal", global_parameters.value) == "false") {
-//          global_epsilon = 0.1;
-//          global_parameters.value = "";
-//          return false;
-//      }   
-//      if (global_parameters.value <= 0) {
-//          alert('Zero is an invalid entry');
-//          global_epsilon = 0.1;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      if (global_parameters.value >= 1) {
-//          alert('Values greater than 1 are invalid');
-//          global_epsilon = 0.1;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      global_epsilon = global_parameters.value;   
-//  }
-//  else if (global_parameters.name == "delta") {
-//      if (Validation("pos_decimal", global_parameters.value) == "false") {
-//          global_delta = 0.0000001;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      if (global_parameters.value <= 0) {
-//          alert('Zero is an invalid entry');
-//          global_delta = 0.0000001;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      if (global_parameters.value >= 1) {
-//          alert('Values greater than 1 are invalid');
-//          global_delta = 0.0000001;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      global_delta = global_parameters.value;
-//  }
-//  else if (global_parameters.name == "beta") {
-//      if (Validation("pos_decimal", global_parameters.value) == "false") {
-//          global_beta = 0.05;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      if (global_parameters.value <= 0) {
-//          alert('Zero is an invalid entry');
-//          global_beta = 0.05;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      if (global_parameters.value >= 1) {
-//          alert('Values greater than 1 are invalid');
-//          global_beta = 0.05;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      global_beta = global_parameters.value;
-//  }
-//  else {
-//      if (Validation("pos_integer", global_parameters.value) == "false") {
-//          global_size = 2000;
-//          global_parameters.value = "";
-//          return false;
-//      }
-//      global_size = global_parameters.value;
-//  }
-// }
 
 
 var global_epsilon = 0.1;
