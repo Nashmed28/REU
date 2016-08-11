@@ -351,8 +351,8 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
 
         // Updates epsilon table 
         if (previous_inputted_metadata[variable][column_index[stat.name]] == 2) {
-        	console.log("talk to r bc a statistics was removed");
-        	// talktoR();
+            console.log("talk to r bc a statistics was removed");
+            // talktoR();
         }
 
         // calls the parameter HTML generating function
@@ -370,10 +370,10 @@ function Parameter_Memory (parameter, variable) {
 
 
 function Validation (valid_entry, entry) {
-	if (valid_entry == "general_text") {
+    if (valid_entry == "general_text") {
         if (!entry.match(/^[a-zA-Z0-9]+$/)) {
             alert("Invalid entry. Entry can only contain numbers and letters only!");
-        	return "false";
+            return "false";
         }
     }
 
@@ -466,8 +466,8 @@ function ValidateInput (input, valid_entry, variable) {
     } 
 
     if (Validation(valid_entry, entry) == "false") {
-    	inputted_metadata[variable][column_index[input.name]] = "";
-        input.value = "";
+        inputted_metadata[variable][column_index[input.name]] = previous_inputted_metadata[variable][column_index[input.name]];
+        input.value = inputted_metadata[variable][column_index[input.name]];
     }
 
     epsilon_table_validation(variable, input);    
@@ -502,42 +502,42 @@ function epsilon_table_validation (variable, input) {
 
 // call talktoR when form is updated
 function pass_to_r_metadata (variable, input, ppparameter) {
-	
-	var number_changed_metadata = 0;
-	var changed_metadata = 0;
+    
+    var number_changed_metadata = 0;
+    var changed_metadata = 0;
 
-	var should_call_r = 0;
+    var should_call_r = 0;
 
     var metadata_changed_statistic_is_two = 0;
 
-	for (k = 0; k < ppparameter.length; k++) {
-		// stat_index = 4 * k + 1;
+    for (k = 0; k < ppparameter.length; k++) {
+        // stat_index = 4 * k + 1;
         stat_index = 4 * ppparameter[k].rfunctions_index + 1;
-		var prev_state = previous_inputted_metadata[variable][stat_index];
-		var curr_state = inputted_metadata[variable][stat_index];
-		if (curr_state >= 2) {
-			number_changed_metadata++;
-		}
-		if ((prev_state != 2 && curr_state == 2) || (prev_state == 2 && curr_state != 2)) {
-			should_call_r++;
-		}
-		if (prev_state == 2 && curr_state == 2 && input != "undefined") {
-			if (previous_inputted_metadata[variable][column_index[input.name]] != inputted_metadata[variable][column_index[input.name]] && previous_inputted_metadata[variable][column_index[input.name]] != "") {
-				changed_metadata++;
+        var prev_state = previous_inputted_metadata[variable][stat_index];
+        var curr_state = inputted_metadata[variable][stat_index];
+        if (curr_state >= 2) {
+            number_changed_metadata++;
+        }
+        if ((prev_state != 2 && curr_state == 2) || (prev_state == 2 && curr_state != 2)) {
+            should_call_r++;
+        }
+        if (prev_state == 2 && curr_state == 2 && input != "undefined") {
+            if (previous_inputted_metadata[variable][column_index[input.name]] != inputted_metadata[variable][column_index[input.name]] && previous_inputted_metadata[variable][column_index[input.name]] != "") {
+                changed_metadata++;
                 if (rfunctions.rfunctions[ppparameter[k].rfunctions_index].statistic_type[ppparameter[k].parameter_index].parameter.includes(input.name.replace(/_/g, ' '))) {
                     metadata_changed_statistic_is_two++;
                 }
-			}
-		}
-	};
+            }
+        }
+    };
     
-	if (should_call_r > 0) {
-		console.log("talking to r bc statistic can now be editted but doesn't cover the cover the later case where the field becomes null");
-	}
-	
+    if (should_call_r > 0) {
+        console.log("talking to r bc statistic can now be editted but doesn't cover the cover the later case where the field becomes null");
+    }
+    
     if (number_changed_metadata == changed_metadata && number_changed_metadata > 0 && changed_metadata > 0 && should_call_r == 0) {
-		console.log("talking to r bc metadata field just changed but all entry are filled/none are blank")
-	}
+        console.log("talking to r bc metadata field just changed but all entry are filled/none are blank")
+    }
 
     if (metadata_changed_statistic_is_two > 0 && number_changed_metadata != changed_metadata) {
         console.log("talking to R bc a statistic which is now edittable has it's been changed w/ some fields blank");
@@ -618,7 +618,7 @@ function generate_epsilon_table () {
                             inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 1] +
                         "</td>" +
                         "<td>" +
-                            "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateAccuracy(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\"); pass_to_r_epsilon(\"" + statistic_list[m] + "\", \"" + varlist_active[n] + "\");' oninput='Parameter_Memory(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\")'>" +
+                            "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateAccuracy(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\", \"" + statistic_list[m] + "\");' " +
                         "</td>" +
                         "<td>";
                         
@@ -657,24 +657,31 @@ function generate_epsilon_table () {
 
 // call talktoR when epsilon table is updated
 function pass_to_r_epsilon (statistic, variable) {
+
     if (previous_inputted_metadata[variable][column_index[statistic] + 2] !=  inputted_metadata[variable][column_index[statistic] + 2]) {
         console.log("talk to r bc accuracy has changed; can extract var name and stat is necessary");
     }
 };
 
 
-function ValidateAccuracy (input, valid_entry, variable) {
+function ValidateAccuracy (input, valid_entry, variable, statistic) {
     // Actual input validation
     var entry = input.value;
 
-    if (entry == "") {    
-        return false;
-    } 
+    // if (entry == "") {    
+    //     inputted_metadata[variable][column_index[input.name]] = previous_inputted_metadata[variable][column_index[input.name]];
+    //     input.value = previous_inputted_metadata[variable][column_index[input.name]];
+    //     alert("Can't have blank accuracy field");
+    // } 
 
     if (Validation(valid_entry, entry) == "false") {
-        inputted_metadata[variable][column_index[input.name]] = "";
-        input.value = "";
+        inputted_metadata[variable][column_index[input.name]] = previous_inputted_metadata[variable][column_index[input.name]];
+        input.value = previous_inputted_metadata[variable][column_index[input.name]];
+        return false;
     }   
+
+    inputted_metadata[variable][column_index[input.name]] = entry;
+    pass_to_r_epsilon(statistic, variable);
 };
 
 // function pass_to_r_metadata (input, variable) {
@@ -937,74 +944,74 @@ function delete_variable (variable) {
 //         return false;
 //     } 
 
-// 	if (global_parameters.name == "epsilon") {
-// 		if (Validation("pos_decimal", global_parameters.value) == "false") {
-// 			global_epsilon = 0.1;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}	
-// 		if (global_parameters.value <= 0) {
-// 			alert('Zero is an invalid entry');
-// 			global_epsilon = 0.1;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		if (global_parameters.value >= 1) {
-// 			alert('Values greater than 1 are invalid');
-// 			global_epsilon = 0.1;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		global_epsilon = global_parameters.value;	
-// 	}
-// 	else if (global_parameters.name == "delta") {
-// 		if (Validation("pos_decimal", global_parameters.value) == "false") {
-// 			global_delta = 0.0000001;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		if (global_parameters.value <= 0) {
-// 			alert('Zero is an invalid entry');
-// 			global_delta = 0.0000001;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		if (global_parameters.value >= 1) {
-// 			alert('Values greater than 1 are invalid');
-// 			global_delta = 0.0000001;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		global_delta = global_parameters.value;
-// 	}
-// 	else if (global_parameters.name == "beta") {
-// 		if (Validation("pos_decimal", global_parameters.value) == "false") {
-// 			global_beta = 0.05;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		if (global_parameters.value <= 0) {
-// 			alert('Zero is an invalid entry');
-// 			global_beta = 0.05;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		if (global_parameters.value >= 1) {
-// 			alert('Values greater than 1 are invalid');
-// 			global_beta = 0.05;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		global_beta = global_parameters.value;
-// 	}
-// 	else {
-// 		if (Validation("pos_integer", global_parameters.value) == "false") {
-// 			global_size = 2000;
-// 			global_parameters.value = "";
-// 			return false;
-// 		}
-// 		global_size = global_parameters.value;
-// 	}
+//  if (global_parameters.name == "epsilon") {
+//      if (Validation("pos_decimal", global_parameters.value) == "false") {
+//          global_epsilon = 0.1;
+//          global_parameters.value = "";
+//          return false;
+//      }   
+//      if (global_parameters.value <= 0) {
+//          alert('Zero is an invalid entry');
+//          global_epsilon = 0.1;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      if (global_parameters.value >= 1) {
+//          alert('Values greater than 1 are invalid');
+//          global_epsilon = 0.1;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      global_epsilon = global_parameters.value;   
+//  }
+//  else if (global_parameters.name == "delta") {
+//      if (Validation("pos_decimal", global_parameters.value) == "false") {
+//          global_delta = 0.0000001;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      if (global_parameters.value <= 0) {
+//          alert('Zero is an invalid entry');
+//          global_delta = 0.0000001;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      if (global_parameters.value >= 1) {
+//          alert('Values greater than 1 are invalid');
+//          global_delta = 0.0000001;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      global_delta = global_parameters.value;
+//  }
+//  else if (global_parameters.name == "beta") {
+//      if (Validation("pos_decimal", global_parameters.value) == "false") {
+//          global_beta = 0.05;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      if (global_parameters.value <= 0) {
+//          alert('Zero is an invalid entry');
+//          global_beta = 0.05;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      if (global_parameters.value >= 1) {
+//          alert('Values greater than 1 are invalid');
+//          global_beta = 0.05;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      global_beta = global_parameters.value;
+//  }
+//  else {
+//      if (Validation("pos_integer", global_parameters.value) == "false") {
+//          global_size = 2000;
+//          global_parameters.value = "";
+//          return false;
+//      }
+//      global_size = global_parameters.value;
+//  }
 // }
 
 
