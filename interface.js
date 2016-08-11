@@ -657,7 +657,6 @@ function generate_epsilon_table () {
 
 // call talktoR when epsilon table is updated
 function pass_to_r_epsilon (statistic, variable) {
-
     if (previous_inputted_metadata[variable][column_index[statistic] + 2] !=  inputted_metadata[variable][column_index[statistic] + 2]) {
         console.log("talk to r bc accuracy has changed; can extract var name and stat is necessary");
     }
@@ -1118,7 +1117,7 @@ function global_parameters_beta (beta) {
 }
 
 
-
+var global_size = 2000;
 
 
 
