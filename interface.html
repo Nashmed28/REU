@@ -23,7 +23,7 @@
 
 
 <body onload="variable_bubble(); generate_epsilon_table(); populate_variable_selection_sidebar();">
-
+<body>
     <div class="flex-container">
         <header>
             <h3>Budget Tool</h3>
@@ -41,13 +41,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <input style="color: black;" type="text" placeholder="Epsilon">
+                        <input name="epsilon" onfocusout="global_parameters_epsilon(this)" value="0.1" style="color: black;" type="text" placeholder="Epsilon">
                     </td>
                     <td>
-                        <input style="color: black;" type="text" placeholder="Delta">
+                        <input name="delta" onfocusout="global_parameters_delta(this)" value="0.000001" style="color: black;" type="text" placeholder="Delta">
                     </td>
                     <td>
-                        <input style="color: black;" type="text" placeholder="Beta">
+                        <input name="beta" onfocusout="global_parameters_beta(this)" value="0.05" style="color: black;" type="text" placeholder="Beta">
                     </td>
                 </tr>
             </table>
@@ -56,10 +56,10 @@
         <!-- Variable Selection -->
         <nav class="variable_sidebar">
             <!-- Searchbar -->
-            <input id='live-search-box' type="text" class="live-search-box" placeholder="Search Here">
+            <input id='live-search-box' style="display:none" type="text" class="live-search-box" placeholder="Search Here">
 
             <!-- Variable List -->
-            <ul id="variable_sidebar" class="live-search-list"></ul>
+            <!-- <ul id="variable_sidebar" class="live-search-list"></ul> -->
         </nav>
 
         <article class="main">
