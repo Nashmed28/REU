@@ -18,7 +18,7 @@ var JSON_file = '{"rfunctions":[' +
 
 
 // List of variables to make form bubbles (Fanny's work will provide these)
-var JSON_file2 = '{ "varlist": ["var1", "var2", "var3", "var4", "var5", "color", "income", "dogs", "cats", "gods will", "Watergate", "China", "Walls", "Monica"] }'; 
+var JSON_file2 = '{ "varlist": ["name", "gender", "age", "income", "education", "IQ", "employed"] }'; 
 
 
 // Parses the function and varlist data structure
@@ -221,6 +221,7 @@ function type_selected (type_chosen, variable) {
         };
         if (stat_changed > 0) {
             console.log("talk to r bc type has changed and there was valid stats removed");
+         	talktoR();
         }
     }
 
@@ -352,7 +353,7 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
         // Updates epsilon table 
         if (previous_inputted_metadata[variable][column_index[stat.name]] == 2) {
             console.log("talk to r bc a statistics was removed");
-            // talktoR();
+            talktoR();
         }
 
         // calls the parameter HTML generating function
@@ -500,6 +501,7 @@ function epsilon_table_validation (variable, input) {
     generate_epsilon_table();  
 };
 
+
 // call talktoR when form is updated
 function pass_to_r_metadata (variable, input, ppparameter) {
     
@@ -532,15 +534,18 @@ function pass_to_r_metadata (variable, input, ppparameter) {
     };
     
     if (should_call_r > 0) {
-        console.log("talking to r bc statistic can now be editted but doesn't cover the cover the later case where the field becomes null");
+        console.log("talking to r bc statistic can now be editted but doesn't cover the later case where the field becomes null");
+        talktoR();
     }
     
     if (number_changed_metadata == changed_metadata && number_changed_metadata > 0 && changed_metadata > 0 && should_call_r == 0) {
         console.log("talking to r bc metadata field just changed but all entry are filled/none are blank")
+        talktoR();
     }
 
     if (metadata_changed_statistic_is_two > 0 && number_changed_metadata != changed_metadata) {
         console.log("talking to R bc a statistic which is now edittable has it's been changed w/ some fields blank");
+        talktoR();
     }
 };
 
@@ -558,9 +563,16 @@ function record_table () {
 
 // Does the hold function
 function hold_status (hold_checkbox, variable, statistic) {
+	
     previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
     if ($("#" + hold_checkbox.id).prop('checked')) {
         inputted_metadata[variable][column_index["hold_" + statistic]] = 1;
+        var allHeld = areAllHeld();
+		if(allHeld){
+			alert("Cannot hold every statistic");
+			inputted_metadata[variable][column_index["hold_" + statistic]] = 0;
+			document.getElementById(hold_checkbox.id).checked=false;
+		}
     }
     else {
 
@@ -569,7 +581,29 @@ function hold_status (hold_checkbox, variable, statistic) {
     console.log(previous_inputted_metadata);
 };
 
-
+// checks if every statistic is being held. If variable is not null, checks if 
+// deleting that variable would result in all statistics being held.
+function areAllHeld (variable=null){
+	var allHeld = true;
+	var tempvarlist = JSON.parse(JSON.stringify(varlist_active));
+	if(variable){
+		var index = tempvarlist.indexOf(variable);
+		if(index > -1){
+			tempvarlist.splice(index, 1);
+		} 
+	}
+	 for (n = 0; n < tempvarlist.length; n++) {
+        for (m = 0; m < statistic_list.length; m++) {
+        	var stat_index = 4 * m + 1;
+            var hold_index = 4 * m + 4;
+            // if any completed statistic is unheld, return false
+            if (inputted_metadata[tempvarlist[n].replace(/\s/g, '_')][stat_index] == 2 && inputted_metadata[tempvarlist[n].replace(/\s/g, '_')][hold_index] == 0) {
+            	allHeld = false;
+            }
+        }
+    }
+    return allHeld;
+}
 
 // Creates Epsilon 
 function generate_epsilon_table () {
@@ -595,7 +629,8 @@ function generate_epsilon_table () {
     for (n = 0; n < varlist_active.length; n++) {
         for (m = 0; m < statistic_list.length; m++) {
             var stat_index = 4 * m + 1;
-            if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] > 0) {
+           if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] > 0) {
+// if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 2) {
                 epsilon_table += 
                 "<tr>" +
                     "<td>" +
@@ -605,14 +640,13 @@ function generate_epsilon_table () {
                         statistic_list[m] +
                     "</td>"; 
 
-                    if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 2) {
-                        //talktoR(previous_inputted_metadata,inputted_metadata, column_index); 
+                  if (inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index] == 2) {
                         epsilon_table += 
                         "<td>" +
-                            inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 1] +
+                            (parseFloat(inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 1]).toFixed(4)).toString() +
                         "</td>" +
                         "<td>" +
-                            "<input type='text' value='" + inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2] + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateAccuracy(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\", \"" + statistic_list[m] + "\");' " +
+                            "<input type='text' style='width:75px' value='" + (parseFloat(inputted_metadata[varlist_active[n].replace(/\s/g, '_')][stat_index + 2]).toFixed(4)).toString() + "' name='accuracy_" + statistic_list[m] + "' onclick='record_table()' onfocusout='ValidateAccuracy(this, \"pos_number\", \"" + varlist_active[n].replace(/\s/g, '_') + "\", \"" + statistic_list[m] + "\");' " +
                         "</td>" +
                         "<td>";
                         
@@ -622,7 +656,7 @@ function generate_epsilon_table () {
                         else {
                             epsilon_table += "<input type='checkbox' id='hold_" + varlist_active[n].replace(/\s/g, '_') + "_" + statistic_list[m] + "' onclick='hold_status(this,\"" + varlist_active[n].replace(/\s/g, '_') + "\",\"" + statistic_list[m] + "\")'>";
                         }
-                    }
+                  }
 
                     else {
                         epsilon_table += 
@@ -648,11 +682,11 @@ function generate_epsilon_table () {
 
 
 
-
 // call talktoR when epsilon table is updated
 function pass_to_r_epsilon (statistic, variable) {
     if (previous_inputted_metadata[variable][column_index[statistic] + 2] !=  inputted_metadata[variable][column_index[statistic] + 2]) {
         console.log("talk to r bc accuracy has changed; can extract var name and stat is necessary");
+        talktoR("accuracyEdited", variable, statistic);
     }
 };
 
@@ -831,28 +865,54 @@ function create_new_variable (variable) {
 
 // Remove variable
 function delete_variable (variable) {
-    previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
-    document.getElementById("selection_sidebar_" + variable.replace(/\s/g, '_')).style.cssText = variable_unselected_class; 
-    var variable_index = varlist_active.indexOf(variable);
-    varlist_active.splice(variable_index, 1);
-    varlist_inactive.push(variable);
-    delete inputted_metadata[variable.replace(/\s/g, '_')];
-    document.getElementById(variable.replace(/\s/g, '_')).remove();
+	// if deleting variable would result in all held statistics, don't delete. 
+	if(areAllHeld(variable)){
+		alert("Deletion would result in all held statistics. Try removing some holds before deleting");
+	}
+	else{
+		previous_inputted_metadata = JSON.parse(JSON.stringify(inputted_metadata));
+		document.getElementById("selection_sidebar_" + variable.replace(/\s/g, '_')).style.cssText = variable_unselected_class; 
+		var variable_index = varlist_active.indexOf(variable);
+		varlist_active.splice(variable_index, 1);
+		varlist_inactive.push(variable);
+		delete inputted_metadata[variable.replace(/\s/g, '_')];
+		document.getElementById(variable.replace(/\s/g, '_')).remove();
 
-    
-    var active_stat = 0;
-    for (j = 0; j < statistic_list.length; j++) {
-        stat_index = 4 * j + 1;
-        if (previous_inputted_metadata[variable][stat_index] == 2) {
-            active_stat++;
-        }
-    };
-    if (active_stat > 0) {
-        console.log("talk to r bc variable deleted and it had valid stats")
-    }
+	
+		var active_stat = 0;
+		for (j = 0; j < statistic_list.length; j++) {
+			stat_index = 4 * j + 1;
+			if (previous_inputted_metadata[variable][stat_index] == 2) {
+				active_stat++;
+			}
+		};
+		//JM make sure at least one statistic is still being computed
+		if(varlist_active.length == 0){
+			active_stat=0;
+		}
+		if(active_stat != 0){
+			var noStats = true;
+			for(i = 0; i < varlist_active.length; i++){
+				for (j = 0; j < statistic_list.length; j++) {
+					stat_index = 4 * j + 1;
+					if (inputted_metadata[varlist_active[i]][stat_index] == 2){
+						noStats = false;
+					} 
+				}
+			}
+			if(noStats){
+				active_stat=0;
+			}
+		}
+		// done JM
+		if (active_stat > 0) {
+			console.log("talk to r bc variable deleted and it had valid stats")
+			talktoR();
+		}
 
-    generate_epsilon_table();
-    console.log(previous_inputted_metadata);
+		generate_epsilon_table();
+		console.log(previous_inputted_metadata);
+	}
 };
 
 
@@ -885,7 +945,8 @@ function global_parameters_epsilon (epsilon) {
             }
 
             if (is_active_stat >  0) {
-                console.log("talk to r bc epsilon changed but talks even when no stat presents has been fixedg");
+                console.log("talk to r bc epsilon changed but talks even when no stat presents has been fixed");
+                talktoR();
             }
         }
     }
@@ -919,7 +980,8 @@ function global_parameters_delta (delta) {
             }
 
             if (is_active_stat >  0) {
-                console.log("talk to r bc delta changed but talks even when no stat presents has been fixedg");
+                console.log("talk to r bc delta changed but talks even when no stat presents has been fixed");
+                talktoR();
             }
         }
     }
@@ -953,7 +1015,8 @@ function global_parameters_beta (beta) {
             }
 
             if (is_active_stat >  0) {
-                console.log("talk to r bc beta changed but talks even when no stat presents has been fixedg");
+                console.log("talk to r bc beta changed but talks even when no stat presents has been fixed");
+                talktoR("betaChange", "", "");
             }
         }
     }
@@ -972,12 +1035,12 @@ var global_size = 2000;
 // indices: column_index
 // stats: ["Mean", "Quantile", "Histogram"]
 // metadata: ["Lower_Bound","Upper_Bound","Number_of_Bins", "Granularity"]
-// globals: {eps=.1, del=.0000001, Beta=.05, n=2000), action=""}
+// globals: {eps=.1, del=.0000001, Beta=.05, n=2000)}
 // action: string. either "betaChange" if beta was just changed, "accuracyEdited" if 
 //         accuracy was just edited, or an empty string otherwise
 // var:    if accuracy was edited, the associated variable name. Otherwise empty string
 // stat:   if accuracy was edited, the associated statistic. Otherwise empty string.
- function talktoR(action, variable, stat) {
+ function talktoR(action="", variable="", stat="") {
 
    //package the output as JSON
    var estimated=false;
@@ -987,17 +1050,16 @@ var global_size = 2000;
      console.log("json in: ", json);
      if(json["error"][0] ==="T"){
         alert(json["message"]);
-        //undo to previous state of page (using previous_inputted_metadata
+        //undo to previous state of page
+        inputted_metadata = JSON.parse(JSON.stringify(previous_inputted_metadata));
+         generate_epsilon_table();
     }
-    // something here has to be done!!!!!
+
     else{
         // If all went well, replace inputted_metadata with the returned dictionary 
         // and rebuild the epsilon table.
-        // why doesn't the below work?
-        // JSONIFY
+
         inputted_metadata = JSON.parse(JSON.stringify(json["prd"]));
-        //console.log(inputted_metadata);
-        // CALL THIS HERE
         generate_epsilon_table();
 
     } 
@@ -1014,7 +1076,7 @@ var global_size = 2000;
      estimated=true;
    }
 
-   var jsonout = JSON.stringify({ dict: inputted_metadata, indices: column_index, stats: statistic_list, metadata: metadata_list, globals: {eps: global_epsilon, del: global_delta, Beta: global_beta, n: global_size, action:""}, action: action, variable: variable, stat: stat });
+   var jsonout = JSON.stringify({ dict: inputted_metadata, indices: column_index, stats: statistic_list, metadata: metadata_list, globals: {eps: global_epsilon, del: global_delta, Beta: global_beta, n: global_size}, action: action, variable: variable, stat: stat });
    console.log(jsonout)
    urlcall = base+"privateAccuracies";
    console.log("urlcall out: ", urlcall);
