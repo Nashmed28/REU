@@ -1477,8 +1477,9 @@ var SS_value_past = "";
 
 function global_parameters_SS (SS) {
     if (SS.value != SS_value_past && SS.value > population_size) {
-        alert('work');
         SS_value_past = SS.value;
+        calculate_fe();
+        calculate_fd();
     }
     else {
         SS.value = SS_value_past;
@@ -1486,14 +1487,28 @@ function global_parameters_SS (SS) {
     }
 };
 
-
 function clear_SS () {
     SS_value_past = "";
-    alert(document.getElementById('SS').value);
+    document.getElementById('SS').value = "";
+    document.getElementById('FE').value = "";
+    document.getElementById('FD').value = "";
 }
 
-//talktoR checks for empty table + fe + fd
+// secrecy of sample/global variable * e or * d
+function calculate_fe () {
+    var fe = (SS_value_past / population_size) * global_epsilon;
+    document.getElementById('FE').value = fe;
+    // alert(fe);
+} 
 
+function calculate_fd () {
+    var fd = (SS_value_past / population_size) * global_delta;
+    document.getElementById('FD').value = fd;
+    // alert(fd);
+}
+
+
+//talktoR checks for empty table + fe + fd
 
 
 

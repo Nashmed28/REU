@@ -62,19 +62,19 @@
                     </td>
 
                     <td>
-                        <input id="SS" name="SS" onfocusout="global_parameters_SS(this)" value="" style="color: black;" type="text" placeholder="SS">
+                        <input id="SS" name="SS" onfocusout="global_parameters_SS(this)" value="" style="color: black;" type="text" placeholder="SS > 1000">
                     </td>
                     <td>
-                        <input name="FE" value="" style="color: black;" type="text" placeholder="FE/none if no SS" readonly>
+                        <input id="FE" name="FE" value="" style="color: black;" type="text" placeholder="FE/none if no SS" readonly>
                     </td>
                     <td>
-                        <input name="FD" value="" style="color: black;" type="text" placeholder="FD/none if no SS" readonly>
+                        <input id="FD" name="FD" value="" style="color: black;" type="text" placeholder="FD/none if no SS" readonly>
                     </td>
 
                 </tr>
             </table>
 
-            <button type="button" onclick="clear_SS">Clear SS</button>
+            <input type="button" onclick="clear_SS()" value="Clear">
         
         </header>
 
