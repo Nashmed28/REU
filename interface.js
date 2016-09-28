@@ -1489,20 +1489,28 @@ function global_parameters_SS (SS) {
 
 function clear_SS () {
     SS_value_past = "";
+    global_fe = "";
+    global_fd = "";
     document.getElementById('SS').value = "";
     document.getElementById('FE').value = "";
     document.getElementById('FD').value = "";
 }
 
 // secrecy of sample/global variable * e or * d
+
+var global_fe = "";
+var global_fd = "";
+
 function calculate_fe () {
     var fe = (SS_value_past / population_size) * global_epsilon;
+    global_fe = fe;
     document.getElementById('FE').value = fe;
     // alert(fe);
 } 
 
 function calculate_fd () {
     var fd = (SS_value_past / population_size) * global_delta;
+    global_fd = fd;
     document.getElementById('FD').value = fd;
     // alert(fd);
 }
