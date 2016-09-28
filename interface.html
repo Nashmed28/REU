@@ -38,6 +38,17 @@
                     <td>
                         Beta (B)
                     </td>
+
+                    <td>
+                        SS (s)
+                    </td>
+                    <td>
+                        FE (fe)
+                    </td>
+                    <td>
+                        FD (fd)
+                    </td>
+
                 </tr>
                 <tr>
                     <td>
@@ -49,8 +60,22 @@
                     <td>
                         <input name="beta" onfocusout="global_parameters_beta(this)" value="0.05" style="color: black;" type="text" placeholder="Beta">
                     </td>
+
+                    <td>
+                        <input id="SS" name="SS" onfocusout="global_parameters_SS(this)" value="" style="color: black;" type="text" placeholder="SS">
+                    </td>
+                    <td>
+                        <input name="FE" value="" style="color: black;" type="text" placeholder="FE/none if no SS" readonly>
+                    </td>
+                    <td>
+                        <input name="FD" value="" style="color: black;" type="text" placeholder="FD/none if no SS" readonly>
+                    </td>
+
                 </tr>
             </table>
+
+            <button type="button" onclick="clear_SS">Clear SS</button>
+        
         </header>
 
         <!-- Variable Selection -->

@@ -1471,10 +1471,28 @@ var global_size = 2000;
 
 
 
+// Function epsilon, delta, and secrecy of the sample.
+var population_size = 1000;
+var SS_value_past = "";
+
+function global_parameters_SS (SS) {
+    if (SS.value != SS_value_past && SS.value > population_size) {
+        alert('work');
+        SS_value_past = SS.value;
+    }
+    else {
+        SS.value = SS_value_past;
+        // alert("Please enter in a whole number greater than your sample size!");
+    }
+};
 
 
+function clear_SS () {
+    SS_value_past = "";
+    alert(document.getElementById('SS').value);
+}
 
-
+//talktoR checks for empty table + fe + fd
 
 
 
