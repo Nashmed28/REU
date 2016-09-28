@@ -1,3 +1,11 @@
+// to do:
+//wipe out epsilon + accuracy for unchecked stats (done line 364)
+// fd + fe should be sent when they are available
+// add clear button for secrecy sample 
+// population size/database size (secrecy of sample/global variable * e or * d (w/ ss> n))
+// don't send an empty
+// multivariate analysis
+
 // JM 
 var production = false;
 if (!production) {
@@ -349,6 +357,8 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
 
         // Updating the master data-array
         inputted_metadata[variable][column_index[stat.name]] = 0;
+        inputted_metadata[variable][column_index["epsilon_" + stat.name]] = "";
+        inputted_metadata[variable][column_index["accuracy_" + stat.name]] = "";
 
         // Updates epsilon table 
         if (previous_inputted_metadata[variable][column_index[stat.name]] == 2) {
