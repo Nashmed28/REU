@@ -1480,6 +1480,7 @@ function global_parameters_SS (SS) {
         SS_value_past = SS.value;
         calculate_fe();
         calculate_fd();
+        // talk to r bc e, d , and etc. changed
     }
     else {
         SS.value = SS_value_past;
@@ -1494,6 +1495,7 @@ function clear_SS () {
     document.getElementById('SS').value = "";
     document.getElementById('FE').value = "";
     document.getElementById('FD').value = "";
+    // talk to R bc e, d, etc. changed
 }
 
 // secrecy of sample/global variable * e or * d
