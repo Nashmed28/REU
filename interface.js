@@ -365,7 +365,7 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
     if ($("#" + stat.id).prop('checked')) {
         // Updating the master data-array
         inputted_metadata[variable][column_index[stat.name]] = 1;
-        
+
         // In case zero parameters needed
         epsilon_table_validation(variable, "undefined"); 
         
@@ -522,12 +522,12 @@ function epsilon_table_validation (variable, input) {
     eval("var ppparameter = " + type_chosen + "_stat_parameter_list;"); 
     var previous_stat_state; 
     for (q = 0; q < pparameter.length; q++) {
-        if (inputted_metadata[variable][column_index[pparameter[q]]] > 0) {
+        if (inputted_metadata[variable][column_index[pparameter[q].replace(/\s/g, '_')]] > 0) {
             var sparameter = rfunctions.rfunctions[(ppparameter[(pparameter.indexOf(pparameter[q]))].rfunctions_index)].statistic_type[ppparameter[pparameter.indexOf(pparameter[q])].parameter_index].parameter;
-            inputted_metadata[variable][column_index[pparameter[q]]] = 2 + sparameter.length;
+            inputted_metadata[variable][column_index[pparameter[q].replace(/\s/g, '_')]] = 2 + sparameter.length;
             for (r = 0; r < sparameter.length; r++) {
                 if (inputted_metadata[variable][column_index[sparameter[r].replace(/\s/g, '_')]] != "") {
-                    inputted_metadata[variable][column_index[pparameter[q]]]--;
+                    inputted_metadata[variable][column_index[pparameter[q].replace(/\s/g, '_')]]--;
                 }
             };
             // previous_stat_state = inputted_metadata[variable][column_index[pparameter[q]]];
