@@ -34,12 +34,12 @@ if (!production) {
 // JSON data of r-libraries and functions (Fanny's work will provide these)
 var JSON_file = '{"rfunctions":[' +
     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
-    '{"statistic": "Me ain", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
+    // '{"statistic": "Me ain", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
     '{"statistic": "Casual Inference", "stat_info": "Inferences", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Treatment Variable"]}, {"stype": "Boolean", "parameter": ["Treatment Variable"]}]},' + 
     '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]} ],' +
     '"type_label": [ {"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"} ],' +
-    '"parameter_info": [ {"parameter": "Lower Bound", "entry_type": "number", "pinfo": "Lowest Value"}, {"parameter": "Upper Bound", "entry_type": "number", "pinfo": "Highest Value"}, {"parameter": "Number of Bins", "entry_type": "pos_integer", "pinfo": "Number of Categories"}, {"parameter": "Granularity", "entry_type": "pos_integer", "pinfo": "Spread"}, {"parameter": "Treatment Variable", "entry_type": "none", "pinfo": "Other axis variable"} ] }';
+    '"parameter_info": [ {"parameter": "Lower Bound", "entry_type": "number", "pinfo": "Lowest Value", "function": "none"}, {"parameter": "Upper Bound", "entry_type": "number", "pinfo": "Highest Value", "function": "none"}, {"parameter": "Number of Bins", "entry_type": "pos_integer", "pinfo": "Number of Categories", "function": "none"}, {"parameter": "Granularity", "entry_type": "pos_integer", "pinfo": "Spread", "function": "none"}, {"parameter": "Treatment Variable", "entry_type": "none", "pinfo": "Other axis variable", "function": "none"} ] }';
 
 // {"parameter": "VT", "entry_type": "none", "pinfo": "variables"}
 
