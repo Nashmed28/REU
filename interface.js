@@ -1,4 +1,19 @@
 // to do:
+//talktoR checks for empty table + fe + fd
+
+
+
+
+
+
+
+// casual inference
+// lower, upper
+// treatment variable (i.e. what other varibale)
+// boolean and numerical type
+
+// functions
+
 //wipe out epsilon + accuracy for unchecked stats (done line 364)
 // fd + fe should be sent when they are available
 // add clear button for secrecy sample 
@@ -19,11 +34,14 @@ if (!production) {
 // JSON data of r-libraries and functions (Fanny's work will provide these)
 var JSON_file = '{"rfunctions":[' +
     '{"statistic": "Mean", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
+    '{"statistic": "Me ain", "stat_info": "Average", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound"]}, {"stype": "Boolean", "parameter": []}]},' + 
     '{"statistic": "Histogram", "stat_info": "Frequency", "statistic_type": [{"stype": "Numerical", "parameter": ["Number of Bins"]}, {"stype": "Boolean", "parameter": []}, {"stype": "Categorical", "parameter": ["Number of Bins"]}]},' +
+    '{"statistic": "Casual Inference", "stat_info": "Inferences", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Treatment Variable"]}, {"stype": "Boolean", "parameter": ["Treatment Variable"]}]},' + 
     '{"statistic": "Quantile", "stat_info": "Range", "statistic_type": [{"stype": "Numerical", "parameter": ["Lower Bound", "Upper Bound", "Granularity"]}, {"stype": "Boolean", "parameter": []}]} ],' +
     '"type_label": [ {"stype": "Numerical", "type_info": "Numbers"}, {"stype": "Boolean", "type_info": "True or False"}, {"stype": "Categorical", "type_info": "Categories"} ],' +
-    '"parameter_info": [ {"parameter": "Lower Bound", "entry_type": "number", "pinfo": "Lowest Value"}, {"parameter": "Upper Bound", "entry_type": "number", "pinfo": "Highest Value"}, {"parameter": "Number of Bins", "entry_type": "pos_integer", "pinfo": "Number of Categories"}, {"parameter": "Granularity", "entry_type": "pos_integer", "pinfo": "Spread"} ] }';
+    '"parameter_info": [ {"parameter": "Lower Bound", "entry_type": "number", "pinfo": "Lowest Value"}, {"parameter": "Upper Bound", "entry_type": "number", "pinfo": "Highest Value"}, {"parameter": "Number of Bins", "entry_type": "pos_integer", "pinfo": "Number of Categories"}, {"parameter": "Granularity", "entry_type": "pos_integer", "pinfo": "Spread"}, {"parameter": "Treatment Variable", "entry_type": "none", "pinfo": "Other axis variable"} ] }';
 
+// {"parameter": "VT", "entry_type": "none", "pinfo": "variables"}
 
 // List of variables to make form bubbles (Fanny's work will provide these)
 var JSON_file2 = '{ "varlist": ["name", "gender", "age", "income", "education", "IQ", "employed"] }'; 
@@ -41,6 +59,11 @@ var varlist_active = [];
 var varlist_inactive = variable_list; 
 
 
+
+
+// function test () {
+//     alert(rfunctions.parameter_info[1].pinfo)
+// }
 
 
 
@@ -229,7 +252,7 @@ function type_selected (type_chosen, variable) {
         };
         if (stat_changed > 0) {
             console.log("talk to r bc type has changed and there was valid stats removed");
-         	talktoR();
+         	// talktoR();
         }
     }
 
@@ -324,7 +347,7 @@ function parameter_fields (variable, type_chosen) {
     // uses .unique() to get all unique values and iterate through
     for (j = 0; j < needed_parameters.length; j++) {
         // creates html list in .sort() (alphabet order)
-        parameter_field += "<span title='" + rfunctions.parameter_info[(column_index[needed_parameters[j].replace(/\s/g, '_')] - (4 * type_list.length) - 1)].pinfo + "'>" + needed_parameters[j] + ":</span> <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' onfocusin='record_table()' oninput='Parameter_Memory(this,\"" + variable + "\")' onfocusout='ValidateInput(this, \"" + rfunctions.parameter_info[(column_index[needed_parameters[j].replace(/\s/g, '_')] - (4 * type_list.length) - 1)].entry_type + "\", \"" + variable + "\");'><br>"
+        parameter_field += "<span title='" + rfunctions.parameter_info[metadata_list.indexOf(needed_parameters[j].replace(/\s/g, '_'))].pinfo + "'>" + needed_parameters[j] + ":</span> <input type='text' value='" + inputted_metadata[variable][column_index[needed_parameters[j].replace(/\s/g, '_')]] + "' name='" + needed_parameters[j].replace(/\s/g, '_') + "'id='input_" + needed_parameters[j].replace(/\s/g, '_') + "_" + variable + "' onfocusin='record_table()' oninput='Parameter_Memory(this,\"" + variable + "\")' onfocusout='ValidateInput(this, \"" + rfunctions.parameter_info[metadata_list.indexOf(needed_parameters[j].replace(/\s/g, '_'))].entry_type + "\", \"" + variable + "\");'><br>"
     };
 
     // prints this all out, display seems smooth
@@ -342,7 +365,7 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
     if ($("#" + stat.id).prop('checked')) {
         // Updating the master data-array
         inputted_metadata[variable][column_index[stat.name]] = 1;
-
+        
         // In case zero parameters needed
         epsilon_table_validation(variable, "undefined"); 
         
@@ -363,7 +386,7 @@ function Parameter_Populate (stat, stat_index, variable, type_chosen) {
         // Updates epsilon table 
         if (previous_inputted_metadata[variable][column_index[stat.name]] == 2) {
             console.log("talk to r bc a statistics was removed");
-            talktoR();
+            // talktoR();
         }
 
         // calls the parameter HTML generating function
@@ -381,6 +404,10 @@ function Parameter_Memory (parameter, variable) {
 
 
 function Validation (valid_entry, entry) {
+    if (valid_entry == "none") {
+        return "true";
+    }
+
     if (valid_entry == "general_text") {
         if (!entry.match(/^[a-zA-Z0-9]+$/)) {
             alert("Invalid entry. Entry can only contain numbers and letters only!");
@@ -545,17 +572,17 @@ function pass_to_r_metadata (variable, input, ppparameter) {
     
     if (should_call_r > 0) {
         console.log("talking to r bc statistic can now be editted but doesn't cover the later case where the field becomes null");
-        talktoR();
+        // talktoR();
     }
     
     if (number_changed_metadata == changed_metadata && number_changed_metadata > 0 && changed_metadata > 0 && should_call_r == 0) {
         console.log("talking to r bc metadata field just changed but all entry are filled/none are blank")
-        talktoR();
+        // talktoR();
     }
 
     if (metadata_changed_statistic_is_two > 0 && number_changed_metadata != changed_metadata) {
         console.log("talking to R bc a statistic which is now edittable has it's been changed w/ some fields blank");
-        talktoR();
+        // talktoR();
     }
 };
 
@@ -696,7 +723,7 @@ function generate_epsilon_table () {
 function pass_to_r_epsilon (statistic, variable) {
     if (previous_inputted_metadata[variable][column_index[statistic] + 2] !=  inputted_metadata[variable][column_index[statistic] + 2]) {
         console.log("talk to r bc accuracy has changed; can extract var name and stat is necessary");
-        talktoR("accuracyEdited", variable, statistic);
+        // talktoR("accuracyEdited", variable, statistic);
     }
 };
 
@@ -917,7 +944,7 @@ function delete_variable (variable) {
 		// done JM
 		if (active_stat > 0) {
 			console.log("talk to r bc variable deleted and it had valid stats")
-			talktoR();
+			// talktoR();
 		}
 
 		generate_epsilon_table();
@@ -956,7 +983,7 @@ function global_parameters_epsilon (epsilon) {
 
             if (is_active_stat >  0) {
                 console.log("talk to r bc epsilon changed but talks even when no stat presents has been fixed");
-                talktoR();
+                // talktoR();
             }
         }
     }
@@ -991,7 +1018,7 @@ function global_parameters_delta (delta) {
 
             if (is_active_stat >  0) {
                 console.log("talk to r bc delta changed but talks even when no stat presents has been fixed");
-                talktoR();
+                // talktoR();
             }
         }
     }
@@ -1026,7 +1053,7 @@ function global_parameters_beta (beta) {
 
             if (is_active_stat >  0) {
                 console.log("talk to r bc beta changed but talks even when no stat presents has been fixed");
-                talktoR("betaChange", "", "");
+                // talktoR("betaChange", "", "");
             }
         }
     }
@@ -1526,6 +1553,12 @@ function calculate_fd () {
 
 
 
+// casual inference
+// lower, upper
+// treatment variable (i.e. what other varibale)
+// boolean and numerical type
+
+// functions
 
 
 
